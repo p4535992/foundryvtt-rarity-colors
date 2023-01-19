@@ -24,4 +24,10 @@ Hooks.on("renderSidebarTab", (bar, html) => {
         if(type === "spell" && spellFlag) i.classList.add("spell")
         if(type === "feat" && featFlag) i.classList.add("feat")
     }
-})
+});
+
+Hooks.on('updateItem', (item, diff, options, userID) => {
+    if (item.actor) return;
+
+    ui.sidebar.render();
+});
