@@ -2,7 +2,7 @@
   "id": "rarity-colors",
   "title": "Rarity Colors",
   "description": "Auto colors inventory items based on visibility",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
   "minimumCoreVersion": "10",
