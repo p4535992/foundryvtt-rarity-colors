@@ -10,8 +10,8 @@ export const registerSettings = function () {
 		restricted: true
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "rarityFlag", {
-		name: game.i18n.format("rarity-colors.rarityFlag.name"),
-		hint: game.i18n.format("rarity-colors.rarityFlag.hint"),
+		name: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.hint`,
 		scope: "world",
 		config: true,
 		default: true,
@@ -19,8 +19,8 @@ export const registerSettings = function () {
 	});
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "spellFlag", {
-		name: game.i18n.format("rarity-colors.spellFlag.name"),
-		hint: game.i18n.format("rarity-colors.spellFlag.hint"),
+		name: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.hint`,
 		scope: "world",
 		config: true,
 		default: true,
@@ -28,25 +28,26 @@ export const registerSettings = function () {
 	});
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "featFlag", {
-		name: game.i18n.format("rarity-colors.featFlag.name"),
-		hint: game.i18n.format("rarity-colors.featFlag.hint"),
+		name: `${CONSTANTS.MODULE_NAME}.setting.featFlag.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.featFlag.hint`,
 		scope: "world",
 		config: true,
 		default: true,
 		type: Boolean
 	});
 
-	game.settings.register(CONSTANTS.MODULE_NAME, "spellFeats", {
-		name: "Color Spell and Feature Names on item detail",
-		hint: "",
-		scope: "world",
-		config: true,
-		type: Boolean,
-		default: true
-	});
+	// game.settings.register(CONSTANTS.MODULE_NAME, "spellFeats", {
+	// 	name: "Color Spell and Feature Names on item detail",
+	// 	hint: "",
+	// 	scope: "world",
+	// 	config: true,
+	// 	type: Boolean,
+	// 	default: true
+	// });
 
 	game.settings.register(CONSTANTS.MODULE_NAME, "uncommon", {
-		name: "Uncommon",
+		name: `${CONSTANTS.MODULE_NAME}.setting.uncommon.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.uncommon.hint`,
 		scope: "client",
 		type: String,
 		default: "#008000",
@@ -54,7 +55,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "uncommonExternal", {
-		name: "Uncommon External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.uncommonExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.uncommonExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#006400",
@@ -62,7 +64,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "rare", {
-		name: "Rare",
+		name: `${CONSTANTS.MODULE_NAME}.setting.rare.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.rare.hint`,
 		scope: "client",
 		type: String,
 		default: "#0000FF",
@@ -70,7 +73,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "rareExternal", {
-		name: "Rare External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.rareExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.rareExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#191970",
@@ -78,7 +82,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "veryrare", {
-		name: "Very Rare",
+		name: `${CONSTANTS.MODULE_NAME}.setting.veryrare.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.veryrare.hint`,
 		scope: "client",
 		type: String,
 		default: "#800080",
@@ -86,7 +91,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "veryrareExternal", {
-		name: "Very Rare External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.veryrareExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.veryrareExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#4B0082",
@@ -94,7 +100,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "legendary", {
-		name: "Legendary",
+		name: `${CONSTANTS.MODULE_NAME}.setting.legendary.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.legendary.hint`,
 		scope: "client",
 		type: String,
 		default: "#FFA500",
@@ -102,7 +109,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "legendaryExternal", {
-		name: "Legendary External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.legendaryExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.legendaryExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#D2691E",
@@ -110,7 +118,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "artifact", {
-		name: "Artifact",
+		name: `${CONSTANTS.MODULE_NAME}.setting.artifact.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.artifact.hint`,
 		scope: "client",
 		type: String,
 		default: "#D2691E",
@@ -118,7 +127,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "artifactExternal", {
-		name: "Artifact External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.artifactExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.artifactExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#91450e",
@@ -126,7 +136,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "spell", {
-		name: "Spell",
+		name: `${CONSTANTS.MODULE_NAME}.setting.spell.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.spell.hint`,
 		scope: "client",
 		type: String,
 		default: "#add8e6",
@@ -134,7 +145,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "spellExternal", {
-		name: "Spell External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.spellExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.spellExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#0000ff",
@@ -142,7 +154,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "feat", {
-		name: "Feat",
+		name: `${CONSTANTS.MODULE_NAME}.setting.feat.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.feat.hint`,
 		scope: "client",
 		type: String,
 		default: "#48d1cc",
@@ -150,7 +163,8 @@ export const registerSettings = function () {
 		onChange: refresh
 	});
 	game.settings.register(CONSTANTS.MODULE_NAME, "featExternal", {
-		name: "Feat External",
+		name: `${CONSTANTS.MODULE_NAME}.setting.featExternal.name`,
+		hint: `${CONSTANTS.MODULE_NAME}.setting.featExternal.hint`,
 		scope: "client",
 		type: String,
 		default: "#0e5c59",

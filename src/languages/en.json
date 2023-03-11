@@ -1,10 +1,74 @@
 {
-	"rarity-colors.rarityFlag.name": "Rarity Color",
-	"rarity-colors.rarityFlag.hint": "Color Items in the actor sheet and sidebar based on its rarity",
+	"rarity-colors.setting.rarityFlag.name": "Rarity Color",
+	"rarity-colors.setting.rarityFlag.hint": "Color Items in the actor sheet and sidebar based on its rarity",
 
-	"rarity-colors.spellFlag.name": "Spell Color",
-	"rarity-colors.spellFlag.hint": "Color Items in the sidebar that are Spells",
+	"rarity-colors.setting.spellFlag.name": "Spell Color",
+	"rarity-colors.setting.spellFlag.hint": "Color Items in the sidebar that are Spells",
 
-	"rarity-colors.featFlag.name": "Feat Color",
-	"rarity-colors.featFlag.hint": "Color Items in the sidebar that are Features"
+	"rarity-colors.setting.featFlag.name": "Feat Color",
+	"rarity-colors.setting.featFlag.hint": "Color Items in the sidebar that are Features",
+
+	"rarity-colors.setting.common.name": "Common Color",
+	"rarity-colors.setting.common.hint": " ",
+
+	"rarity-colors.setting.commonExternal.name": "Common External Color",
+	"rarity-colors.setting.common.hint": " ",
+
+	"rarity-colors.setting.uncommon.name": "Uncommon Color",
+	"rarity-colors.setting.uncommon.hint": " ",
+
+	"rarity-colors.setting.uncommonExternal.name": "Uncommon External Color",
+	"rarity-colors.setting.uncommon.hint": " ",
+
+	"rarity-colors.setting.rare.name": "Rare Color",
+	"rarity-colors.setting.rare.hint": " ",
+
+	"rarity-colors.setting.rareExternal.name": "Rare External Color",
+	"rarity-colors.setting.rareExternal.hint": " ",
+
+	"rarity-colors.setting.veryrare.name": "Very Rare Color",
+	"rarity-colors.setting.veryrare.hint": " ",
+
+	"rarity-colors.setting.veryrareExternal.name": "Very Rare External Color",
+	"rarity-colors.setting.veryrareExternal.hint": " ",
+
+	"rarity-colors.setting.legendary.name": "Legendary Color",
+	"rarity-colors.setting.legendary.hint": " ",
+
+	"rarity-colors.setting.legendaryExternal.name": "Legendary External Color",
+	"rarity-colors.setting.legendaryExternal.hint": " ",
+
+	"rarity-colors.setting.artifact.name": "Artifact Color",
+	"rarity-colors.setting.artifact.hint": " ",
+
+	"rarity-colors.setting.artifactExternal.name": "Artifact External Color",
+	"rarity-colors.setting.artifactExternal.hint": " ",
+
+	"rarity-colors.setting.spell.name": "Spell Color",
+	"rarity-colors.setting.spell.hint": " ",
+
+	"rarity-colors.setting.spellExternal.name": "Spell External Color",
+	"rarity-colors.setting.spellExternal.hint": " ",
+
+	"rarity-colors.setting.feat.name": "Feat Color",
+	"rarity-colors.setting.feat.hint": " ",
+
+	"rarity-colors.setting.featExternal.name": "Feat External Color",
+	"rarity-colors.setting.featExternal.hint": " ",
+
+	"rarity-colors.setting.reset.name": "Reset settings to default",
+	"rarity-colors.setting.reset.label": "Reset Settings To Default",
+	"rarity-colors.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",
+	"rarity-colors.setting.debug.name": "Enable debugging",
+	"rarity-colors.setting.debug.label": "Prints debug messages to the console",
+	"rarity-colors.setting.debug.hint": " ",
+	"rarity-colors.dialogs.resetsettings.title": "Reset Module Settings",
+	"rarity-colors.dialogs.resetsettings.content": "Are you sure you want to reset all of the module settings to the current system's defaults? <strong>THIS CANNOT BE UNDONE!</strong>",
+	"rarity-colors.dialogs.resetsettings.confirm": "Reset Module Settings",
+	"rarity-colors.dialogs.resetsettings.cancel": "Cancel",
+	"rarity-colors.dialogs.nosystemfound.title": "System Not Recognized",
+	"rarity-colors.dialogs.nosystemfound.content": "This system is not currently fully supported. This means that the module does not know how to best handle this system's items, but can still operate in a limited fashion.<br><br>You can configure the module's settings yourself, but it requires a bit of technical know-how.",
+	"rarity-colors.dialogs.systemfound.title": "System Recognized",
+	"rarity-colors.dialogs.systemfound.content": "This system was previously not supported, but in an recent update it was added as a supported system!<br><br>Do you want to load this system's default Item Pile settings?",
+	"rarity-colors.dialogs.systemfound.confirm": "Apply System Defaults"
 }
