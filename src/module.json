@@ -2,7 +2,7 @@
 	"id": "rarity-colors",
 	"title": "Rarity Colors",
 	"description": "Auto colors inventory items based on visibility",
-	"version": "0.2.2",
+	"version": "0.2.3",
 	"authors": [
 		{
 			"name": "Kandashi",

@@ -140,7 +140,7 @@ export const registerSettings = function () {
 		hint: `${CONSTANTS.MODULE_NAME}.setting.spell.hint`,
 		scope: "client",
 		type: String,
-		default: "#add8e6",
+		default: "#4a8396" /*#add8e6*/,
 		config: true,
 		onChange: refresh
 	});

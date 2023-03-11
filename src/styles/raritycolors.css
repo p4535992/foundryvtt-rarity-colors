@@ -9,65 +9,65 @@
 	--rarity-colors-legendaryExt: #d2691e;
 	--rarity-colors-artifact: #d2691e;
 	--rarity-colors-artifactExt: #91450e;
-	--rarity-colors-spell: #add8e6;
+	--rarity-colors-spell: #4a8396; /*#add8e6*/
 	--rarity-colors-spellExt: #0000ff;
 	--rarity-colors-feat: #48d1cc;
 	--rarity-colors-featExt: #0e5c59;
 }
 .item.rarity-colors-uncommon .item-name h4 {
 	color: var(--rarity-colors-uncommon) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt) !important;
 }
 
 .item.rarity-colors-rare .item-name h4 {
 	color: var(--rarity-colors-rare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt) !important;
 }
 
 .item.rarity-colors-veryrare .item-name h4 {
 	color: var(--rarity-colors-veryrare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt) !important;
 }
 
 .item.rarity-colors-legendary .item-name h4 {
 	color: var(--rarity-colors-legendary) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt) !important;
 }
 
 .item.rarity-colors-artifact .item-name h4 {
 	color: var(--rarity-colors-artifact) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt) !important;
 }
 
 .directory-item.rarity-colors-uncommon .document-name {
 	color: var(--rarity-colors-uncommon) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt) !important;
 }
 
 .directory-item.rarity-colors-rare .document-name {
 	color: var(--rarity-colors-rare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt) !important;
 }
 .directory-item.rarity-colors-veryrare .document-name {
 	color: var(--rarity-colors-veryrare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt) !important;
 }
 .directory-item.rarity-colors-legendary .document-name {
 	color: var(--rarity-colors-legendary) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt) !important;
 }
 
 .directory-item.rarity-colors-artifact .document-name {
 	color: var(--rarity-colors-artifact) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt) !important;
 }
 
 .directory-item.rarity-colors-spell .document-name {
 	color: var(--rarity-colors-spell) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-spellExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-spellExt) !important;
 }
 
 .directory-item.rarity-colors-feat .document-name {
 	color: var(--rarity-colors-feat) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-featExt);
+	-webkit-text-stroke: 0.5px var(--rarity-colors-featExt) !important;
 }

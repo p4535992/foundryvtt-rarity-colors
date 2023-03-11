@@ -1,7 +1,11 @@
-import { warn } from "./lib/lib.js";
+import { debug, warn } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 
 export const initHooks = async () => {
+	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+	if (!rarityFlag) {
+		return;
+	}
 	// Hooks.once("socketlib.ready", registerSocket);
 	// registerSocket();
 	Hooks.on("renderSettingsConfig", (app, el, data) => {
@@ -68,65 +72,123 @@ export const setupHooks = async () => {
 	// setApi(API);
 };
 
-export const readyHooks = () => {};
+export const readyHooks = () => {
+	// Do nothing
+};
 
 Hooks.on("renderActorSheet", (actor, html) => {
 	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
 	if (!rarityFlag) {
 		return;
 	}
-	let spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
-	let featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+
+	const spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
+	const featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+
 	let items = html.find($(".items-list .item"));
-	for (let i of items) {
-		let id = i.outerHTML.match(/data-item-id="(.*?)"/);
+	for (let itemElement of items) {
+		let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
 		if (!id) {
-			return;
+			continue;
 		}
-		let rarity = actor.object.items.get(id[1]).getRollData()?.item.rarity || undefined;
+		let item = actor.object.items.get(id[1]);
+		if (!item) {
+			continue;
+		}
+
+		let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
+		rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
+		if (rarity && rarity === "common") {
+			continue;
+		}
 		let type = item?.type;
+
+		let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
+		const itemNameElement = $(itemElement).find(".item-name h4");
+		let doColor = false;
+
 		if (rarity !== "" && rarity !== undefined) {
-			i.classList.add("rarity-colors-" + rarity.slugify().toLowerCase());
+			itemElement.classList.add("rarity-colors-" + rarity.slugify().toLowerCase());
+			doColor = true;
 		}
 		if (type === "spell" && spellFlag) {
-			i.classList.add("rarity-colors-spell");
+			itemElement.classList.add("rarity-colors-spell");
+			doColor = true;
 		}
 		if (type === "feat" && featFlag) {
-			i.classList.add("rarity-colors-feat");
+			itemElement.classList.add("rarity-colors-feat");
+			doColor = true;
+		}
+
+		if (rarityOrType && itemNameElement.length > 0 && doColor) {
+			debug(`Try to get setting : ${rarityOrType}`);
+			const color = game.settings.get(CONSTANTS.MODULE_NAME, rarityOrType);
+			const colorExternal = game.settings.get(CONSTANTS.MODULE_NAME, rarityOrType + "External");
+			itemNameElement.css("color", color);
+			itemNameElement.css("-webkit-text-stroke", `0.5px var(${colorExternal})`);
 		}
 	}
 });
 
 Hooks.on("renderSidebarTab", (bar, html) => {
 	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
-	if (!game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag")) {
+	if (!rarityFlag) {
 		return;
 	}
-	let spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
-	let featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+
+	const spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
+	const featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+
 	let items = html.find(".directory-item.document.item");
-	for (let i of items) {
-		let id = i.outerHTML.match(/data-document-id="(.*?)"/);
+	for (let itemElement of items) {
+		let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
 		if (!id) {
 			continue;
 		}
 		let item = game.items.get(id[1]);
-		let rarity = item?.system?.rarity ? item.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
+		if (!item) {
+			continue;
+		}
+
+		let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
+		rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
+		if (rarity && rarity === "common") {
+			continue;
+		}
 
 		let type = item?.type;
+
+		let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
+		const itemNameElement = $(itemElement).find(".item-name h4");
+		let doColor = false;
+
 		if (rarity !== "" && rarity !== undefined) {
-			i.classList.add("rarity-colors-" + rarity.slugify().toLowerCase().trim());
+			itemElement.classList.add("rarity-colors-" + rarity.slugify().toLowerCase().trim());
+			doColor = true;
 		}
 		if (type === "spell" && spellFlag) {
-			i.classList.add("rarity-colors-spell");
+			itemElement.classList.add("rarity-colors-spell");
+			doColor = true;
 		}
 		if (type === "feat" && featFlag) {
-			i.classList.add("rarity-colors-feat");
+			itemElement.classList.add("rarity-colors-feat");
+			doColor = true;
+		}
+
+		if (rarityOrType && itemNameElement.length > 0 && doColor) {
+			const color = game.settings.get(CONSTANTS.MODULE_NAME, rarityOrType);
+			const colorExternal = game.settings.get(CONSTANTS.MODULE_NAME, rarityOrType + "External");
+			itemNameElement.css("color", color);
+			itemNameElement.css("-webkit-text-stroke", `0.5px var(${colorExternal})`);
 		}
 	}
 });
 
 Hooks.on("updateItem", (item, diff, options, userID) => {
+	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+	if (!rarityFlag) {
+		return;
+	}
 	if (item.actor) {
 		return;
 	}
@@ -134,6 +196,10 @@ Hooks.on("updateItem", (item, diff, options, userID) => {
 });
 
 Hooks.on("renderItemSheet", (app, html, appData) => {
+	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+	if (!rarityFlag) {
+		return;
+	}
 	// Color item name
 	const itemNameElement = html.find(`input[name="name"]`);
 	const itemRarityElement = html.find(`select[name="system.rarity"]`);
@@ -163,7 +229,9 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
 
 	if (doColor) {
 		const color = game.settings.get(CONSTANTS.MODULE_NAME, rarity);
+		const colorExternal = game.settings.get(CONSTANTS.MODULE_NAME, rarity + "External");
 		itemNameElement.css("color", color);
+		itemNameElement.css("-webkit-text-stroke", `0.5px var(${colorExternal})`);
 		// itemRarityElement.css("color", color);
 	}
 
@@ -208,6 +276,10 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
 });
 
 Hooks.once("canvasReady", () => {
+	let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+	if (!rarityFlag) {
+		return;
+	}
 	refresh();
 });
 
