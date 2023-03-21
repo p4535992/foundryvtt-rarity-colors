@@ -71,3 +71,22 @@
 	color: var(--rarity-colors-feat) !important;
 	-webkit-text-stroke: 0.5px var(--rarity-colors-featExt) !important;
 }
+
+#rarity-colors-app td {
+    justify-content: center;
+    align-items: center;
+}
+
+#rarity-colors-app .rarity-colors-td-center{
+    display: flex;
+}
+
+#rarity-colors-app td .fa-trash{
+    color: var(--color-shadow-primary);
+    transition: all 0.2s ease-in-out;
+}
+
+#rarity-colors-app td .fa-trash:hover{
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--color-shadow-primary);
+}

@@ -1,0 +1,49 @@
+<form onsubmit="event.preventDefault();" class="flexcol {{classes}}" autocomplete="off"></form>
+    <section id="config-tabs" class="content">
+
+        <h2><i class="fa-regular fa-gem"></i> {{localize "rarity-colors.dialog.itemRarity.name"}}</h2>
+        <hr>
+        <!-- Item Rarity Colors Tab -->
+        <article class="setting">
+            <table>
+                <tr>
+                    <th>{{localize "rarity-colors.dialog.itemRarity.itemRarityName"}}</th>
+                    <th><i class="fas fa-palette"></i></th>
+                </tr>
+
+                {{#each ORIGINAL_CONFIG.itemRarity}}
+                <tr data-item-rarity-id="{{@key}}">
+                    <td>
+                        <input type="text" readonly name="data.itemRarity.defaults.{{@key}}.name" value="{{localize this}}">
+                    </td>
+                    <td class="rarity-colors-td-center">
+                        <input type="color" name="itemRarity.defaults.{{@key}}.raritycolor"
+                            value="{{rarityColorsChecked "data.itemRarity.defaults.{{@key}}.raritycolor"}}">
+                    </td>
+                </tr>
+                {{/each}}
+                <!-- Integration with D&D5e - System Customizer -->
+                {{#if isDSCEnabled}}
+                    {{#each customizations.itemRarity.custom}}
+                    <tr data-item-rarity-id="{{@key}}">
+                        <td>
+                            <input type="text" readonly name="itemRarity.custom.{{@key}}.name" value="{{this.name}}">
+                        </td>
+                        <td class="rarity-colors-td-center">
+                            <input type="color" name="itemRarity.custom.{{@key}}.raritycolor"
+                                value="{{"data.itemRarity.custom.{{@key}}.raritycolor"}}">
+                        </td>
+                    </tr>
+                    {{/each}}
+                {{/if}}
+
+            </table>
+
+            <button id="add-item-rarity">
+                <i class="fas fa-plus"></i> {{localize "rarity-colors.dialog.itemRarity.add"}}
+            </button>
+
+        </article>
+
+    </section>
+</form>
