@@ -1,50 +1,42 @@
 import { i18n } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
-import { refresh } from "./module.js";
+import { RarityColorsApp } from "./apps/rarity-colors-app.js";
 export const registerSettings = function () {
-	game.settings.registerMenu(CONSTANTS.MODULE_NAME, "resetAllSettings", {
-		name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
-		hint: `${CONSTANTS.MODULE_NAME}.setting.reset.hint`,
-		icon: "fas fa-coins",
-		type: ResetSettingsDialog,
-		restricted: true
-	});
-	game.settings.register(CONSTANTS.MODULE_NAME, "rarityFlag", {
-		name: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.name`,
-		hint: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.hint`,
-		scope: "world",
-		config: true,
-		default: true,
-		type: Boolean
-	});
+  game.settings.registerMenu(CONSTANTS.MODULE_NAME, "resetAllSettings", {
+    name: `${CONSTANTS.MODULE_NAME}.setting.reset.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.reset.hint`,
+    icon: "fas fa-coins",
+    type: ResetSettingsDialog,
+    restricted: true,
+  });
+  game.settings.register(CONSTANTS.MODULE_NAME, "rarityFlag", {
+    name: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.rarityFlag.hint`,
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
 
-	game.settings.register(CONSTANTS.MODULE_NAME, "spellFlag", {
-		name: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.name`,
-		hint: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.hint`,
-		scope: "world",
-		config: true,
-		default: true,
-		type: Boolean
-	});
+  game.settings.register(CONSTANTS.MODULE_NAME, "spellFlag", {
+    name: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.spellFlag.hint`,
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
 
-	game.settings.register(CONSTANTS.MODULE_NAME, "featFlag", {
-		name: `${CONSTANTS.MODULE_NAME}.setting.featFlag.name`,
-		hint: `${CONSTANTS.MODULE_NAME}.setting.featFlag.hint`,
-		scope: "world",
-		config: true,
-		default: true,
-		type: Boolean
-	});
+  game.settings.register(CONSTANTS.MODULE_NAME, "featFlag", {
+    name: `${CONSTANTS.MODULE_NAME}.setting.featFlag.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.featFlag.hint`,
+    scope: "world",
+    config: true,
+    default: true,
+    type: Boolean,
+  });
 
-	// game.settings.register(CONSTANTS.MODULE_NAME, "spellFeats", {
-	// 	name: "Color Spell and Feature Names on item detail",
-	// 	hint: "",
-	// 	scope: "world",
-	// 	config: true,
-	// 	type: Boolean,
-	// 	default: true
-	// });
-
+  /*
 	game.settings.register(CONSTANTS.MODULE_NAME, "uncommon", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.uncommon.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.uncommon.hint`,
@@ -135,12 +127,14 @@ export const registerSettings = function () {
 		config: true,
 		onChange: refresh
 	});
+	*/
+  /*
 	game.settings.register(CONSTANTS.MODULE_NAME, "spell", {
 		name: `${CONSTANTS.MODULE_NAME}.setting.spell.name`,
 		hint: `${CONSTANTS.MODULE_NAME}.setting.spell.hint`,
 		scope: "client",
 		type: String,
-		default: "#4a8396" /*#add8e6*/,
+		default: "#4a8396",
 		config: true,
 		onChange: refresh
 	});
@@ -171,52 +165,82 @@ export const registerSettings = function () {
 		config: true,
 		onChange: refresh
 	});
+	*/
+  game.settings.register(CONSTANTS.MODULE_NAME, "configurations", {
+    scope: "world",
+    config: false,
+    type: Object,
+    default: {
+      spellSchools: {
+        custom: {},
+        defaults: {},
+      },
+      itemRarity: {
+        custom: {},
+        defaults: {},
+      },
+      classFeatureTypes: {
+        custom: {},
+        defaults: {},
+      },
+    },
+  });
 
-	// ========================================================================
-	game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
-		name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,
-		hint: `${CONSTANTS.MODULE_NAME}.setting.debug.hint`,
-		scope: "client",
-		config: true,
-		default: false,
-		type: Boolean
-	});
+  game.settings.registerMenu(CONSTANTS.MODULE_NAME, "rarityColorsAppMenu", {
+    name: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.menu.name`),
+    label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.menu.label`),
+    hint: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.menu.hint`),
+    icon: "fas fa-cogs",
+    scope: "world",
+    restricted: true,
+    type: RarityColorsApp,
+  });
+
+  // ========================================================================
+  game.settings.register(CONSTANTS.MODULE_NAME, "debug", {
+    name: `${CONSTANTS.MODULE_NAME}.setting.debug.name`,
+    hint: `${CONSTANTS.MODULE_NAME}.setting.debug.hint`,
+    scope: "client",
+    config: true,
+    default: false,
+    type: Boolean,
+  });
 };
 class ResetSettingsDialog extends FormApplication {
-	constructor(...args) {
-		//@ts-ignore
-		super(...args);
-		//@ts-ignore
-		return new Dialog({
-			title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.title`),
-			content:
-				'<p style="margin-bottom:1rem;">' +
-				game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.content`) +
-				"</p>",
-			buttons: {
-				confirm: {
-					icon: '<i class="fas fa-check"></i>',
-					label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.confirm`),
-					callback: async () => {
-						const worldSettings = game.settings.storage
-							?.get("world")
-							?.filter((setting) => setting.key.startsWith(`${CONSTANTS.MODULE_NAME}.`));
-						for (let setting of worldSettings) {
-							console.log(`Reset setting '${setting.key}'`);
-							await setting.delete();
-						}
-						//window.location.reload();
-					}
-				},
-				cancel: {
-					icon: '<i class="fas fa-times"></i>',
-					label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.cancel`)
-				}
-			},
-			default: "cancel"
-		});
-	}
-	async _updateObject(event, formData) {
-		// do nothing
-	}
+  constructor(...args) {
+    //@ts-ignore
+    super(...args);
+    //@ts-ignore
+    return new Dialog({
+      title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.title`),
+      content:
+        '<p style="margin-bottom:1rem;">' +
+        game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.content`) +
+        "</p>",
+      buttons: {
+        confirm: {
+          icon: '<i class="fas fa-check"></i>',
+          label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.confirm`),
+          callback: async () => {
+            const worldSettings = game.settings.storage
+              ?.get("world")
+              ?.filter((setting) => setting.key.startsWith(`${CONSTANTS.MODULE_NAME}.`));
+            for (let setting of worldSettings) {
+              console.log(`Reset setting '${setting.key}'`);
+              await setting.delete();
+            }
+            //window.location.reload();
+          },
+        },
+        cancel: {
+          icon: '<i class="fas fa-times"></i>',
+          label: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.dialogs.resetsettings.cancel`),
+        },
+      },
+      default: "cancel",
+    });
+  }
+  async _updateObject(event, formData) {
+    // do nothing
+  }
 }

@@ -14,21 +14,19 @@
 
 [![Translation status](https://weblate.foundryvtt-hub.com/widgets/rarity-colors/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/rarity-colors/)
 
-### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
+**Note: This is module is inspired from the  wonderful work done by [theRipper93](https://github.com/theripper93) 
+If you want to support more modules of this kind, I invite you to go and support his patreon**
+
+[![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/theripper93) [![alt-text](https://img.shields.io/badge/-Discord-%235662f6?style=for-the-badge)](https://discord.gg/F53gBjR97G)
 
 Give your Inventory and Sidebar a splash of color. Re-colors Actor Inventory Items and the Items Sidebar names with colors based on item rarity and type
 
-## Colors are as follows
-
-- Uncommon Items - Green
-- Rare Items - Blue
-- Very Rare Items - Purple
-- Legendary Items - Orange
-- Artifact Items - Brown/Dark Orange
-- Spells - Light blue
-- Features - Terqouise 
-
 ![image](https://user-images.githubusercontent.com/1347785/140974008-cc790018-4fb3-410b-a856-9993cfba498b.png)
+
+### Color Settings
+
+This module uses the [colorsettings](https://github.com/ardittristan/VTTColorSettings). It is a mandatory dependency but it is recommended for the best experience and compatibility with other modules.
+
 
 ## Installation
 

@@ -1,73 +1,23 @@
-:root {
-	--rarity-colors-uncommon: #008000;
-	--rarity-colors-uncommonExt: #006400;
-	--rarity-colors-rare: #0000ff;
-	--rarity-colors-rareExt: #191970;
-	--rarity-colors-veryrare: #800080;
-	--rarity-colors-veryrareExt: #4b0082;
-	--rarity-colors-legendary: #ffa500;
-	--rarity-colors-legendaryExt: #d2691e;
-	--rarity-colors-artifact: #d2691e;
-	--rarity-colors-artifactExt: #91450e;
-	--rarity-colors-spell: #4a8396; /*#add8e6*/
-	--rarity-colors-spellExt: #0000ff;
-	--rarity-colors-feat: #48d1cc;
-	--rarity-colors-featExt: #0e5c59;
-}
-.item.rarity-colors-uncommon .item-name h4 {
-	color: var(--rarity-colors-uncommon) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt) !important;
+#rarity-colors-config-app td {
+  justify-content: center;
+  align-items: center;
 }
 
-.item.rarity-colors-rare .item-name h4 {
-	color: var(--rarity-colors-rare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt) !important;
+#rarity-colors-config-app td .fa-trash {
+  color: var(--color-shadow-primary);
+  transition: all 0.2s ease-in-out;
 }
 
-.item.rarity-colors-veryrare .item-name h4 {
-	color: var(--rarity-colors-veryrare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt) !important;
+#rarity-colors-config-app td .fa-trash:hover {
+  cursor: pointer;
+  text-shadow: 0 0 5px var(--color-shadow-primary);
 }
 
-.item.rarity-colors-legendary .item-name h4 {
-	color: var(--rarity-colors-legendary) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt) !important;
+#rarity-colors-config-app .tabs {
+  flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
-.item.rarity-colors-artifact .item-name h4 {
-	color: var(--rarity-colors-artifact) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt) !important;
-}
-
-.directory-item.rarity-colors-uncommon .document-name {
-	color: var(--rarity-colors-uncommon) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-uncommonExt) !important;
-}
-
-.directory-item.rarity-colors-rare .document-name {
-	color: var(--rarity-colors-rare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-rareExt) !important;
-}
-.directory-item.rarity-colors-veryrare .document-name {
-	color: var(--rarity-colors-veryrare) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-veryrareExt) !important;
-}
-.directory-item.rarity-colors-legendary .document-name {
-	color: var(--rarity-colors-legendary) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-legendaryExt) !important;
-}
-
-.directory-item.rarity-colors-artifact .document-name {
-	color: var(--rarity-colors-artifact) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-artifactExt) !important;
-}
-
-.directory-item.rarity-colors-spell .document-name {
-	color: var(--rarity-colors-spell) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-spellExt) !important;
-}
-
-.directory-item.rarity-colors-feat .document-name {
-	color: var(--rarity-colors-feat) !important;
-	-webkit-text-stroke: 0.5px var(--rarity-colors-featExt) !important;
+#rarity-colors-config-app td input[type="color"] {
+  width: 100%;
 }
