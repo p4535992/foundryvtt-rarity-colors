@@ -1,4 +1,4 @@
-import { debug, warn } from "./lib/lib.js";
+import { debug, error, isEmptyObject, warn } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 
 export let ORIGINAL_CONFIG = {};
@@ -8,7 +8,7 @@ let mapConfigurations = {};
 export const initHooks = async () => {
   ORIGINAL_CONFIG = deepClone(game.dnd5e.config);
 
-  let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+  let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
   }
@@ -26,15 +26,15 @@ export const readyHooks = () => {
 };
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
-  let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+  let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
   }
   if (isEmptyObject(mapConfigurations)) {
     mapConfigurations = prepareMapConfigurations();
   }
-  const spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
-  const featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+  const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
+  const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
   let items = html.find($(".items-list .item"));
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
@@ -53,7 +53,12 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     }
     let type = item?.type;
     let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
-    const itemNameElement = $(itemElement).find(".item-name h4");
+    let itemNameElement = null;
+    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+      itemNameElement = $(itemElement);
+    } else {
+      itemNameElement = $(itemElement).find(".item-name h4");
+    }
     let doColor = false;
     if (rarity !== "" && rarity !== undefined) {
       //itemElement.classList.add("rarity-colors-" + rarity.slugify().toLowerCase());
@@ -79,7 +84,11 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
       debug(`Try to get setting : ${rarityOrType}`);
       const color = mapConfigurations[rarityOrType].color;
       if (color && color !== "#000000") {
-        itemNameElement.css("color", color);
+        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+          itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+        } else {
+          itemNameElement.css("color", color);
+        }
       }
     }
   }
@@ -89,15 +98,15 @@ Hooks.on("renderSidebarTab", (bar, html) => {
   if (bar.id !== "items") {
     return;
   }
-  let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+  let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
   }
   if (isEmptyObject(mapConfigurations)) {
     mapConfigurations = prepareMapConfigurations();
   }
-  const spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
-  const featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+  const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
+  const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
   let items = html.find(".directory-item.document.item");
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
@@ -115,7 +124,15 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     }
     let type = item?.type;
     let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
-    const itemNameElement = $(itemElement).find(".document-name");
+    let itemNameElement = null;
+    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+      itemNameElement = $(itemElement).find(".document-name");
+      const thumbnail = $(itemElement).find(".thumbnail");
+      thumbnail.css("z-index", 1); // stupid display flex
+    } else {
+      itemNameElement = $(itemElement).find(".document-name");
+    }
+
     let doColor = false;
     if (rarityOrType !== "" && rarityOrType !== undefined) {
       //itemElement.classList.add("rarity-colors-" + rarityOrType.slugify().toLowerCase().trim());
@@ -140,14 +157,18 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     if (rarityOrType && itemNameElement.length > 0 && doColor) {
       const color = mapConfigurations[rarityOrType].color;
       if (color && color !== "#000000") {
-        itemNameElement.css("color", color);
+        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+          itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+        } else {
+          itemNameElement.css("color", color);
+        }
       }
     }
   }
 });
 
 Hooks.on("updateItem", (item, diff, options, userID) => {
-  let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+  let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
   }
@@ -158,8 +179,12 @@ Hooks.on("updateItem", (item, diff, options, userID) => {
 });
 
 Hooks.on("renderItemSheet", (app, html, appData) => {
-  let rarityFlag = game.settings.get(CONSTANTS.MODULE_NAME, "rarityFlag");
+  let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
+    return;
+  }
+  let item = appData;
+  if (!item) {
     return;
   }
   if (isEmptyObject(mapConfigurations)) {
@@ -168,17 +193,15 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   // Color item name
   const itemNameElement = html.find(`input[name="name"]`);
   const itemRarityElement = html.find(`select[name="system.rarity"]`);
-  const itemType = appData.document.type;
-  let rarityOrType = appData.system.rarity
-    ? appData.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim()
-    : itemType;
+  const itemType = item.document.type;
+  let rarityOrType = item.system.rarity ? item.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim() : itemType;
 
-  let spellFlag = game.settings.get(CONSTANTS.MODULE_NAME, "spellFlag");
-  let featFlag = game.settings.get(CONSTANTS.MODULE_NAME, "featFlag");
+  let spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
+  let featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
   const isSpell = itemType === "spell";
   const isFeat = itemType === "feat";
   let doColor = false;
-  if (appData.system.rarity && appData.system.rarity !== "common") {
+  if (item.system.rarity && item.system.rarity !== "common") {
     doColor = true;
   } else if (isSpell && spellFlag) {
     rarityOrType = item?.system.school ?? "spell";
@@ -197,7 +220,11 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   if (doColor) {
     const color = mapConfigurations[rarityOrType].color;
     if (color && color !== "#000000") {
-      itemNameElement.css("color", color);
+      if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+        itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+      } else {
+        itemNameElement.css("color", color);
+      }
     }
   }
   // Change rarity select element
@@ -205,7 +232,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   if (!raritySelectElement.length) {
     return;
   }
-  // const customRarities = game.settings.get(CONSTANTS.MODULE_NAME, "rarityNames");
+  // const customRarities = game.settings.get(CONSTANTS.MODULE_ID, "rarityNames");
   $(raritySelectElement)
     .find(`option`)
     .each(function () {
@@ -217,6 +244,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
         return;
       }
       const color = mapConfigurations[rarityOrType].color;
+
       $(this).css("color", color);
       // Color selected option
       if ($(this).prop("selected")) {
@@ -231,7 +259,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
 // ===================================================
 
 export function prepareMapConfigurations() {
-  let configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+  let configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
   let mapAll = {};
   if (
     isEmptyObject(configurations) ||
@@ -310,7 +338,7 @@ function prepareMapClassFeatureTypes(mapAll, customClassFeatureTypes) {
 }
 
 export function prepareConfigurations() {
-  let configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+  let configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
   if (
     isEmptyObject(configurations) ||
     isEmptyObject(configurations.itemRarity) ||
@@ -330,7 +358,7 @@ export function prepareConfigurations() {
         defaults: {},
       },
     };
-    //await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    //await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
   }
 
   configurations.itemRarity ??= {};
@@ -431,14 +459,18 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
   }
 }
 
-export function isEmptyObject(obj) {
-  // because Object.keys(new Date()).length === 0;
-  // we have to do some additional check
-  if (obj === null || obj === undefined) {
-    return true;
+/**
+ * @href https://stackoverflow.com/questions/19799777/how-to-add-transparency-information-to-a-hex-color-code
+ * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
+ */
+export function convertHexColorToRGBAColorString(colorHex, alpha = 0.25) {
+  // const rgb = Color.from(colorHex);
+  // return "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alpha + ")";
+  if (colorHex.length > 7) {
+    return colorHex;
+  } else {
+    return `${colorHex}${Math.floor(alpha * 255)
+      .toString(16)
+      .padStart(2, "0")}`;
   }
-  const result =
-    obj && // null and undefined check
-    Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
-  return result;
 }

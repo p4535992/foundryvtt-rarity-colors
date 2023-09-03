@@ -74,6 +74,10 @@
   "rarity-colors.dialogs.menu.name": "Rarity Color Configuration",
   "rarity-colors.dialogs.menu.label": "Rarity Color Configuration",
   "rarity-colors.dialogs.menu.hint": "Set colors for item, spells and features",
+
+  "rarity-colors.setting.enableBackgroundColorInsteadText.name": "Enable Color only as background and not text",
+  "rarity-colors.setting.enableBackgroundColorInsteadText.hint": "Color the Backgrounds Items in the sidebar and the inventory instead the text",
+
   "rarity-colors.RarityColorsApp": {
     "title": "Rarity Color Configuration",
     "save": "Save Changes",

@@ -1,13 +1,13 @@
-import { ORIGINAL_CONFIG, isEmptyObject, prepareConfigurations } from "../raritycolors.js";
+import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
-import { log } from "../lib/lib.js";
+import { isEmptyObject, log } from "../lib/lib.js";
 
 export class RarityColorsApp extends FormApplication {
   static get defaultOptions() {
     return mergeObject(super.defaultOptions, {
-      title: game.i18n.localize(`${CONSTANTS.MODULE_NAME}.RarityColorsApp.title`),
-      template: `modules/${CONSTANTS.MODULE_NAME}/templates/rarityColorsApp.hbs`,
-      id: `${CONSTANTS.MODULE_NAME}-config-app`,
+      title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.RarityColorsApp.title`),
+      template: `modules/${CONSTANTS.MODULE_ID}/templates/rarityColorsApp.hbs`,
+      id: `${CONSTANTS.MODULE_ID}-config-app`,
       width: 620,
       height: "auto",
       resizable: true,
@@ -19,7 +19,7 @@ export class RarityColorsApp extends FormApplication {
   }
 
   getData() {
-    let configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    let configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     if (
       isEmptyObject(configurations) ||
       isEmptyObject(configurations.itemRarity) ||
@@ -180,7 +180,7 @@ export class RarityColorsApp extends FormApplication {
 
   async _addItemRarity(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const newItemRarity = {
       name: "New Item Rarity",
       key: "new",
@@ -188,22 +188,22 @@ export class RarityColorsApp extends FormApplication {
     };
     configurations.itemRarity.custom ??= {};
     configurations.itemRarity.custom[randomID()] = newItemRarity;
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _deleteItemRarity(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const itemRarity = event.currentTarget.closest("tr").dataset.itemRarityId;
     delete configurations.itemRarity.custom[itemRarity];
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _addSpellSchool(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const newSpellSchool = {
       name: "New Spell School",
       key: "new",
@@ -211,22 +211,22 @@ export class RarityColorsApp extends FormApplication {
     };
     configurations.spellSchools.custom ??= {};
     configurations.spellSchools.custom[randomID()] = newSpellSchool;
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _deleteSpellSchool(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const spellSchool = event.currentTarget.closest("tr").dataset.spellSchoolId;
     delete configurations.spellSchools.custom[spellSchool];
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _addClassFeature(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const newClassFeature = {
       name: "New Class Feature",
       key: "new",
@@ -234,23 +234,23 @@ export class RarityColorsApp extends FormApplication {
     };
     configurations.classFeatureTypes.custom ??= {};
     configurations.classFeatureTypes.custom[randomID()] = newClassFeature;
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _deleteClassFeature(event) {
     event.preventDefault();
-    const configurations = game.settings.get(CONSTANTS.MODULE_NAME, "configurations");
+    const configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     const classFeature = event.currentTarget.closest("tr").dataset.classFeatureId;
     delete configurations.classFeatureTypes.custom[classFeature];
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", configurations);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
     this.render(true);
   }
 
   async _updateObject(event, formData) {
     log("RarityColorsApp | _updateObject | formData", formData);
     const expanded = expandObject(formData);
-    await game.settings.set(CONSTANTS.MODULE_NAME, "configurations", expanded);
+    await game.settings.set(CONSTANTS.MODULE_ID, "configurations", expanded);
   }
 
   async close(...args) {
