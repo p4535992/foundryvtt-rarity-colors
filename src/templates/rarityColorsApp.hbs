@@ -20,14 +20,14 @@
         {{#each configurations.itemRarity.defaults}}
         <tr data-item-rarity-id="{{@key}}">
           <td><input type="text" readonly name="itemRarity.defaults.{{@key}}.name" value="{{localize this.name}}"></td>
-          <td><input type="color" name="itemRarity.defaults.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="itemRarity.defaults.{{@key}}.color" value="{{this.color}}"></td>
         </tr>
         {{/each}}
     
         {{#each configurations.itemRarity.custom}}
         <tr data-item-rarity-id="{{@key}}">
           <td><input type="text" name="itemRarity.custom.{{@key}}.name" value="{{this.name}}"></td>
-          <td><input type="color" name="itemRarity.custom.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="itemRarity.custom.{{@key}}.color" value="{{this.color}}"></td>
           <td><i class="fas fa-trash delete-item-rarity"></i></td>
         </tr>
         {{/each}}
@@ -51,14 +51,14 @@
         {{#each configurations.spellSchools.defaults}}
         <tr data-spell-school-id="{{@key}}">
           <td><input type="text" readonly name="spellSchools.defaults.{{@key}}.name" value="{{localize this.name}}"></td>
-          <td><input type="color" name="spellSchools.defaults.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="spellSchools.defaults.{{@key}}.color" value="{{this.color}}"></td>
         </tr>
         {{/each}}
 
         {{#each configurations.spellSchools.custom}}
         <tr data-spell-school-id="{{@key}}">
           <td><input type="text" name="spellSchools.custom.{{@key}}.name" value="{{this.name}}"></td>
-          <td><input type="color" name="spellSchools.custom.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="spellSchools.custom.{{@key}}.color" value="{{this.color}}"></td>
           <td><i class="fas fa-trash delete-spell-school"></i></td>
         </tr>
         {{/each}}
@@ -82,14 +82,14 @@
         {{#each configurations.classFeatureTypes.defaults}}
         <tr data-class-feature-id="{{@key}}">
           <td><input type="text" readonly name="classFeatureTypes.defaults.{{@key}}.name" value="{{localize this.name}}"></td>
-          <td><input type="color" name="classFeatureTypes.defaults.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="classFeatureTypes.defaults.{{@key}}.color" value="{{this.color}}"></td>
         </tr>
         {{/each}}
     
         {{#each configurations.classFeatureTypes.custom}}
         <tr data-class-feature-id="{{@key}}">
           <td><input type="text" name="classFeatureTypes.custom.{{@key}}.name" value="{{this.name}}"></td>
-          <td><input type="color" name="classFeatureTypes.custom.{{@key}}.color" value="{{this.color}}"></td>
+          <td><input type="text" is="colorpicker-input" data-responsive-color name="classFeatureTypes.custom.{{@key}}.color" value="{{this.color}}"></td>
           <td><i class="fas fa-trash delete-class-feature"></i></td>
         </tr>
         {{/each}}

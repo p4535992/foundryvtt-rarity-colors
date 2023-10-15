@@ -48,9 +48,9 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     }
     let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
     rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
-    if (rarity && rarity === "common") {
-      continue;
-    }
+    // if (rarity && rarity === "common") {
+    //   continue;
+    // }
     let type = item?.type;
     let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
     let itemNameElement = null;
@@ -83,9 +83,9 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     if (rarityOrType && itemNameElement.length > 0 && doColor) {
       debug(`Try to get setting : ${rarityOrType}`);
       const color = mapConfigurations[rarityOrType].color;
-      if (color && color !== "#000000") {
+      if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+          itemNameElement.css("background-color", hexToRGBAString(color));
         } else {
           itemNameElement.css("color", color);
         }
@@ -119,9 +119,9 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     }
     let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
     rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
-    if (rarity && rarity === "common") {
-      continue;
-    }
+    // if (rarity && rarity === "common") {
+    //   continue;
+    // }
     let type = item?.type;
     let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
     let itemNameElement = null;
@@ -156,9 +156,9 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     }
     if (rarityOrType && itemNameElement.length > 0 && doColor) {
       const color = mapConfigurations[rarityOrType].color;
-      if (color && color !== "#000000") {
+      if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+          itemNameElement.css("background-color", hexToRGBAString(color));
         } else {
           itemNameElement.css("color", color);
         }
@@ -201,7 +201,8 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   const isSpell = itemType === "spell";
   const isFeat = itemType === "feat";
   let doColor = false;
-  if (item.system.rarity && item.system.rarity !== "common") {
+  if (item.system.rarity) {
+    //  && item.system.rarity !== "common"
     doColor = true;
   } else if (isSpell && spellFlag) {
     rarityOrType = item?.system.school ?? "spell";
@@ -219,9 +220,9 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
 
   if (doColor) {
     const color = mapConfigurations[rarityOrType].color;
-    if (color && color !== "#000000") {
+    if (color && !colorIsDefault(color)) {
       if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-        itemNameElement.css("background-color", convertHexColorToRGBAColorString(color));
+        itemNameElement.css("background-color", hexToRGBAString(color));
       } else {
         itemNameElement.css("color", color);
       }
@@ -240,9 +241,9 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
       if (!rarityOrType) {
         return;
       }
-      if (rarityOrType === "common") {
-        return;
-      }
+      // if (rarityOrType === "common") {
+      //   return;
+      // }
       const color = mapConfigurations[rarityOrType].color;
 
       $(this).css("color", color);
@@ -463,14 +464,48 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
  * @href https://stackoverflow.com/questions/19799777/how-to-add-transparency-information-to-a-hex-color-code
  * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
  */
-export function convertHexColorToRGBAColorString(colorHex, alpha = 0.25) {
-  // const rgb = Color.from(colorHex);
+export function hexToRGBAString(colorHex, alpha = 0.25) {
+  let rgba = Color.from(colorHex).toRGBA();
   // return "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alpha + ")";
   if (colorHex.length > 7) {
-    return colorHex;
+    rgba = hexToRGBA(colorHex);
   } else {
-    return `${colorHex}${Math.floor(alpha * 255)
-      .toString(16)
-      .padStart(2, "0")}`;
+    // const colorHex2 = `${colorHex}${Math.floor(alpha * 255)
+    //   .toString(16)
+    //   .padStart(2, "0")}`;
+    // return hexToRGBA(colorHex2);
+    const c = Color.from(colorHex);
+    rgba = c.toRGBA();
   }
+  return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a ?? alpha + ")";
+}
+
+/**
+ * turn hex rgba into rgba string
+ * @param {String} hex 8 long hex value in string form, eg: "#123456ff"
+ * @returns Array of rgba[r, g, b, a]
+ */
+export function hexToRGBA(hex) {
+  const hexArr = hex.slice(1).match(new RegExp(".{2}", "g"));
+  const [r, g, b, a] = hexArr.map((hexStr) => {
+    // Hex to rgba
+    return parseInt(hexStr.repeat(2 / hexStr.length), 16);
+  });
+  const rgba = [r, g, b, Math.round((a / 256 + Number.EPSILON) * 100) / 100];
+  return {
+    r: rgba[0] ?? 255,
+    g: rgba[1] ?? 255,
+    b: rgba[2] ?? 255,
+    a: rgba[3] ?? 255,
+  };
+}
+
+export function colorIsDefault(color) {
+  if (!color) {
+    return true;
+  }
+  if (color !== "#000000" && color !== "#000000ff") {
+    return false;
+  }
+  return true;
 }

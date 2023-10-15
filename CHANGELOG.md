@@ -1,3 +1,7 @@
+### 0.3.4 
+
+- Try to fix again: https://github.com/p4535992/foundryvtt-rarity-colors/issues/3
+
 ### 0.3.3
 
 - Bug fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/3, removed colorsettings picker in favor of standard input color
