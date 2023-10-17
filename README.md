@@ -14,10 +14,7 @@
 
 [![Translation status](https://weblate.foundryvtt-hub.com/widgets/rarity-colors/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/rarity-colors/)
 
-**Note: This is module is inspired from the  wonderful work done by [theRipper93](https://github.com/theripper93) 
-If you want to support more modules of this kind, I invite you to go and support his patreon**
-
-[![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/theripper93) [![alt-text](https://img.shields.io/badge/-Discord-%235662f6?style=for-the-badge)](https://discord.gg/F53gBjR97G)
+**Note: This is module is inspired from the  wonderful work done by [kandashi](https://github.com/kandashi) with the module [Rarity Color](https://github.com/kandashi/rarity-colors)
 
 Give your Inventory and Sidebar a splash of color. Re-colors Actor Inventory Items and the Items Sidebar names with colors based on item rarity and type
 
@@ -131,6 +128,10 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 
 This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
+- [Rarity Color](https://github.com/kandashi/rarity-colors) with license [MIT](https://github.com/kandashi/rarity-colors/blob/master/LICENSE)
+
 ## Credit
 
 Thanks to anyone who helps me with this code! I appreciate the user community's feedback on this project!
+
+- Ty to  [Kandashi](https://github.com/kandashi) and the module [Rarity Color](https://github.com/kandashi/rarity-colors)
