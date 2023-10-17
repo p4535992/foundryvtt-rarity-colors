@@ -14,6 +14,8 @@
 
 [![Translation status](https://weblate.foundryvtt-hub.com/widgets/rarity-colors/-/287x66-black.png)](https://weblate.foundryvtt-hub.com/engage/rarity-colors/)
 
+### If you want to buy me a coffee [![alt-text](https://img.shields.io/badge/-Patreon-%23ff424d?style=for-the-badge)](https://www.patreon.com/p4535992)
+
 **Note: This is module is inspired from the  wonderful work done by [kandashi](https://github.com/kandashi) with the module [Rarity Color](https://github.com/kandashi/rarity-colors)
 
 Give your Inventory and Sidebar a splash of color. Re-colors Actor Inventory Items and the Items Sidebar names with colors based on item rarity and type
