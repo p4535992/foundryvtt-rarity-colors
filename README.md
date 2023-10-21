@@ -18,7 +18,9 @@
 
 **Note: This is module is inspired from the  wonderful work done by [kandashi](https://github.com/kandashi) with the module [Rarity Color](https://github.com/kandashi/rarity-colors)
 
-Give your Inventory and Sidebar a splash of color. Re-colors Actor Inventory Items and the Items Sidebar names with colors based on item rarity and type
+Give your Inventory and Sidebar a splash of color. Re-colors Actor Inventory Items and the Items Sidebar names with colors based on item rarity and type.
+
+### NOTE: Is been tested only on Dnd5e, but it should work with all the system with the property `system.rarity` as string, a API support is been recently added for help the integration with other system
 
 ![image](https://user-images.githubusercontent.com/1347785/140974008-cc790018-4fb3-410b-a856-9993cfba498b.png)
 
@@ -44,6 +46,8 @@ To install this module manually:
 Any issues, bugs, or feature requests are always welcome to be reported directly to the [Issue Tracker](https://github.com/p4535992/foundryvtt-rarity-colors/issues ), or using the [Bug Reporter Module](https://foundryvtt.com/packages/bug-reporter/).
 
 ## Api
+
+All the api information are here [API](./wiki/api.md)
 
 # Build
 

@@ -62,6 +62,62 @@ export function dialogWarning(message, icon = "fas fa-exclamation-triangle") {
       </p>`;
 }
 
+// ================================
+// Retrieve document utility
+// ================================
+
+export function getDocument(target) {
+  if (stringIsUuid(target)) {
+    target = fromUuidSync(target);
+  }
+  return target?.document ?? target;
+}
+
+export function stringIsUuid(inId) {
+  return typeof inId === "string" && (inId.match(/\./g) || []).length && !inId.endsWith(".");
+}
+
+export function getUuid(target) {
+  if (stringIsUuid(target)) {
+    return target;
+  }
+  const document = getDocument(target);
+  return document?.uuid ?? false;
+}
+
+export function getItemSync(target, ignoreError) {
+  if (!target) {
+    throw error(`Item is undefined`, true, target);
+  }
+  if (target instanceof Item) {
+    return target;
+  }
+  if (target.document) {
+    target = target.document;
+  }
+  if (target instanceof Item) {
+    return target;
+  }
+  if (stringIsUuid(target)) {
+    target = fromUuidSync(target);
+  } else {
+    target = game.items.get(target) ?? game.items.getName(target);
+  }
+  if (!target) {
+    if (ignoreError) {
+      warn(`Item is not found`, false, target);
+      return target;
+    } else {
+      throw error(`Item is not found`, true, target);
+    }
+  }
+  // Type checking
+  if (!(target instanceof Item)) {
+    throw error(`Invalid Item`, true, target);
+  }
+  return target;
+}
+
 // ==================================================================================
 
 export function isEmptyObject(obj) {

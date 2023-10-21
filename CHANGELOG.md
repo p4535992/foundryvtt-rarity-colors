@@ -1,3 +1,8 @@
+### 0.3.5
+
+- Add new feature: https://github.com/p4535992/foundryvtt-rarity-colors/issues/5
+- Add API support and documentation 
+
 ### 0.3.4 
 
 - Try to fix again: https://github.com/p4535992/foundryvtt-rarity-colors/issues/3

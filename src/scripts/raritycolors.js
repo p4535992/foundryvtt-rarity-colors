@@ -220,6 +220,7 @@ export function prepareMapConfigurations() {
   prepareMapItemRarity(mapAll, configurations.itemRarity);
   prepareMapSpellSchools(mapAll, configurations.spellSchools);
   prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
+  // just for retro compatibility
   mapAll["spell"] = {
     color: "#4a8396",
     name: "Spell",
@@ -403,17 +404,17 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
  * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
  */
 export function hexToRGBAString(colorHex, alpha = 0.25) {
-  let rgba = Color.from(colorHex).toRGBA();
+  let rgba = Color.from(colorHex);
   // return "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alpha + ")";
   if (colorHex.length > 7) {
     rgba = hexToRGBA(colorHex);
   } else {
-    // const colorHex2 = `${colorHex}${Math.floor(alpha * 255)
-    //   .toString(16)
-    //   .padStart(2, "0")}`;
-    // return hexToRGBA(colorHex2);
-    const c = Color.from(colorHex);
-    rgba = c.toRGBA();
+    const colorHex2 = `${colorHex}${Math.floor(alpha * 255)
+      .toString(16)
+      .padStart(2, "0")}`;
+    rgba = hexToRGBA(colorHex2);
+    // const c = Color.from(colorHex);
+    // rgba = c.toRGBA();
   }
   return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a ?? alpha + ")";
 }

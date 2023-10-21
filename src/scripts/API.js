@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants";
-import { debug, isEmptyObject, warn } from "./lib/lib";
+import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors";
 
 /**
@@ -8,11 +8,19 @@ import { colorIsDefault, prepareMapConfigurations } from "./raritycolors";
 const API = {
   mapConfigurations: null,
 
+  /**
+   * Method to recover the color from a item object
+   * @param {string|Item} item
+   * @param {boolean} applyModuleSettings if true it will apply the 'rarity-colors' module settings
+   * @returns {string|null} the hex string of the color or the null value if not founded
+   */
   getColorFromItem(item, applyModuleSettings = true) {
     if (!item) {
       warn(`getColorFromItem | No item reference is been passed`, true);
       return;
     }
+
+    item = getItemSync(item, false);
 
     const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
     const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
@@ -49,7 +57,7 @@ const API = {
 
     if (applyModuleSettings) {
       if (rarityOrType !== "" && rarityOrType !== undefined && doColor) {
-        debug(`Try to get setting : ${rarityOrType}`);
+        debug(`Try to get color with settings : ${rarityOrType}`);
         const color = this.mapConfigurations[rarityOrType].color;
         if (color && !colorIsDefault(color)) {
           return color;
@@ -58,7 +66,7 @@ const API = {
       return null;
     } else {
       if (rarityOrType !== "" && rarityOrType !== undefined) {
-        debug(`Try to get setting : ${rarityOrType}`);
+        debug(`Try to get color without settings : ${rarityOrType}`);
         const color = this.mapConfigurations[rarityOrType].color;
         if (color && !colorIsDefault(color)) {
           return color;
@@ -68,6 +76,10 @@ const API = {
     }
   },
 
+  /**
+   * Retrieve the full color map of 'rarity-color' for you own use ?
+   * @returns {Object.<string, {color: string}>}
+   */
   getColorMap() {
     if (isEmptyObject(this.mapConfigurations)) {
       this.mapConfigurations = prepareMapConfigurations();
