@@ -203,6 +203,7 @@ export const registerSettings = function () {
     config: true,
     default: false,
     type: Boolean,
+    requiresReload: true,
   });
 
   // ========================================================================

@@ -1,9 +1,10 @@
 import { debug, error, isEmptyObject, warn } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
+import API from "./API.js";
 
 export let ORIGINAL_CONFIG = {};
 
-let mapConfigurations = {};
+// let mapConfigurations = {};
 
 export const initHooks = async () => {
   ORIGINAL_CONFIG = deepClone(game.dnd5e.config);
@@ -16,12 +17,14 @@ export const initHooks = async () => {
 
 export const setupHooks = async () => {
   // setApi(API);
+  const data = game.modules.get(CONSTANTS.MODULE_ID);
+  data.api = API;
 };
 
 export const readyHooks = () => {
   // Do nothing
-  if (isEmptyObject(mapConfigurations)) {
-    mapConfigurations = prepareMapConfigurations();
+  if (isEmptyObject(API.mapConfigurations)) {
+    API.mapConfigurations = API.getColorMap();
   }
 };
 
@@ -30,11 +33,10 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
   if (!rarityFlag) {
     return;
   }
-  if (isEmptyObject(mapConfigurations)) {
-    mapConfigurations = prepareMapConfigurations();
+  if (isEmptyObject(API.mapConfigurations)) {
+    API.mapConfigurations = API.getColorMap();
   }
-  const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
-  const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
+
   let items = html.find($(".items-list .item"));
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
@@ -46,46 +48,22 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     if (!item) {
       continue;
     }
-    let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
-    rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
-    // if (rarity && rarity === "common") {
-    //   continue;
-    // }
-    let type = item?.type;
-    let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
     let itemNameElement = null;
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
       itemNameElement = $(itemElement);
     } else {
       itemNameElement = $(itemElement).find(".item-name h4");
     }
-    let doColor = false;
-    if (rarity !== "" && rarity !== undefined) {
-      //itemElement.classList.add("rarity-colors-" + rarity.slugify().toLowerCase());
-      doColor = true;
-    }
-    if (type === "spell" && spellFlag) {
-      //itemElement.classList.add("rarity-colors-spell");
-      rarityOrType = item?.system.school ?? "spell";
-      if (!mapConfigurations[rarityOrType]) {
-        rarityOrType = "spell";
-      }
-      doColor = true;
-    }
-    if (type === "feat" && featFlag) {
-      //itemElement.classList.add("rarity-colors-feat");
-      rarityOrType = item?.system.type ?? "feat";
-      if (!mapConfigurations[rarityOrType]) {
-        rarityOrType = "feat";
-      }
-      doColor = true;
-    }
-    if (rarityOrType && itemNameElement.length > 0 && doColor) {
-      debug(`Try to get setting : ${rarityOrType}`);
-      const color = mapConfigurations[rarityOrType].color;
+
+    const color = API.getColorFromItem(item);
+    if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
           itemNameElement.css("background-color", hexToRGBAString(color));
+          if (game.modules.get("colorsettings")?.api) {
+            const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+            itemNameElement.css("color", textColor);
+          }
         } else {
           itemNameElement.css("color", color);
         }
@@ -102,11 +80,10 @@ Hooks.on("renderSidebarTab", (bar, html) => {
   if (!rarityFlag) {
     return;
   }
-  if (isEmptyObject(mapConfigurations)) {
-    mapConfigurations = prepareMapConfigurations();
+  if (isEmptyObject(API.mapConfigurations)) {
+    API.mapConfigurations = API.getColorMap();
   }
-  const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
-  const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
+
   let items = html.find(".directory-item.document.item");
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
@@ -117,13 +94,7 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     if (!item) {
       continue;
     }
-    let rarity = item.getRollData()?.item.rarity || item?.system?.rarity || undefined;
-    rarity = rarity ? rarity.replaceAll(/\s/g, "").toLowerCase().trim() : undefined;
-    // if (rarity && rarity === "common") {
-    //   continue;
-    // }
-    let type = item?.type;
-    let rarityOrType = rarity || (type === "spell" || type === "feat" ? type : undefined);
+
     let itemNameElement = null;
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
       itemNameElement = $(itemElement).find(".document-name");
@@ -133,32 +104,15 @@ Hooks.on("renderSidebarTab", (bar, html) => {
       itemNameElement = $(itemElement).find(".document-name");
     }
 
-    let doColor = false;
-    if (rarityOrType !== "" && rarityOrType !== undefined) {
-      //itemElement.classList.add("rarity-colors-" + rarityOrType.slugify().toLowerCase().trim());
-      doColor = true;
-    }
-    if (type === "spell" && spellFlag) {
-      //itemElement.classList.add("rarity-colors-spell");
-      rarityOrType = item?.system.school ?? "spell";
-      if (!mapConfigurations[rarityOrType]) {
-        rarityOrType = "spell";
-      }
-      doColor = true;
-    }
-    if (type === "feat" && featFlag) {
-      //itemElement.classList.add("rarity-colors-feat");
-      rarityOrType = item?.system.type ?? "feat";
-      if (!mapConfigurations[rarityOrType]) {
-        rarityOrType = "feat";
-      }
-      doColor = true;
-    }
-    if (rarityOrType && itemNameElement.length > 0 && doColor) {
-      const color = mapConfigurations[rarityOrType].color;
+    const color = API.getColorFromItem(item);
+    if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
           itemNameElement.css("background-color", hexToRGBAString(color));
+          if (game.modules.get("colorsettings")?.api) {
+            const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+            itemNameElement.css("color", textColor);
+          }
         } else {
           itemNameElement.css("color", color);
         }
@@ -187,47 +141,26 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   if (!item) {
     return;
   }
-  if (isEmptyObject(mapConfigurations)) {
-    mapConfigurations = prepareMapConfigurations();
+  if (isEmptyObject(API.mapConfigurations)) {
+    API.mapConfigurations = API.getColorMap();
   }
   // Color item name
   const itemNameElement = html.find(`input[name="name"]`);
-  const itemRarityElement = html.find(`select[name="system.rarity"]`);
-  const itemType = item.document.type;
-  let rarityOrType = item.system.rarity ? item.system.rarity.replaceAll(/\s/g, "").toLowerCase().trim() : itemType;
+  // const itemRarityElement = html.find(`select[name="system.rarity"]`);
 
-  let spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
-  let featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
-  const isSpell = itemType === "spell";
-  const isFeat = itemType === "feat";
-  let doColor = false;
-  if (item.system.rarity) {
-    //  && item.system.rarity !== "common"
-    doColor = true;
-  } else if (isSpell && spellFlag) {
-    rarityOrType = item?.system.school ?? "spell";
-    if (!mapConfigurations[rarityOrType]) {
-      rarityOrType = "spell";
-    }
-    doColor = true;
-  } else if (isFeat && featFlag) {
-    rarityOrType = item?.system.type ?? "feat";
-    if (!mapConfigurations[rarityOrType]) {
-      rarityOrType = "feat";
-    }
-    doColor = true;
-  }
-
-  if (doColor) {
-    const color = mapConfigurations[rarityOrType].color;
-    if (color && !colorIsDefault(color)) {
-      if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-        itemNameElement.css("background-color", hexToRGBAString(color));
-      } else {
-        itemNameElement.css("color", color);
+  const color = API.getColorFromItem(item);
+  if (color && !colorIsDefault(color)) {
+    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+      itemNameElement.css("background-color", hexToRGBAString(color));
+      if (game.modules.get("colorsettings")?.api) {
+        const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+        itemNameElement.css("color", textColor);
       }
+    } else {
+      itemNameElement.css("color", color);
     }
   }
+
   // Change rarity select element
   const raritySelectElement = html.find(`select[name="system.rarity"]`);
   if (!raritySelectElement.length) {
@@ -244,13 +177,18 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
       // if (rarityOrType === "common") {
       //   return;
       // }
-      const color = mapConfigurations[rarityOrType].color;
+      const color = API.mapConfigurations[rarityOrType].color;
 
       $(this).css("color", color);
       // Color selected option
       if ($(this).prop("selected")) {
         $(this).css("background-color", color);
-        $(this).css("color", "white");
+        if (game.modules.get("colorsettings")?.api) {
+          const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+          $(this).css("color", textColor);
+        } else {
+          $(this).css("color", "white");
+        }
       }
     });
 });
