@@ -15,7 +15,7 @@ Method to recover the color from a item reference
 | Param                    | Type                    | Default | Description                                            |
 |--------------------------|-------------------------|---------|--------------------------------------------------------|
 | item                     | `string (Item id or Item uuid) or Item`        |         | The item reference can be the item himself or a item id or a item uuid        |
-| applyModuleSettings      | `boolean`               |         | OPTIONAL: if true it will apply the 'rarity-colors' module settings |
+| applyModuleSettings      | `boolean`               |   true      | OPTIONAL: if true it will apply the 'rarity-colors' module settings |
 
 **Example**:
 
