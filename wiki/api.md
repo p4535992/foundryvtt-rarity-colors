@@ -6,7 +6,7 @@ The api is reachable from the variable `game.modules.get('rarity-colors').api`
 
 ### Get color from item
 
-`game.modules.get('rarity-colors').api.getColorFromItem(item, true)` ⇒ `string`
+`game.modules.get('rarity-colors').api.getColorFromItem(item:string|Item, applyModuleSettings:boolean)` ⇒ `string`
 
 Method to recover the color from a item reference
 
