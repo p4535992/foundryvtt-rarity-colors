@@ -92,6 +92,7 @@ export function getItemSync(target, ignoreError) {
   if (target instanceof Item) {
     return target;
   }
+  // This is just a patch for compatibillity with others modules
   if (target.document) {
     target = target.document;
   }
