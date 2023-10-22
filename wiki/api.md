@@ -1,14 +1,12 @@
 # API DOCUMENTATION
 
-### This is the documentation to the old api, it will remain for retrocompatibility, all the api references are moved from ` game.betterTables` and `game.modules.get("rarity-colors").public.API` to `game.modules.get("rarity-colors").api`, so please use  `game.modules.get("rarity-colors").api` for get api form this module.
-
 ### The documentation can be out of sync with the API code checkout the code if you want to dig up [API](../src/scripts/API.js)
 
-The api is reachable from the variable `game.modules.get('rarity-colors').api` or from the socket libary `socketLib` on the variable `game.modules.get('rarity-colors').socket` if present and active.
+The api is reachable from the variable `game.modules.get('rarity-colors').api`
 
 ### Get color from item
 
-`game.modules.get('rarity-colors').api.getColorFromItem(item, true)` ⇒ `string`
+`game.modules.get('rarity-colors').api.getColorFromItem(item:string|Item, applyModuleSettings:boolean)` ⇒ `string`
 
 Method to recover the color from a item reference
 
@@ -17,7 +15,7 @@ Method to recover the color from a item reference
 | Param                    | Type                    | Default | Description                                            |
 |--------------------------|-------------------------|---------|--------------------------------------------------------|
 | item                     | `string (Item id or Item uuid) or Item`        |         | The item reference can be the item himself or a item id or a item uuid        |
-| applyModuleSettings      | `boolean`               |         | OPTIONAL: if true it will apply the 'rarity-colors' module settings |
+| applyModuleSettings      | `boolean`               |   true      | OPTIONAL: if true it will apply the 'rarity-colors' module settings |
 
 **Example**:
 
