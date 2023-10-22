@@ -16,6 +16,7 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
+    requiresReload: true,
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "spellFlag", {
@@ -25,6 +26,7 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
+    requiresReload: true,
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "featFlag", {
@@ -34,6 +36,7 @@ export const registerSettings = function () {
     config: true,
     default: true,
     type: Boolean,
+    requiresReload: true,
   });
 
   /*

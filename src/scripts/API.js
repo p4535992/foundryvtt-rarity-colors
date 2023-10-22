@@ -40,19 +40,27 @@ const API = {
     if (rarityOrType !== "" && rarityOrType !== undefined) {
       doColor = true;
     }
-    if (isSpell && spellFlag) {
+    if (isSpell) {
       rarityOrType = item?.system.school ?? "spell";
       if (!this.mapConfigurations[rarityOrType]) {
         rarityOrType = "spell";
       }
-      doColor = true;
+      if (spellFlag) {
+        doColor = true;
+      } else {
+        doColor = false;
+      }
     }
-    if (isFeat && featFlag) {
+    if (isFeat) {
       rarityOrType = item?.system.type ?? "feat";
       if (!this.mapConfigurations[rarityOrType]) {
         rarityOrType = "feat";
       }
-      doColor = true;
+      if (featFlag) {
+        doColor = true;
+      } else {
+        doColor = false;
+      }
     }
 
     if (applyModuleSettings) {

@@ -1,3 +1,7 @@
+### 0.3.6
+
+- Fixed not read the module settings...
+
 ### 0.3.5
 
 - Add new feature: https://github.com/p4535992/foundryvtt-rarity-colors/issues/5
