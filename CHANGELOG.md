@@ -1,3 +1,7 @@
+### 0.3.7
+
+- Try to fix : https://discord.com/channels/170995199584108546/722566083499786352/1168493224738959360
+
 ### 0.3.6
 
 - Fixed not read the module settings...

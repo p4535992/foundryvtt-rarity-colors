@@ -136,7 +136,7 @@ export class RarityColorsApp extends FormApplication {
         value.name = value.label;
       }
       if (!value.name) {
-        value.name = ORIGINAL_CONFIG.featureTypes[key].label ?? "";
+        value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
       }
       configurations.classFeatureTypes.defaults[key] = value;
     }
@@ -155,7 +155,7 @@ export class RarityColorsApp extends FormApplication {
         value.name = value.label;
       }
       if (!value.name) {
-        value.name = ORIGINAL_CONFIG.featureTypes[key].label ?? "";
+        value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
       }
       configurations.classFeatureTypes.custom[key] = value;
     }
