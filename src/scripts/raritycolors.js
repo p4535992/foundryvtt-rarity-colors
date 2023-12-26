@@ -160,10 +160,12 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
     raritySelectSelector: 'select[data-tidy-field="system.rarity"]',
   };
 
+  // Undo any existing color overrides
   const html = $(element);
-
   html.find(options.itemNameSelector).css("background-color", "");
   html.find(options.itemNameSelector).css("color", "");
+  html.find(`${options.raritySelectSelector} option`).css("background-color", "");
+  html.find(`${options.raritySelectSelector} option`).css("color", "");
 
   renderItemSheetRarityColors(app, html, data, options);
 });
