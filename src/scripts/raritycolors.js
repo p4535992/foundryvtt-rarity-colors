@@ -156,8 +156,8 @@ Hooks.on("updateItem", (item, diff, options, userID) => {
 
 Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
   const options = {
-    itemNameSelector: "[data-tidy-item-name]",
-    raritySelectSelector: 'select[data-tidy-field="system.rarity"]',
+    itemNameSelector: `[data-tidy-field="name"]`,
+    raritySelectSelector: `select[data-tidy-field="system.rarity"]`,
   };
 
   // Undo any existing color overrides
