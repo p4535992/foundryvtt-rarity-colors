@@ -40,17 +40,17 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   html.find(options.itemSelector).css("color", "");
   html.find(options.itemNameSelector).css("color", "");
 
-  renderActorRarityColors(app, $(element), options);
+  renderRarityColors(app, $(element), options);
 });
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
-  renderActorRarityColors(actorSheet, html, {
+  renderRarityColors(actorSheet, html, {
     itemSelector: ".items-list .item",
     itemNameSelector: ".item-name h4",
   });
 });
 
-export function renderActorRarityColors(actorSheet, html, options) {
+export function renderRarityColors(actorSheet, html, options) {
   let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
@@ -59,7 +59,7 @@ export function renderActorRarityColors(actorSheet, html, options) {
     API.mapConfigurations = API.getColorMap();
   }
 
-  let items = html.find($(".items-list .item"));
+  let items = html.find($(options.itemSelector));
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
     if (!id) {
@@ -74,7 +74,7 @@ export function renderActorRarityColors(actorSheet, html, options) {
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
       itemNameElement = $(itemElement);
     } else {
-      itemNameElement = $(itemElement).find(".item-name h4");
+      itemNameElement = $(itemElement).find(options.itemNameSelector);
     }
 
     const color = API.getColorFromItem(item);
