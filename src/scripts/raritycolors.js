@@ -40,17 +40,17 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   html.find(options.itemSelector).css("color", "");
   html.find(options.itemNameSelector).css("color", "");
 
-  renderRarityColors(app, $(element), options);
+  renderActorRarityColors(app, $(element), options);
 });
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
-  renderRarityColors(actorSheet, html, {
+  renderActorRarityColors(actorSheet, html, {
     itemSelector: ".items-list .item",
     itemNameSelector: ".item-name h4",
   });
 });
 
-export function renderRarityColors(actorSheet, html, options) {
+export function renderActorRarityColors(actorSheet, html, options) {
   let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
