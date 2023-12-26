@@ -28,7 +28,29 @@ export const readyHooks = () => {
   }
 };
 
+// Tidy 5e Sheet compatibility
+Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
+  const options = {
+    itemSelector: "[data-tidy-item-name-container]",
+    itemNameSelector: "[data-tidy-item-name]",
+  };
+  // Undo any existing color overrides
+  const html = $(element);
+  html.find(options.itemSelector).css("background-color", "");
+  html.find(options.itemSelector).css("color", "");
+  html.find(options.itemNameSelector).css("color", "");
+
+  renderRarityColors(app, $(element), options);
+});
+
 Hooks.on("renderActorSheet", (actorSheet, html) => {
+  renderRarityColors(actorSheet, html, {
+    itemSelector: ".items-list .item",
+    itemNameSelector: ".item-name h4",
+  });
+});
+
+export function renderRarityColors(actorSheet, html, options) {
   let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
@@ -37,7 +59,7 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     API.mapConfigurations = API.getColorMap();
   }
 
-  let items = html.find($(".items-list .item"));
+  let items = html.find($(options.itemSelector));
   for (let itemElement of items) {
     let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
     if (!id) {
@@ -52,7 +74,7 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
       itemNameElement = $(itemElement);
     } else {
-      itemNameElement = $(itemElement).find(".item-name h4");
+      itemNameElement = $(itemElement).find(options.itemNameSelector);
     }
 
     const color = API.getColorFromItem(item);
@@ -70,7 +92,7 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
       }
     }
   }
-});
+}
 
 Hooks.on("renderSidebarTab", (bar, html) => {
   if (bar.id !== "items") {
