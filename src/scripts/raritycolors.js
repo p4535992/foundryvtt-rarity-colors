@@ -31,7 +31,7 @@ export const readyHooks = () => {
 // Tidy 5e Sheet compatibility
 Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   const options = {
-    itemSelector: "[data-tidy-item-name-container]",
+    itemSelector: "[data-item-table-row]",
     itemNameSelector: "[data-tidy-item-name]",
   };
   // Undo any existing color overrides
