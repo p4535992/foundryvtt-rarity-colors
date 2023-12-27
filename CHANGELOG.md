@@ -2,7 +2,6 @@
 
 - Better integration with tidy5e sheet ty to @kgar https://github.com/p4535992/foundryvtt-rarity-colors/pull/8, https://github.com/p4535992/foundryvtt-rarity-colors/pull/9
 - Bug fix https://github.com/p4535992/foundryvtt-rarity-colors/issues/6
-- 
 
 ### 0.3.7
 
