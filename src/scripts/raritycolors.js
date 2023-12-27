@@ -31,7 +31,7 @@ export const readyHooks = () => {
 // Tidy 5e Sheet compatibility
 Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   const options = {
-    itemSelector: "[data-tidy-item-name-container]",
+    itemSelector: "[data-tidy-item-table-row]",
     itemNameSelector: "[data-tidy-item-name]",
   };
   // Undo any existing color overrides
@@ -40,17 +40,17 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   html.find(options.itemSelector).css("color", "");
   html.find(options.itemNameSelector).css("color", "");
 
-  renderRarityColors(app, $(element), options);
+  renderActorRarityColors(app, $(element), options);
 });
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
-  renderRarityColors(actorSheet, html, {
+  renderActorRarityColors(actorSheet, html, {
     itemSelector: ".items-list .item",
     itemNameSelector: ".item-name h4",
   });
 });
 
-export function renderRarityColors(actorSheet, html, options) {
+export function renderActorRarityColors(actorSheet, html, options) {
   let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
@@ -154,7 +154,31 @@ Hooks.on("updateItem", (item, diff, options, userID) => {
   ui.sidebar.render();
 });
 
+Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
+  const options = {
+    itemNameSelector: `[data-tidy-field="name"]`,
+    raritySelectSelector: `select[data-tidy-field="system.rarity"]`,
+  };
+
+  // Undo any existing color overrides
+  const html = $(element);
+  html.find(options.itemNameSelector).css("background-color", "");
+  html.find(options.itemNameSelector).css("color", "");
+  html.find(`${options.raritySelectSelector} option`).css("background-color", "");
+  html.find(`${options.raritySelectSelector} option`).css("color", "");
+
+  renderItemSheetRarityColors(app, html, data, options);
+});
+
 Hooks.on("renderItemSheet", (app, html, appData) => {
+  const options = {
+    itemNameSelector: 'input[name="name"]',
+    raritySelectSelector: 'select[name="system.rarity"]',
+  };
+  renderItemSheetRarityColors(app, html, appData, options);
+});
+
+export function renderItemSheetRarityColors(app, html, appData, options) {
   let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
   if (!rarityFlag) {
     return;
@@ -167,7 +191,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
     API.mapConfigurations = API.getColorMap();
   }
   // Color item name
-  const itemNameElement = html.find(`input[name="name"]`);
+  const itemNameElement = html.find(options.itemNameSelector);
   // const itemRarityElement = html.find(`select[name="system.rarity"]`);
 
   const color = API.getColorFromItem(item);
@@ -184,7 +208,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
   }
 
   // Change rarity select element
-  const raritySelectElement = html.find(`select[name="system.rarity"]`);
+  const raritySelectElement = html.find(options.raritySelectSelector);
   if (!raritySelectElement.length) {
     return;
   }
@@ -213,7 +237,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
         }
       }
     });
-});
+}
 
 // =================================================
 // UTILITY
