@@ -223,6 +223,10 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
       // if (rarityOrType === "common") {
       //   return;
       // }
+      if (!API.mapConfigurations[rarityOrType]) {
+        warn(`Cannot find color for rarity '${rarityOrType}'`, false, API.mapConfigurations);
+        return;
+      }
       const color = API.mapConfigurations[rarityOrType].color;
 
       $(this).css("color", color);
@@ -378,6 +382,10 @@ function prepareItemRarity(customItemRarity) {
     if (key === "undefined") {
       continue;
     } else {
+      if (!value) {
+        warn(`Cannot find color for rarity '${value.key}'`, false, value);
+        continue;
+      }
       itemRarity[value.key] = {
         color: value.color ?? "#000000",
         name: value.name ? value.name : value.label,

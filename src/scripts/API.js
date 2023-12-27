@@ -66,6 +66,10 @@ const API = {
     if (applyModuleSettings) {
       if (rarityOrType !== "" && rarityOrType !== undefined && doColor) {
         debug(`Try to get color with settings : ${rarityOrType}`);
+        if (!this.mapConfigurations[rarityOrType]) {
+          warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+          return null;
+        }
         const color = this.mapConfigurations[rarityOrType].color;
         if (color && !colorIsDefault(color)) {
           return color;
@@ -75,6 +79,10 @@ const API = {
     } else {
       if (rarityOrType !== "" && rarityOrType !== undefined) {
         debug(`Try to get color without settings : ${rarityOrType}`);
+        if (!this.mapConfigurations[rarityOrType]) {
+          warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+          return null;
+        }
         const color = this.mapConfigurations[rarityOrType].color;
         if (color && !colorIsDefault(color)) {
           return color;

@@ -1,6 +1,6 @@
 import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
-import { isEmptyObject, log } from "../lib/lib.js";
+import { isEmptyObject, log, warn } from "../lib/lib.js";
 
 export class RarityColorsApp extends FormApplication {
   static get defaultOptions() {
@@ -33,6 +33,10 @@ export class RarityColorsApp extends FormApplication {
     for (const [key, value] of Object.entries(configurationsItemRarityDefaultsTmp)) {
       if (typeof value === "string" || value instanceof String || key === "undefined") {
         delete configurations.itemRarity.defaults[key];
+        continue;
+      }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -81,6 +85,10 @@ export class RarityColorsApp extends FormApplication {
         delete configurations.itemRarity.custom[key];
         continue;
       }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
+        continue;
+      }
       if (!value.color || value.color === "#000000") {
         value.color = "#000000";
       }
@@ -95,6 +103,10 @@ export class RarityColorsApp extends FormApplication {
     for (const [key, value] of Object.entries(configurationsSpellSchoolsDefaultsTmp)) {
       if (typeof value === "string" || value instanceof String || key === "undefined") {
         delete configurations.spellSchools.defaults[key];
+        continue;
+      }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -113,6 +125,10 @@ export class RarityColorsApp extends FormApplication {
         delete configurations.spellSchools.custom[key];
         continue;
       }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
+        continue;
+      }
       if (!value.color || value.color === "#000000") {
         value.color = "#4a8396";
       }
@@ -127,6 +143,10 @@ export class RarityColorsApp extends FormApplication {
     for (const [key, value] of Object.entries(configurationsClassFeatureTypesDefaultsTmp)) {
       if (typeof value === "string" || value instanceof String || key === "undefined") {
         delete configurations.classFeatureTypes.defaults[key];
+        continue;
+      }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -146,6 +166,10 @@ export class RarityColorsApp extends FormApplication {
     for (const [key, value] of Object.entries(configurationsClassFeatureTypesCustomTmp)) {
       if (typeof value === "string" || value instanceof String || key === "undefined") {
         delete configurations.classFeatureTypes.custom[key];
+        continue;
+      }
+      if (!value) {
+        warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {

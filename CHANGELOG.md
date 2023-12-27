@@ -1,3 +1,7 @@
+### 0.3.9
+
+- Add some null pointer check
+
 ### 0.3.8
 
 - Better integration with tidy5e sheet ty to @kgar https://github.com/p4535992/foundryvtt-rarity-colors/pull/8, https://github.com/p4535992/foundryvtt-rarity-colors/pull/9
