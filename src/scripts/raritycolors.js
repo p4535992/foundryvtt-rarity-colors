@@ -81,9 +81,9 @@ export function renderActorRarityColors(actorSheet, html, options) {
     if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          itemNameElement.css("background-color", hexToRGBAString(color));
+          itemNameElement.css("background-color", hexToRGBAString(color, 0.25));
           if (game.modules.get("colorsettings")?.api) {
-            const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+            const textColor = API.getTextColor(color);
             itemNameElement.css("color", textColor);
           }
         } else {
@@ -130,9 +130,9 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          itemNameElement.css("background-color", hexToRGBAString(color));
+          itemNameElement.css("background-color", hexToRGBAString(color, 0.25));
           if (game.modules.get("colorsettings")?.api) {
-            const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+            const textColor = API.getTextColor(color);
             itemNameElement.css("color", textColor);
           }
         } else {
@@ -197,9 +197,9 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
   const color = API.getColorFromItem(item);
   if (color && !colorIsDefault(color)) {
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-      itemNameElement.css("background-color", hexToRGBAString(color));
+      itemNameElement.css("background-color", hexToRGBAString(color, 0.25));
       if (game.modules.get("colorsettings")?.api) {
-        const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+        const textColor = API.getTextColor(color);
         itemNameElement.css("color", textColor);
       }
     } else {
@@ -230,7 +230,7 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
       if ($(this).prop("selected")) {
         $(this).css("background-color", color);
         if (game.modules.get("colorsettings")?.api) {
-          const textColor = game.modules.get("colorsettings").api.getTextColor(color);
+          const textColor = API.getTextColor(color);
           $(this).css("color", textColor);
         } else {
           $(this).css("color", "white");
@@ -449,20 +449,8 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
  * @href https://stackoverflow.com/questions/19799777/how-to-add-transparency-information-to-a-hex-color-code
  * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
  */
-export function hexToRGBAString(colorHex, alpha = 0.25) {
-  let rgba = Color.from(colorHex);
-  // return "rgba(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ", " + alpha + ")";
-  if (colorHex.length > 7) {
-    rgba = hexToRGBA(colorHex);
-  } else {
-    const colorHex2 = `${colorHex}${Math.floor(alpha * 255)
-      .toString(16)
-      .padStart(2, "0")}`;
-    rgba = hexToRGBA(colorHex2);
-    // const c = Color.from(colorHex);
-    // rgba = c.toRGBA();
-  }
-  return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + rgba.a ?? alpha + ")";
+export function hexToRGBAString(colorHex, alpha = 1) {
+  return API.hexToRGBAString(colorHex, alpha);
 }
 
 /**
@@ -471,18 +459,7 @@ export function hexToRGBAString(colorHex, alpha = 0.25) {
  * @returns Array of rgba[r, g, b, a]
  */
 export function hexToRGBA(hex) {
-  const hexArr = hex.slice(1).match(new RegExp(".{2}", "g"));
-  const [r, g, b, a] = hexArr.map((hexStr) => {
-    // Hex to rgba
-    return parseInt(hexStr.repeat(2 / hexStr.length), 16);
-  });
-  const rgba = [r, g, b, Math.round((a / 256 + Number.EPSILON) * 100) / 100];
-  return {
-    r: rgba[0] ?? 255,
-    g: rgba[1] ?? 255,
-    b: rgba[2] ?? 255,
-    a: rgba[3] ?? 255,
-  };
+  return API.hexToRGBA(hex);
 }
 
 export function colorIsDefault(color) {
