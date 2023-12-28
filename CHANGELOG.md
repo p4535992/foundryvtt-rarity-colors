@@ -1,3 +1,7 @@
+### 0.3.11
+
+- Add double check for https://github.com/p4535992/foundryvtt-rarity-colors/issues/10 ?
+
 ### 0.3.10
 
 - Add library [font-color-contrast](https://github.com/russoedu/font-color-contrast) for support the text color calculation

@@ -354,10 +354,32 @@ export function prepareConfigurations() {
     };
     //await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
   }
-
-  configurations.itemRarity ??= {};
-  configurations.spellSchools ??= {};
-  configurations.classFeatureTypes ??= {};
+  configurations ??= {
+    spellSchools: {
+      custom: {},
+      defaults: {},
+    },
+    itemRarity: {
+      custom: {},
+      defaults: {},
+    },
+    classFeatureTypes: {
+      custom: {},
+      defaults: {},
+    },
+  };
+  configurations.itemRarity ??= {
+    custom: {},
+    defaults: {},
+  };
+  configurations.spellSchools ??= {
+    custom: {},
+    defaults: {},
+  };
+  configurations.classFeatureTypes ??= {
+    custom: {},
+    defaults: {},
+  };
 
   prepareItemRarity(configurations.itemRarity);
   prepareSpellSchools(configurations.spellSchools);
