@@ -1,7 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.cssNamedColors = void 0;
-exports.cssNamedColors = [
+export const cssNamedColors = [
   {
     name: "aliceblue",
     hex: "#f0f8ff",
@@ -595,4 +592,3 @@ exports.cssNamedColors = [
     hex: "#663399",
   },
 ];
-//# sourceMappingURL=cssNamedColors.js.map

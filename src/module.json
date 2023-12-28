@@ -58,10 +58,7 @@
   ],
   "packs": [],
   "systems": [],
-  "scripts": [
-    "scripts/libs/font-color-contrast-1.1.1/FontColorContrast.js",
-    "scripts/libs/font-color-contrast-1.1.1/cssNamedColors.js"
-  ],
+  "scripts": [],
   "esmodules": ["module.js"],
   "styles": ["styles/raritycolors.css"],
   "compatibility": {

@@ -1,7 +1,8 @@
 import CONSTANTS from "./constants";
 import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib";
+import { fontColorContrast } from "./libs/font-color-contrast-11.1.0";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors";
-import fontColorContrast from "font-color-contrast";
+
 /**
  * Create a new API class and export it as default
  */
