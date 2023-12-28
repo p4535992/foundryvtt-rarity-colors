@@ -1,5 +1,4 @@
 import { cssNamedColors } from "./cssNamedColors";
-import { CssColor } from "./CssNamedColorsType";
 
 export const NumberType = {
   COLOR: 0xff,

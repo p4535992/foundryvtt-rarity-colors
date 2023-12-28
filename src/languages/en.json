@@ -83,6 +83,9 @@
   "rarity-colors.setting.forceThresholdBackgroundColorInsteadText.name": "Force to use the manual Contrast threshold to control the resulting font color",
   "rarity-colors.setting.forceThresholdBackgroundColorInsteadText.hint": "Make sense only with 'Enable Color only as background and not text' enabled. If enabled it will apply the Contrast threshold set on 'Contrast threshold to control the resulting font color' to all text even the one with a rgba background.",
 
+  "rarity-colors.setting.forceAlphaBackgroundColorInsteadText.name": "Force the alpha/opacity value on the rgba background color.",
+  "rarity-colors.setting.forceAlphaBackgroundColorInsteadText.hint": "Make sense only with 'Enable Color only as background and not text' enabled. If enabled it will apply the alpha value on thi setting if is > 0 by default in all the backgrounds even the one with a rgba background. NOTE: The value '0' will disable this setting.",
+
   "rarity-colors.RarityColorsApp": {
     "title": "Rarity Color Configuration",
     "save": "Save Changes",

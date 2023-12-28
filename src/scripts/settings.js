@@ -230,6 +230,17 @@ export const registerSettings = function () {
     requiresReload: true,
   });
 
+  game.settings.register(CONSTANTS.MODULE_ID, "forceAlphaBackgroundColorInsteadText", {
+    name: i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.name`),
+    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.hint`),
+    scope: "world",
+    config: true,
+    default: 0.25,
+    type: Number,
+    range: { min: 0, max: 1, step: 0.01 },
+    requiresReload: true,
+  });
+
   // ========================================================================
   game.settings.register(CONSTANTS.MODULE_ID, "debug", {
     name: `${CONSTANTS.MODULE_ID}.setting.debug.name`,

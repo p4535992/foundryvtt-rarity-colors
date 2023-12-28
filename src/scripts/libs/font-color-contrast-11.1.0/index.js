@@ -1,4 +1,3 @@
-import { CssColor } from "./CssNamedColorsType";
 import { FontColorContrast } from "./FontColorContrast";
 
 /**
