@@ -16,7 +16,6 @@ export const initHooks = async () => {
 };
 
 export const setupHooks = async () => {
-  // setApi(API);
   const data = game.modules.get(CONSTANTS.MODULE_ID);
   data.api = API;
 };
