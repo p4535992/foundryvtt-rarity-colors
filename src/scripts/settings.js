@@ -202,7 +202,28 @@ export const registerSettings = function () {
   game.settings.register(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText", {
     name: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.name`,
     hint: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.hint`,
-    scope: "client",
+    scope: "world",
+    config: true,
+    default: false,
+    type: Boolean,
+    requiresReload: true,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "thresholdBackgroundColorInsteadText", {
+    name: i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.name`),
+    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.hint`),
+    scope: "world",
+    config: true,
+    default: 0.5,
+    type: Number,
+    range: { min: 0, max: 1, step: 0.1 },
+    requiresReload: true,
+  });
+
+  game.settings.register(CONSTANTS.MODULE_ID, "forceThresholdBackgroundColorInsteadText", {
+    name: i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.name`),
+    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.hint`),
+    scope: "world",
     config: true,
     default: false,
     type: Boolean,

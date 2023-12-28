@@ -1,7 +1,7 @@
 import CONSTANTS from "./constants";
 import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors";
-
+import fontColorContrast from "font-color-contrast";
 /**
  * Create a new API class and export it as default
  */
@@ -131,6 +131,8 @@ const API = {
 
   /**
    * Makes text white or black according to background color
+   * @href https://wunnle.com/dynamic-text-color-based-on-background
+   * @href https://stackoverflow.com/questions/54230440/how-to-change-text-color-based-on-rgb-and-rgba-background-color
    * @param {String} rgbaHex 8 long hex value in string form, eg: "#123456ff"
    * @returns {String} "black" or "white"
    */
@@ -138,6 +140,9 @@ const API = {
     // return game.modules.get("colorsettings").api.getTextColor(rgbaHex);
 
     const rgba = this.hexToRGBA(rgbaHex);
+    // DO NOT WORK IN ALL CASES
+    /*
+    //const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : 1;
     const brightness = Math.round((rgba.r * 299 + rgba.g * 587 + rgba.b * 114) / 1000);
     // const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : 1;
     if (this._isRealNumber(rgba.a) && rgba.a > 0.5) {
@@ -145,6 +150,24 @@ const API = {
     } else {
       //return 'black';
       return brightness > 125 ? "black" : "white";
+    }
+    */
+    const forceThresholdBackgroundColorInsteadText = game.settings.get(
+      CONSTANTS.MODULE_ID,
+      "forceThresholdBackgroundColorInsteadText"
+    );
+    const thresholdBackgroundColorInsteadText = game.settings.get(
+      CONSTANTS.MODULE_ID,
+      "thresholdBackgroundColorInsteadText"
+    );
+
+    if (this._isRealNumber(rgba.a)) {
+      const threshold = forceThresholdBackgroundColorInsteadText ? thresholdBackgroundColorInsteadText : 1 - rgba.a;
+      const hexTextColor = fontColorContrast(rgba.r, rgba.g, rgba.b, threshold);
+      return hexTextColor;
+    } else {
+      const hexTextColor = fontColorContrast(rgba.r, rgba.g, rgba.b, thresholdBackgroundColorInsteadText);
+      return hexTextColor;
     }
   },
 
@@ -227,6 +250,39 @@ const API = {
     }
     const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : alpha;
     return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + realAlpha + ")";
+  },
+
+  /**
+   * Calculate brightness value by RGB or HEX color.
+   * @param color (String) The color value in RGB or HEX (for example: #000000 || #000 || rgb(0,0,0) || rgba(0,0,0,0))
+   * @returns (Number) The brightness value (dark) 0 ... 255 (light)
+   */
+  brightnessByColor(colorHexOrRgb) {
+    let color = "" + colorHexOrRgb;
+    let isHEX = color.indexOf("#") == 0;
+    let isRGB = color.indexOf("rgb") == 0;
+    let r = 0;
+    let g = 0;
+    let b = 0;
+    if (isHEX) {
+      const rgba = this.hexToRGBA(color);
+      r = rgba.r;
+      g = rgba.g;
+      b = rgba.b;
+    }
+    if (isRGB) {
+      var m = color.match(/(\d+){3}/g);
+      if (m) {
+        r = m[0];
+        g = m[1];
+        b = m[2];
+      }
+    }
+    if (typeof r != "undefined") {
+      return (r * 299 + g * 587 + b * 114) / 1000;
+    } else {
+      return undefined;
+    }
   },
 
   _isRealNumber(inNumber) {

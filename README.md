@@ -116,9 +116,11 @@ Any issues, bugs, or feature requests are always welcome to be reported directly
 This package is under an [MIT license](LICENSE) and the [Foundry Virtual Tabletop Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 
 - [Rarity Color](https://github.com/kandashi/rarity-colors) with license [MIT](https://github.com/kandashi/rarity-colors/blob/master/LICENSE)
+- [font-color-contrast](https://github.com/russoedu/font-color-contrast) with license [MIT](https://github.com/russoedu/font-color-contrast/blob/master/LICENSE)
 
 ## Credit
 
 Thanks to anyone who helps me with this code! I appreciate the user community's feedback on this project!
 
 - Ty to  [Kandashi](https://github.com/kandashi) and the module [Rarity Color](https://github.com/kandashi/rarity-colors)
+- Ty to  [russoedu](https://github.com/russoedu) and the module [font-color-contrast](https://github.com/russoedu/font-color-contrast)

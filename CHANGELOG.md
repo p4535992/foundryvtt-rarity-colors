@@ -1,3 +1,10 @@
+### 0.3.10
+
+- Add library [font-color-contrast](https://github.com/russoedu/font-color-contrast) for support the text color calculation
+- Add module setting 'thresholdBackgroundColorInsteadText'
+- Add module setting 'forceThresholdBackgroundColorInsteadText'
+- Add api method brightnessByColor
+
 ### 0.3.9
 
 - Add some null pointer check

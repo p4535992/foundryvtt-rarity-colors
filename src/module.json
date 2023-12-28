@@ -2,7 +2,7 @@
   "id": "rarity-colors",
   "title": "Rarity Colors",
   "description": "Auto colors inventory items based on visibility",
-  "version": "0.3.9",
+  "version": "0.3.10",
   "authors": [
     {
       "name": "Kandashi",
@@ -58,7 +58,10 @@
   ],
   "packs": [],
   "systems": [],
-  "scripts": [],
+  "scripts": [
+    "scripts/libs/font-color-contrast-1.1.1/FontColorContrast.js",
+    "scripts/libs/font-color-contrast-1.1.1/cssNamedColors.js"
+  ],
   "esmodules": ["module.js"],
   "styles": ["styles/raritycolors.css"],
   "compatibility": {
@@ -68,8 +71,8 @@
   },
   "manifestPlusVersion": "1.2.1",
   "url": "https://github.com/p4535992/foundryvtt-rarity-colors",
-  "manifest": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.9/module.json",
-  "download": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.9/module.zip",
+  "manifest": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.10/module.json",
+  "download": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.10/module.zip",
   "readme": "https://github.com/p4535992/foundryvtt-rarity-colors/blob/master/README.md",
   "changelog": "https://github.com/p4535992/foundryvtt-rarity-colors/blob/master/CHANGELOG.md",
   "bugs": "https://github.com/p4535992/foundryvtt-rarity-colors/issues",
