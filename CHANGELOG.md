@@ -3,7 +3,9 @@
 - Add library [font-color-contrast](https://github.com/russoedu/font-color-contrast) for support the text color calculation
 - Add module setting 'thresholdBackgroundColorInsteadText'
 - Add module setting 'forceThresholdBackgroundColorInsteadText'
+- Add module setting 'forceAlphaBackgroundColorInsteadText'
 - Add api method brightnessByColor
+- Bug fix again https://github.com/p4535992/foundryvtt-rarity-colors/issues/6
 
 ### 0.3.9
 

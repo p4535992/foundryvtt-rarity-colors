@@ -1,7 +1,7 @@
-import CONSTANTS from "./constants";
-import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib";
-import { fontColorContrast } from "./libs/font-color-contrast-11.1.0";
-import { colorIsDefault, prepareMapConfigurations } from "./raritycolors";
+import CONSTANTS from "./constants.js";
+import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib.js";
+import { fontColorContrast } from "./libs/font-color-contrast-11.1.0/FontColorContrast.js";
+import { colorIsDefault, prepareMapConfigurations } from "./raritycolors.js";
 
 /**
  * Create a new API class and export it as default
@@ -104,6 +104,56 @@ const API = {
     return this.mapConfigurations;
   },
 
+  /**
+   * Makes the background color with a specific opacity
+   * @href https://wunnle.com/dynamic-text-color-based-on-background
+   * @href https://stackoverflow.com/questions/54230440/how-to-change-text-color-based-on-rgb-and-rgba-background-color
+   * @param {String} rgbaHex 8 long hex value in string form, eg: "#123456ff"
+   * @return rgba as string e.g. rgba('xxx','xxx','xxx','xxx')
+   */
+  getRarityTextBackgroundColor(rgbaHex, alpha = 0.25) {
+    const forceAlphaBackgroundColorInsteadText = game.settings.get(
+      CONSTANTS.MODULE_ID,
+      "forceAlphaBackgroundColorInsteadText"
+    );
+
+    let realAlpha = alpha;
+    if (forceAlphaBackgroundColorInsteadText > 0) {
+      realAlpha = forceAlphaBackgroundColorInsteadText;
+    }
+
+    const rgba = this.hexToRGBA(rgbaHex);
+    const newRgba = this.RGBAToHex(rgba.r, rgba.g, rgba.b, realAlpha);
+    // const newRgbaS = "rgba(" + newRgba.r + ", " + newRgba.g + ", " + newRgba.b + ", " + realAlpha + ")"
+    return newRgba;
+  },
+
+  /**
+   * Makes text white or black according to background color
+   * @href https://wunnle.com/dynamic-text-color-based-on-background
+   * @href https://stackoverflow.com/questions/54230440/how-to-change-text-color-based-on-rgb-and-rgba-background-color
+   * @param {String} rgbaHex 8 long hex value in string form, eg: "#123456ff"
+   * @param {number} threshold Contrast threshold to control the resulting font color, float values from 0 to 1. Default is 0.5.
+   * @returns {String} "black" or "white"
+   */
+  getRarityTextColor(rgbaHex, threshold = 0.5) {
+    const forceThresholdBackgroundColorInsteadText = game.settings.get(
+      CONSTANTS.MODULE_ID,
+      "forceThresholdBackgroundColorInsteadText"
+    );
+    const thresholdBackgroundColorInsteadText = game.settings.get(
+      CONSTANTS.MODULE_ID,
+      "thresholdBackgroundColorInsteadText"
+    );
+
+    const rgba = this.hexToRGBA(rgbaHex);
+    let newThreshold = threshold;
+    if (this._isRealNumber(rgba.a)) {
+      newThreshold = forceThresholdBackgroundColorInsteadText ? thresholdBackgroundColorInsteadText : 1 - rgba.a;
+    }
+    return this.getTextColor(rgbaHex, newThreshold);
+  },
+
   // ============================
   // COLOR SETTINGS MIRROR API
   // ============================
@@ -131,37 +181,14 @@ const API = {
   },
 
   /**
-   * Makes the background color with a specific opacity
-   * @href https://wunnle.com/dynamic-text-color-based-on-background
-   * @href https://stackoverflow.com/questions/54230440/how-to-change-text-color-based-on-rgb-and-rgba-background-color
-   * @param {String} rgbaHex 8 long hex value in string form, eg: "#123456ff"
-   * @return rgba as string e.g. rgba('xxx','xxx','xxx','xxx')
-   */
-  getTextBackgroundColor(rgbaHex, alpha = 0.25) {
-    const forceAlphaBackgroundColorInsteadText = game.settings.get(
-      CONSTANTS.MODULE_ID,
-      "forceAlphaBackgroundColorInsteadText"
-    );
-
-    let realAlpha = alpha;
-    if (forceAlphaBackgroundColorInsteadText > 0) {
-      realAlpha = forceAlphaBackgroundColorInsteadText;
-    }
-
-    const rgba = this.hexToRGBA(rgbaHex);
-    const newRgba = this.RGBAToHex(rgba.r, rgba.g, rgba.b, realAlpha);
-    // const newRgbaS = "rgba(" + newRgba.r + ", " + newRgba.g + ", " + newRgba.b + ", " + realAlpha + ")"
-    return newRgba;
-  },
-
-  /**
    * Makes text white or black according to background color
    * @href https://wunnle.com/dynamic-text-color-based-on-background
    * @href https://stackoverflow.com/questions/54230440/how-to-change-text-color-based-on-rgb-and-rgba-background-color
    * @param {String} rgbaHex 8 long hex value in string form, eg: "#123456ff"
+   * @param {number} threshold Contrast threshold to control the resulting font color, float values from 0 to 1. Default is 0.5.
    * @returns {String} "black" or "white"
    */
-  getTextColor(rgbaHex) {
+  getTextColor(rgbaHex, threshold = 0.5) {
     // return game.modules.get("colorsettings").api.getTextColor(rgbaHex);
 
     const rgba = this.hexToRGBA(rgbaHex);
@@ -177,23 +204,8 @@ const API = {
       return brightness > 125 ? "black" : "white";
     }
     */
-    const forceThresholdBackgroundColorInsteadText = game.settings.get(
-      CONSTANTS.MODULE_ID,
-      "forceThresholdBackgroundColorInsteadText"
-    );
-    const thresholdBackgroundColorInsteadText = game.settings.get(
-      CONSTANTS.MODULE_ID,
-      "thresholdBackgroundColorInsteadText"
-    );
-
-    if (this._isRealNumber(rgba.a)) {
-      const threshold = forceThresholdBackgroundColorInsteadText ? thresholdBackgroundColorInsteadText : 1 - rgba.a;
-      const hexTextColor = fontColorContrast(rgba.r, rgba.g, rgba.b, threshold);
-      return hexTextColor;
-    } else {
-      const hexTextColor = fontColorContrast(rgba.r, rgba.g, rgba.b, thresholdBackgroundColorInsteadText);
-      return hexTextColor;
-    }
+    const hexTextColor = fontColorContrast(rgba.r, rgba.g, rgba.b, threshold);
+    return hexTextColor;
   },
 
   /**
@@ -281,6 +293,7 @@ const API = {
    * Calculate brightness value by RGB or HEX color.
    * @param color (String) The color value in RGB or HEX (for example: #000000 || #000 || rgb(0,0,0) || rgba(0,0,0,0))
    * @returns (Number) The brightness value (dark) 0 ... 255 (light)
+   * @return {number} brigthness
    */
   brightnessByColor(colorHexOrRgb) {
     let color = "" + colorHexOrRgb;

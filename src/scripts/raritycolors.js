@@ -81,10 +81,10 @@ export function renderActorRarityColors(actorSheet, html, options) {
     if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          const backgroundColor = API.getTextBackgroundColor(color);
+          const backgroundColor = API.getRarityTextBackgroundColor(color);
           itemNameElement.css("background-color", backgroundColor);
           if (game.modules.get("colorsettings")?.api) {
-            const textColor = API.getTextColor(color);
+            const textColor = API.getRarityTextColor(color);
             itemNameElement.css("color", textColor);
           }
         } else {
@@ -131,10 +131,10 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     if (itemNameElement.length > 0 && color) {
       if (color && !colorIsDefault(color)) {
         if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-          const backgroundColor = API.getTextBackgroundColor(color);
+          const backgroundColor = API.getRarityTextBackgroundColor(color);
           itemNameElement.css("background-color", backgroundColor);
           if (game.modules.get("colorsettings")?.api) {
-            const textColor = API.getTextColor(color);
+            const textColor = API.getRarityTextColor(color);
             itemNameElement.css("color", textColor);
           }
         } else {
@@ -199,10 +199,10 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
   const color = API.getColorFromItem(item);
   if (color && !colorIsDefault(color)) {
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-      const backgroundColor = API.getTextBackgroundColor(color);
+      const backgroundColor = API.getRarityTextBackgroundColor(color);
       itemNameElement.css("background-color", backgroundColor);
       if (game.modules.get("colorsettings")?.api) {
-        const textColor = API.getTextColor(color);
+        const textColor = API.getRarityTextColor(color);
         itemNameElement.css("color", textColor);
       }
     } else {
@@ -235,10 +235,10 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
       $(this).css("color", color);
       // Color selected option
       if ($(this).prop("selected")) {
-        const backgroundColor = API.getTextBackgroundColor(color);
+        const backgroundColor = API.getRarityTextBackgroundColor(color);
         $(this).css("background-color", backgroundColor);
         if (game.modules.get("colorsettings")?.api) {
-          const textColor = API.getTextColor(color);
+          const textColor = API.getRarityTextColor(color);
           $(this).css("color", textColor);
         } else {
           $(this).css("color", "white");
