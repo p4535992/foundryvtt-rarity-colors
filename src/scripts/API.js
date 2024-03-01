@@ -53,7 +53,7 @@ const API = {
       }
     }
     if (isFeat) {
-      rarityOrType = item?.system.type ?? "feat";
+      rarityOrType = item?.system.type?.value ? item?.system.type?.value ?? "feat" : item?.system.type ?? "feat";
       if (!this.mapConfigurations[rarityOrType]) {
         rarityOrType = "feat";
       }
