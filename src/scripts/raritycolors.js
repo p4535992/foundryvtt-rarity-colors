@@ -38,8 +38,12 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
   const html = $(element);
   html.find(options.itemSelector).css("background-color", "");
   html.find(options.itemSelector).css("color", "");
-  html.find(options.itemNameSelector).css("color", "");
-
+  if (html.find(options.itemNameSelector)?.length > 0) {
+    html.find(options.itemNameSelector).css("color", "");
+  }
+  if (html.find(options.itemNameSelector2)?.length > 0) {
+    html.find(options.itemNameSelector2).css("color", "");
+  }
   renderActorRarityColors(app, $(element), options);
 });
 
@@ -47,6 +51,7 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
   renderActorRarityColors(actorSheet, html, {
     itemSelector: ".items-list .item",
     itemNameSelector: ".item-name h4",
+    itemNameSelector2: ".item-name .title", // New 3.0.0 sheet...
   });
 });
 
@@ -74,7 +79,15 @@ export function renderActorRarityColors(actorSheet, html, options) {
     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
       itemNameElement = $(itemElement);
     } else {
-      itemNameElement = $(itemElement).find(options.itemNameSelector);
+      if ($(itemElement).find(options.itemNameSelector)?.length > 0) {
+        itemNameElement = $(itemElement).find(options.itemNameSelector);
+      }
+      if ($(itemElement).find(options.itemNameSelector2)?.length > 0) {
+        itemNameElement = $(itemElement).find(options.itemNameSelector2);
+      }
+    }
+    if (!itemNameElement) {
+      continue;
     }
 
     const color = API.getColorFromItem(item);
@@ -164,8 +177,14 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
 
   // Undo any existing color overrides
   const html = $(element);
-  html.find(options.itemNameSelector).css("background-color", "");
-  html.find(options.itemNameSelector).css("color", "");
+  if (html.find(options.itemNameSelector)?.length > 0) {
+    html.find(options.itemNameSelector).css("background-color", "");
+    html.find(options.itemNameSelector).css("color", "");
+  }
+  if (html.find(options.itemNameSelector2)?.length > 0) {
+    html.find(options.itemNameSelector2).css("background-color", "");
+    html.find(options.itemNameSelector2).css("color", "");
+  }
   html.find(`${options.raritySelectSelector} option`).css("background-color", "");
   html.find(`${options.raritySelectSelector} option`).css("color", "");
 
@@ -193,7 +212,16 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
     API.mapConfigurations = API.getColorMap();
   }
   // Color item name
-  const itemNameElement = html.find(options.itemNameSelector);
+  let itemNameElement = null;
+  if (html.find(options.itemNameSelector)?.length > 0) {
+    itemNameElement = html.find(options.itemNameSelector);
+  }
+  if (html.find(options.itemNameSelector2)?.length > 0) {
+    itemNameElement = html.find(options.itemNameSelector2);
+  }
+  if (!itemNameElement) {
+    return;
+  }
   // const itemRarityElement = html.find(`select[name="system.rarity"]`);
 
   const color = API.getColorFromItem(item);

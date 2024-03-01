@@ -2,7 +2,7 @@
 	"name": "rarity-colors",
 	"title": "Rarity Colors",
 	"description": "Auto colors inventory items based on visibility",
-	"version": "0.3.4",
+	"version": "0.3.12",
 	"main": "module.js",
 	"license": "SEE LICENSE IN LICENSE",
 	"private": true,

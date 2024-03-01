@@ -1,3 +1,9 @@
+### 0.3.12
+
+- Many bug fixing on the rendering app...
+- Bug fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/13
+- Bug fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/12
+
 ### 0.3.11
 
 - Add double check for https://github.com/p4535992/foundryvtt-rarity-colors/issues/10 ?
