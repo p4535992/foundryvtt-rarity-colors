@@ -1,6 +1,6 @@
 import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
-import { isEmptyObject, log, warn } from "../lib/lib.js";
+import { i18n, isEmptyObject, log, warn } from "../lib/lib.js";
 
 export class RarityColorsApp extends FormApplication {
   static get defaultOptions() {
@@ -72,9 +72,10 @@ export class RarityColorsApp extends FormApplication {
           }
         }
       }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.itemRarity[key];
-      }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.itemRarity[key];
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
       configurations.itemRarity.defaults[key] = value;
     }
 
@@ -92,9 +93,10 @@ export class RarityColorsApp extends FormApplication {
       if (!value.color || value.color === "#000000") {
         value.color = "#000000";
       }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.itemRarity[key];
-      }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.itemRarity[key];
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
       configurations.itemRarity.custom[key] = value;
     }
 
@@ -112,9 +114,10 @@ export class RarityColorsApp extends FormApplication {
       if (!value.color || value.color === "#000000") {
         value.color = "#4a8396";
       }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.spellSchools[key];
-      }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.spellSchools[key];
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
       configurations.spellSchools.defaults[key] = value;
     }
 
@@ -132,9 +135,10 @@ export class RarityColorsApp extends FormApplication {
       if (!value.color || value.color === "#000000") {
         value.color = "#4a8396";
       }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.spellSchools[key];
-      }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.spellSchools[key];
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
       configurations.spellSchools.custom[key] = value;
     }
 
@@ -152,12 +156,13 @@ export class RarityColorsApp extends FormApplication {
       if (!value.color || value.color === "#000000") {
         value.color = "#48d1cc";
       }
-      if (value.label) {
-        value.name = value.label;
-      }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
-      }
+      // if (value.label) {
+      //   value.name = value.label;
+      // }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
       configurations.classFeatureTypes.defaults[key] = value;
     }
 
@@ -178,9 +183,10 @@ export class RarityColorsApp extends FormApplication {
       if (value.label) {
         value.name = value.label;
       }
-      if (!value.name) {
-        value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
-      }
+      // if (!value.name) {
+      //   value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
+      // }
+      value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
       configurations.classFeatureTypes.custom[key] = value;
     }
     return { configurations, ORIGINAL_CONFIG };
@@ -280,5 +286,23 @@ export class RarityColorsApp extends FormApplication {
   async close(...args) {
     await super.close(...args);
     SettingsConfig.reloadConfirm();
+  }
+
+  _tryToRetrieveName(value) {
+    if (typeof value === "string" || value instanceof String) {
+      return i18n(value);
+    } else {
+      if (value.label) {
+        if (typeof value.label === "string" || value.label instanceof String) {
+          return i18n(value.label);
+        }
+      }
+      if (value.name) {
+        if (typeof value.name === "string" || value.name instanceof String) {
+          return i18n(value.name);
+        }
+      }
+    }
+    return "";
   }
 }
