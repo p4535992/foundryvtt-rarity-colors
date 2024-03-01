@@ -1,6 +1,7 @@
 import { i18n } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 import { RarityColorsApp } from "./apps/rarity-colors-app.js";
+import Logger from "./lib/Logger.js";
 export const registerSettings = function () {
   game.settings.registerMenu(CONSTANTS.MODULE_ID, "resetAllSettings", {
     name: `${CONSTANTS.MODULE_ID}.setting.reset.name`,
@@ -210,8 +211,8 @@ export const registerSettings = function () {
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "thresholdBackgroundColorInsteadText", {
-    name: i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.name`),
-    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.hint`),
+    name: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.name`),
+    hint: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.hint`),
     scope: "world",
     config: true,
     default: 0.5,
@@ -221,8 +222,8 @@ export const registerSettings = function () {
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "forceThresholdBackgroundColorInsteadText", {
-    name: i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.name`),
-    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.hint`),
+    name: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.name`),
+    hint: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.forceThresholdBackgroundColorInsteadText.hint`),
     scope: "world",
     config: true,
     default: false,
@@ -231,8 +232,8 @@ export const registerSettings = function () {
   });
 
   game.settings.register(CONSTANTS.MODULE_ID, "forceAlphaBackgroundColorInsteadText", {
-    name: i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.name`),
-    hint: i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.hint`),
+    name: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.name`),
+    hint: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.forceAlphaBackgroundColorInsteadText.hint`),
     scope: "world",
     config: true,
     default: 0.25,
@@ -271,7 +272,7 @@ class ResetSettingsDialog extends FormApplication {
               ?.get("world")
               ?.filter((setting) => setting.key.startsWith(`${CONSTANTS.MODULE_ID}.`));
             for (let setting of worldSettings) {
-              console.log(`Reset setting '${setting.key}'`);
+              Logger.log(`Reset setting '${setting.key}'`);
               await setting.delete();
             }
             //window.location.reload();

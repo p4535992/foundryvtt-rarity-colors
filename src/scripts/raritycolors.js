@@ -1,6 +1,7 @@
 import { debug, error, isEmptyObject, warn } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 import API from "./API.js";
+import Logger from "./lib/Logger.js";
 
 export let ORIGINAL_CONFIG = {};
 
@@ -226,7 +227,7 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
       //   return;
       // }
       if (!API.mapConfigurations[rarityOrType]) {
-        warn(`Cannot find color for rarity '${rarityOrType}'`, false, API.mapConfigurations);
+        Logger.warn(`Cannot find color for rarity '${rarityOrType}'`, false, API.mapConfigurations);
         return;
       }
       const color = API.mapConfigurations[rarityOrType].color;
@@ -258,7 +259,7 @@ export function prepareMapConfigurations() {
     isEmptyObject(configurations.itemRarity) ||
     isEmptyObject(configurations.itemRarity.defaults)
   ) {
-    warn(`No configurations is been setted yet`);
+    Logger.warn(`No configurations is been setted yet`);
     mapAll["common"] = { color: "#000000" };
     mapAll["uncommon"] = { color: "#008000" };
     mapAll["rare"] = { color: "#0000ff" };
@@ -408,7 +409,7 @@ function prepareItemRarity(customItemRarity) {
       continue;
     } else {
       if (!value) {
-        warn(`Cannot find color for rarity '${value.key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${value.key}'`, false, value);
         continue;
       }
       itemRarity[value.key] = {

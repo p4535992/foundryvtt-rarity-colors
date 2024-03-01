@@ -1,6 +1,7 @@
 import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
 import { i18n, isEmptyObject, log, warn } from "../lib/lib.js";
+import Logger from "../lib/Logger.js";
 
 export class RarityColorsApp extends FormApplication {
   static get defaultOptions() {
@@ -36,7 +37,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -87,7 +88,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -108,7 +109,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -129,7 +130,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -150,7 +151,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -174,7 +175,7 @@ export class RarityColorsApp extends FormApplication {
         continue;
       }
       if (!value) {
-        warn(`Cannot find color for rarity '${key}'`, false, value);
+        Logger.warn(`Cannot find color for rarity '${key}'`, false, value);
         continue;
       }
       if (!value.color || value.color === "#000000") {
@@ -278,7 +279,7 @@ export class RarityColorsApp extends FormApplication {
   }
 
   async _updateObject(event, formData) {
-    log("RarityColorsApp | _updateObject | formData", formData);
+    Logger.log("RarityColorsApp | _updateObject | formData", formData);
     const expanded = expandObject(formData);
     await game.settings.set(CONSTANTS.MODULE_ID, "configurations", expanded);
   }
@@ -290,16 +291,16 @@ export class RarityColorsApp extends FormApplication {
 
   _tryToRetrieveName(value) {
     if (typeof value === "string" || value instanceof String) {
-      return i18n(value);
+      return Logger.i18n(value);
     } else {
       if (value.label) {
         if (typeof value.label === "string" || value.label instanceof String) {
-          return i18n(value.label);
+          return Logger.i18n(value.label);
         }
       }
       if (value.name) {
         if (typeof value.name === "string" || value.name instanceof String) {
-          return i18n(value.name);
+          return Logger.i18n(value.name);
         }
       }
     }

@@ -2,6 +2,8 @@ import CONSTANTS from "./constants.js";
 import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib.js";
 import { fontColorContrast } from "./libs/font-color-contrast-11.1.0/FontColorContrast.js";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors.js";
+import Logger from "./lib/Logger.js";
+import { RetrieveHelpers } from "./lib/retrieve-helpers.js";
 
 /**
  * Create a new API class and export it as default
@@ -17,11 +19,15 @@ const API = {
    */
   getColorFromItem(item, applyModuleSettings = true) {
     if (!item) {
-      warn(`getColorFromItem | No item reference is been passed`, true);
+      Logger.warn(`getColorFromItem | No item reference is been passed`, true);
       return;
     }
 
-    item = getItemSync(item, false);
+    item = RetrieveHelpers.getItemSync(item, true);
+    if (!item) {
+      Logger.error(`No item found with reference`, false, item);
+      return null;
+    }
 
     const spellFlag = game.settings.get(CONSTANTS.MODULE_ID, "spellFlag");
     const featFlag = game.settings.get(CONSTANTS.MODULE_ID, "featFlag");
@@ -66,9 +72,9 @@ const API = {
 
     if (applyModuleSettings) {
       if (rarityOrType !== "" && rarityOrType !== undefined && doColor) {
-        debug(`Try to get color with settings : ${rarityOrType}`);
+        Logger.debug(`Try to get color with settings : ${rarityOrType}`);
         if (!this.mapConfigurations[rarityOrType]) {
-          warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+          Logger.warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
           return null;
         }
         const color = this.mapConfigurations[rarityOrType].color;
@@ -79,9 +85,9 @@ const API = {
       return null;
     } else {
       if (rarityOrType !== "" && rarityOrType !== undefined) {
-        debug(`Try to get color without settings : ${rarityOrType}`);
+        Logger.debug(`Try to get color without settings : ${rarityOrType}`);
         if (!this.mapConfigurations[rarityOrType]) {
-          warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+          Logger.warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
           return null;
         }
         const color = this.mapConfigurations[rarityOrType].color;
