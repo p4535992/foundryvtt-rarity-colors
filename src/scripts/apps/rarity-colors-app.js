@@ -1,6 +1,6 @@
 import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
-import { i18n, isEmptyObject, log, warn } from "../lib/lib.js";
+import { isEmptyObject } from "../lib/lib.js";
 import Logger from "../lib/Logger.js";
 
 export class RarityColorsApp extends FormApplication {
@@ -290,6 +290,9 @@ export class RarityColorsApp extends FormApplication {
   }
 
   _tryToRetrieveName(value) {
+    if (!value) {
+      return "";
+    }
     if (typeof value === "string" || value instanceof String) {
       return Logger.i18n(value);
     } else {

@@ -1,4 +1,3 @@
-import { i18n } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 import { RarityColorsApp } from "./apps/rarity-colors-app.js";
 import Logger from "./lib/Logger.js";

@@ -1,3 +1,8 @@
+### 0.3.13 
+
+- Bug fixing again https://github.com/p4535992/foundryvtt-rarity-colors/issues/12
+- Bug fix add new voice on the rarity application
+
 ### 0.3.12
 
 - Many bug fixing on the rendering app...

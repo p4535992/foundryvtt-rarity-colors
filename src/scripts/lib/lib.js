@@ -11,3 +11,7 @@ export function isEmptyObject(obj) {
     Object.keys(obj).length === 0; // || Object.getPrototypeOf(obj) === Object.prototype);
   return result;
 }
+
+export function isRealNumber(inNumber) {
+  return !isNaN(inNumber) && typeof inNumber === "number" && isFinite(inNumber);
+}

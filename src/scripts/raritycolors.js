@@ -1,4 +1,4 @@
-import { debug, error, isEmptyObject, warn } from "./lib/lib.js";
+import { isEmptyObject } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 import API from "./API.js";
 import Logger from "./lib/Logger.js";
@@ -303,14 +303,18 @@ export function prepareMapConfigurations() {
   prepareMapSpellSchools(mapAll, configurations.spellSchools);
   prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
   // just for retro compatibility
-  mapAll["spell"] = {
-    color: "#4a8396",
-    name: "Spell",
-  };
-  mapAll["feat"] = {
-    color: "#48d1cc",
-    name: "Feature",
-  };
+  if (!mapAll["spell"]?.color) {
+    mapAll["spell"] = {
+      color: "#4a8396",
+      name: "Spell",
+    };
+  }
+  if (!mapAll["feat"]?.color) {
+    mapAll["feat"] = {
+      color: "#48d1cc",
+      name: "Feature",
+    };
+  }
   return mapAll;
 }
 

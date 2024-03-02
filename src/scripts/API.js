@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants.js";
-import { debug, getItemSync, isEmptyObject, warn } from "./lib/lib.js";
+import { isEmptyObject, isRealNumber } from "./lib/lib.js";
 import { fontColorContrast } from "./libs/font-color-contrast-11.1.0/FontColorContrast.js";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors.js";
 import Logger from "./lib/Logger.js";
@@ -154,7 +154,7 @@ const API = {
 
     const rgba = this.hexToRGBA(rgbaHex);
     let newThreshold = threshold;
-    if (this._isRealNumber(rgba.a)) {
+    if (isRealNumber(rgba.a)) {
       newThreshold = forceThresholdBackgroundColorInsteadText ? thresholdBackgroundColorInsteadText : 1 - rgba.a;
     }
     return this.getTextColor(rgbaHex, newThreshold);
@@ -176,7 +176,7 @@ const API = {
     const [r, g, b, a] = hexArr.map((hexStr) => {
       return parseInt(hexStr.repeat(2 / hexStr.length), 16);
     });
-    const realAlpha = this._isRealNumber(a) ? a : 1;
+    const realAlpha = isRealNumber(a) ? a : 1;
     const rgba = [r, g, b, Math.round((realAlpha / 256 + Number.EPSILON) * 100) / 100];
     return {
       r: rgba[0] ?? 255,
@@ -200,10 +200,10 @@ const API = {
     const rgba = this.hexToRGBA(rgbaHex);
     // OLD METHOD
     /*
-    //const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : 1;
+    //const realAlpha = isRealNumber(rgba.a) ? rgba.a : 1;
     const brightness = Math.round((rgba.r * 299 + rgba.g * 587 + rgba.b * 114) / 1000);
-    // const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : 1;
-    if (this._isRealNumber(rgba.a) && rgba.a > 0.5) {
+    // const realAlpha = isRealNumber(rgba.a) ? rgba.a : 1;
+    if (isRealNumber(rgba.a) && rgba.a > 0.5) {
       return brightness > 125 ? "black" : "white";
     } else {
       //return 'black';
@@ -291,7 +291,7 @@ const API = {
       // const c = Color.from(colorHex);
       // rgba = c.toRGBA();
     }
-    const realAlpha = this._isRealNumber(rgba.a) ? rgba.a : alpha;
+    const realAlpha = isRealNumber(rgba.a) ? rgba.a : alpha;
     return "rgba(" + rgba.r + ", " + rgba.g + ", " + rgba.b + ", " + realAlpha + ")";
   },
 
@@ -327,10 +327,6 @@ const API = {
     } else {
       return undefined;
     }
-  },
-
-  _isRealNumber(inNumber) {
-    return !isNaN(inNumber) && typeof inNumber === "number" && isFinite(inNumber);
   },
 };
 
