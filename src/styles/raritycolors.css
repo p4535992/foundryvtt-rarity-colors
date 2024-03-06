@@ -1,23 +1,23 @@
 #rarity-colors-config-app td {
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 #rarity-colors-config-app td .fa-trash {
-  color: var(--color-shadow-primary);
-  transition: all 0.2s ease-in-out;
+    color: var(--color-shadow-primary);
+    transition: all 0.2s ease-in-out;
 }
 
 #rarity-colors-config-app td .fa-trash:hover {
-  cursor: pointer;
-  text-shadow: 0 0 5px var(--color-shadow-primary);
+    cursor: pointer;
+    text-shadow: 0 0 5px var(--color-shadow-primary);
 }
 
 #rarity-colors-config-app .tabs {
-  flex-wrap: wrap;
-  gap: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
 }
 
 #rarity-colors-config-app td input[type="color"] {
-  width: 100%;
+    width: 100%;
 }
