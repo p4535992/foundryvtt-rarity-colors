@@ -17,8 +17,7 @@ export const initHooks = async () => {
 };
 
 export const setupHooks = async () => {
-    const data = game.modules.get(CONSTANTS.MODULE_ID);
-    data.api = API;
+    game.modules.get(CONSTANTS.MODULE_ID).api = API;
 };
 
 export const readyHooks = () => {
@@ -55,6 +54,58 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     });
 });
 
+Hooks.on("renderSidebarTab", (tab) => {
+    if (tab instanceof CompendiumDirectory) {
+        // Nothing here
+    }
+    if (tab instanceof Compendium) {
+        applyChangesCompendiumRarityColor(tab);
+    }
+});
+
+export async function applyChangesCompendiumRarityColor(tab) {
+    const headerBanners = document.querySelectorAll(`.directory.compendium`).forEach(async (h) => {
+        const dataPack = h.dataset.pack;
+        const items = document.querySelectorAll(`.directory.compendium[data-pack='${dataPack}'] .directory-item`);
+        for (let itemElement of items) {
+            // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
+            let id = itemElement.dataset.documentId;
+            if (!id) {
+                continue;
+            }
+            let item = await fromUuid(`Compendium.${dataPack}.${id}`);
+            if (!item) {
+                continue;
+            }
+
+            let itemNameElement = null;
+            if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+                itemNameElement = $(itemElement).find(".document-name");
+                // const thumbnail = $(itemElement).find(".thumbnail");
+                // thumbnail.css("z-index", 1); // stupid display flex
+            } else {
+                itemNameElement = $(itemElement).find(".document-name");
+            }
+
+            const color = API.getColorFromItem(item);
+            if (itemNameElement.length > 0 && color) {
+                if (color && !colorIsDefault(color)) {
+                    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+                        const backgroundColor = API.getRarityTextBackgroundColor(color);
+                        itemNameElement.css("background-color", backgroundColor);
+                        if (game.modules.get("colorsettings")?.api) {
+                            const textColor = API.getRarityTextColor(color);
+                            itemNameElement.css("color", textColor);
+                        }
+                    } else {
+                        itemNameElement.css("color", color);
+                    }
+                }
+            }
+        }
+    });
+}
+
 export function renderActorRarityColors(actorSheet, html, options) {
     let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
@@ -66,12 +117,14 @@ export function renderActorRarityColors(actorSheet, html, options) {
 
     let items = html.find($(options.itemSelector));
     for (let itemElement of items) {
-        let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
+        // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
+        let id = itemElement.dataset.itemId;
         if (!id) {
             continue;
         }
         let actor = actorSheet.object;
-        let item = actor.items.get(id[1]);
+        // let item = actor.items.get(id[1]);
+        let item = actor.items.get(id);
         if (!item) {
             continue;
         }
@@ -122,11 +175,13 @@ Hooks.on("renderSidebarTab", (bar, html) => {
 
     let items = html.find(".directory-item.document.item");
     for (let itemElement of items) {
-        let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
+        // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
+        let id = itemElement.dataset.documentId;
         if (!id) {
             continue;
         }
-        let item = game.items.get(id[1]);
+        // let item = game.items.get(id[1]);
+        let item = game.items.get(id);
         if (!item) {
             continue;
         }

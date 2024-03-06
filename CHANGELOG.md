@@ -1,3 +1,7 @@
+### 0.3.14
+
+- Add support for compendiums 
+
 ### 0.3.13 
 
 - Bug fixing again https://github.com/p4535992/foundryvtt-rarity-colors/issues/12

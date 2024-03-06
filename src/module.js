@@ -1,23 +1,10 @@
-/**
- * This is your TypeScript entry file for Foundry VTT.
- * Register custom settings, sheets, and constants using the Foundry API.
- * Change this heading to be more descriptive to your module, or remove it.
- * Author: [your name]
- * Content License: [copyright and-or license] If using an existing system
- * 					you may want to put a (link to a) license or copyright
- * 					notice here (e.g. the OGL).
- * Software License: [your license] Put your desired license here, which
- * 					 determines how others may use and modify your module
- */
-// Import JavaScript modules
-// Import TypeScript modules
 import { registerSettings } from "./scripts/settings.js";
 import { initHooks, readyHooks, setupHooks } from "./scripts/raritycolors.js";
 import CONSTANTS from "./scripts/constants.js";
 import Logger from "./scripts/lib/Logger.js";
 
 /* ------------------------------------ */
-/* Initialize module					*/
+/* Initialize module */
 /* ------------------------------------ */
 Hooks.once("init", () => {
     // Do anything once the module is ready
@@ -36,32 +23,32 @@ Hooks.once("init", () => {
     registerSettings();
 
     initHooks();
-    //readyHooks();
+    // readyHooks();
     // Assign custom classes and constants here
     // Register custom module settings
-    //registerSettings();
-    //fetchParams();
+    // registerSettings();
+    // fetchParams();
     // Preload Handlebars templates
     // await preloadTemplates();
     // Register custom sheets (if any)
 });
 /* ------------------------------------ */
-/* Setup module							*/
+/* Setup module */
 /* ------------------------------------ */
-Hooks.once("setup", function () {
+Hooks.once("setup", () => {
     // Do anything after initialization but before ready
-    //setupModules();
+    // setupModules();
     setupHooks();
-    //registerSettings();
+    // registerSettings();
 });
 /* ------------------------------------ */
-/* When ready							*/
+/* When ready */
 /* ------------------------------------ */
 Hooks.once("ready", () => {
     // if (!game.modules.get("socketLib")?.active && game.user?.isGM) {
     // 	let word = "install and activate";
     // 	if (game.modules.get("socketLib")) word = "activate";
-    // 	throw Logger.error(`Requires the 'socketLib' module. Please ${word} it.`);
+    // 	    throw Logger.error(`Requires the 'socketLib' module. Please ${word} it.`);
     // }
     // Do anything once the module is ready
     // prepareConfigurations();
@@ -69,7 +56,7 @@ Hooks.once("ready", () => {
 });
 
 /* ------------------------------------ */
-/* Other Hooks							*/
+/* Other Hooks */
 /* ------------------------------------ */
 
 Hooks.once("devModeReady", ({ registerPackageDebugFlag }) => {
