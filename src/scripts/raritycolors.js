@@ -35,8 +35,14 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
     };
     // Undo any existing color overrides
     const html = $(element);
-    html.find(options.itemSelector).css("background-color", "");
-    html.find(options.itemSelector).css("color", "");
+    if (options.itemSelector) {
+        html.find(options.itemSelector).css("background-color", "");
+        html.find(options.itemSelector).css("color", "");
+    }
+    if (options.itemSelector2) {
+        html.find(options.itemSelector2).css("background-color", "");
+        html.find(options.itemSelector2).css("color", "");
+    }
     if (html.find(options.itemNameSelector)?.length > 0) {
         html.find(options.itemNameSelector).css("color", "");
     }
@@ -121,7 +127,14 @@ export function renderActorRarityColors(actorSheet, html, options) {
         API.mapConfigurations = API.getColorMap();
     }
 
-    let items = html.find($(options.itemSelector));
+    let items = [];
+    if (html.find($(options.itemSelector))?.length > 0) {
+        items = html.find($(options.itemSelector));
+    }
+    if (html.find($(options.itemSelector2))?.length > 0) {
+        items = html.find($(options.itemSelector2));
+    }
+    // let items = html.find($(options.itemSelector));
     for (let itemElement of items) {
         // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
         let id = itemElement.dataset.itemId;
