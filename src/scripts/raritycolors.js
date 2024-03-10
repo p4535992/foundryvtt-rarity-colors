@@ -69,11 +69,17 @@ export async function applyChangesCompendiumRarityColor(tab) {
         const items = document.querySelectorAll(`.directory.compendium[data-pack='${dataPack}'] .directory-item`);
         for (let itemElement of items) {
             // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
-            let id = itemElement.dataset.documentId;
-            if (!id) {
-                continue;
+            let item = null;
+            if (!itemElement.dataset.uuid) {
+                let id = itemElement.dataset.documentId;
+                if (!id) {
+                    continue;
+                }
+                item = await fromUuid(`Compendium.${dataPack}.${id}`);
+            } else {
+                item = await fromUuid(itemElement.dataset.uuid);
             }
-            let item = await fromUuid(`Compendium.${dataPack}.${id}`);
+
             if (!item) {
                 continue;
             }
@@ -176,12 +182,17 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     let items = html.find(".directory-item.document.item");
     for (let itemElement of items) {
         // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
-        let id = itemElement.dataset.documentId;
-        if (!id) {
-            continue;
+        let item = null;
+        if (!itemElement.dataset.uuid) {
+            let id = itemElement.dataset.documentId;
+            if (!id) {
+                continue;
+            }
+            item = game.items.get(id);
+        } else {
+            item = fromUuidSync(itemElement.dataset.uuid);
         }
-        // let item = game.items.get(id[1]);
-        let item = game.items.get(id);
+
         if (!item) {
             continue;
         }
