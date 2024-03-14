@@ -1,8 +1,13 @@
+### 0.3.16
+
+- Add some better check
+
+
 ### 0.3.14-15
 
-- Add support for compendiums 
+- Add support for compendiums
 
-### 0.3.13 
+### 0.3.13
 
 - Bug fixing again https://github.com/p4535992/foundryvtt-rarity-colors/issues/12
 - Bug fix add new voice on the rarity application
@@ -46,9 +51,9 @@
 ### 0.3.5
 
 - Add new feature: https://github.com/p4535992/foundryvtt-rarity-colors/issues/5
-- Add API support and documentation 
+- Add API support and documentation
 
-### 0.3.4 
+### 0.3.4
 
 - Try to fix again: https://github.com/p4535992/foundryvtt-rarity-colors/issues/3
 

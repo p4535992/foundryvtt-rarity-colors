@@ -29,6 +29,10 @@ export const readyHooks = () => {
 
 // Tidy 5e Sheet compatibility
 Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
+    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
+    if (!rarityFlag) {
+        return;
+    }
     const options = {
         itemSelector: "[data-tidy-item-table-row]",
         itemNameSelector: "[data-tidy-item-name]",
@@ -53,6 +57,10 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
 });
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
+    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
+    if (!rarityFlag) {
+        return;
+    }
     renderActorRarityColors(actorSheet, html, {
         itemSelector: ".items-list .item",
         itemNameSelector: ".item-name h4",
@@ -61,6 +69,10 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
 });
 
 Hooks.on("renderSidebarTab", (tab) => {
+    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
+    if (!rarityFlag) {
+        return;
+    }
     if (tab instanceof CompendiumDirectory) {
         // Nothing here
     }
@@ -119,10 +131,6 @@ export async function applyChangesCompendiumRarityColor(tab) {
 }
 
 export function renderActorRarityColors(actorSheet, html, options) {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
-    if (!rarityFlag) {
-        return;
-    }
     if (isEmptyObject(API.mapConfigurations)) {
         API.mapConfigurations = API.getColorMap();
     }
@@ -181,11 +189,11 @@ export function renderActorRarityColors(actorSheet, html, options) {
 }
 
 Hooks.on("renderSidebarTab", (bar, html) => {
-    if (bar.id !== "items") {
-        return;
-    }
     let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
+        return;
+    }
+    if (bar.id !== "items") {
         return;
     }
     if (isEmptyObject(API.mapConfigurations)) {
@@ -249,6 +257,10 @@ Hooks.on("updateItem", (item, diff, options, userID) => {
 });
 
 Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
+    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
+    if (!rarityFlag) {
+        return;
+    }
     const options = {
         itemNameSelector: `[data-tidy-field="name"]`,
         raritySelectSelector: `select[data-tidy-field="system.rarity"]`,
@@ -271,6 +283,10 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
 });
 
 Hooks.on("renderItemSheet", (app, html, appData) => {
+    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
+    if (!rarityFlag) {
+        return;
+    }
     const options = {
         itemNameSelector: 'input[name="name"]',
         raritySelectSelector: 'select[name="system.rarity"]',
@@ -279,10 +295,6 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
 });
 
 export function renderItemSheetRarityColors(app, html, appData, options) {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
-    if (!rarityFlag) {
-        return;
-    }
     let item = appData;
     if (!item) {
         return;
