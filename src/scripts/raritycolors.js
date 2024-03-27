@@ -33,25 +33,20 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
     if (!rarityFlag) {
         return;
     }
+
     const options = {
-        itemSelector: "[data-tidy-item-table-row]",
-        itemNameSelector: "[data-tidy-item-name]",
-    };
+        itemSelector: `[data-tidy-sheet-part='item-table-row'] .item-table-row`,
+        itemNameSelector: `[data-tidy-sheet-part='item-name']`,
+    }
     // Undo any existing color overrides
     const html = $(element);
     if (options.itemSelector) {
         html.find(options.itemSelector).css("background-color", "");
+        html.find(options.itemSelector).css("background", "");
         html.find(options.itemSelector).css("color", "");
-    }
-    if (options.itemSelector2) {
-        html.find(options.itemSelector2).css("background-color", "");
-        html.find(options.itemSelector2).css("color", "");
     }
     if (html.find(options.itemNameSelector)?.length > 0) {
         html.find(options.itemNameSelector).css("color", "");
-    }
-    if (html.find(options.itemNameSelector2)?.length > 0) {
-        html.find(options.itemNameSelector2).css("color", "");
     }
     renderActorRarityColors(app, $(element), options);
 });
@@ -145,7 +140,8 @@ export function renderActorRarityColors(actorSheet, html, options) {
     // let items = html.find($(options.itemSelector));
     for (let itemElement of items) {
         // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
-        let id = itemElement.dataset.itemId;
+        // Get closest available Item dataset.
+        let id = itemElement.closest('[data-item-id]')?.dataset.itemId;
         if (!id) {
             continue;
         }
@@ -175,7 +171,9 @@ export function renderActorRarityColors(actorSheet, html, options) {
             if (color && !colorIsDefault(color)) {
                 if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
                     const backgroundColor = API.getRarityTextBackgroundColor(color);
+                    // Target background-color and background to ensure there are no overlapping backgrounds.
                     itemNameElement.css("background-color", backgroundColor);
+                    itemNameElement.css("background", backgroundColor);
                     if (game.modules.get("colorsettings")?.api) {
                         const textColor = API.getRarityTextColor(color);
                         itemNameElement.css("color", textColor);
