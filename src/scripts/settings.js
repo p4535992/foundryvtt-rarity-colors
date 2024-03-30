@@ -209,6 +209,16 @@ export const registerSettings = function () {
         requiresReload: true,
     });
 
+    game.settings.register(CONSTANTS.MODULE_ID, "enableBorderColor", {
+        name: `${CONSTANTS.MODULE_ID}.setting.enableBorderColor.name`,
+        hint: `${CONSTANTS.MODULE_ID}.setting.enableBorderColor.hint`,
+        scope: "world",
+        config: true,
+        default: true,
+        type: Boolean,
+        requiresReload: true,
+    });
+
     game.settings.register(CONSTANTS.MODULE_ID, "thresholdBackgroundColorInsteadText", {
         name: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.name`),
         hint: Logger.i18n(`${CONSTANTS.MODULE_ID}.setting.thresholdBackgroundColorInsteadText.hint`),

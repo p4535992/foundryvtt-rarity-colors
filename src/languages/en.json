@@ -78,6 +78,9 @@
     "rarity-colors.setting.enableBackgroundColorInsteadText.name": "Enable Color only as background and not text",
     "rarity-colors.setting.enableBackgroundColorInsteadText.hint": "Color the Backgrounds Items in the sidebar and the inventory instead the text",
 
+    "rarity-colors.setting.enableBorderColor.name": "Enable Color on the image border",
+    "rarity-colors.setting.enableBorderColor.hint": "Enable Color on the image border on Items in the sidebar and the inventory",
+
     "rarity-colors.setting.thresholdBackgroundColorInsteadText.name": "Contrast threshold to control the resulting font color",
     "rarity-colors.setting.thresholdBackgroundColorInsteadText.hint": "Make sense only with 'Enable Color only as background and not text' enabled. Contrast threshold to control the resulting font color, float values from 0 to 1. Default is 0.5. It is use by default for all text without a rgba color background",
     "rarity-colors.setting.forceThresholdBackgroundColorInsteadText.name": "Force to use the manual Contrast threshold to control the resulting font color",

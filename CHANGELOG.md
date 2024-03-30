@@ -1,3 +1,8 @@
+### 0.3.17
+
+- Add new feature : Border color on itme images
+- Add compatbility with tidy5e shett ty to kgar effort
+
 ### 0.3.16
 
 - Add some better check

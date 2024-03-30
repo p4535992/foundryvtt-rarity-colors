@@ -37,7 +37,8 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
     const options = {
         itemSelector: `[data-tidy-sheet-part='item-table-row'] .item-table-row`,
         itemNameSelector: `[data-tidy-sheet-part='item-name']`,
-    }
+        itemImageNameSelector: `.item-image`,
+    };
     // Undo any existing color overrides
     const html = $(element);
     if (options.itemSelector) {
@@ -47,6 +48,9 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
     }
     if (html.find(options.itemNameSelector)?.length > 0) {
         html.find(options.itemNameSelector).css("color", "");
+    }
+    if (html.find(options.itemImageNameSelector)?.length > 0) {
+        html.find(options.itemImageNameSelector).css("border", "");
     }
     renderActorRarityColors(app, $(element), options);
 });
@@ -59,6 +63,7 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
     renderActorRarityColors(actorSheet, html, {
         itemSelector: ".items-list .item",
         itemNameSelector: ".item-name h4",
+        itemImageNameSelector: ".item-image",
         itemNameSelector2: ".item-name .title", // New 3.0.0 sheet...
     });
 });
@@ -98,16 +103,19 @@ export async function applyChangesCompendiumRarityColor(tab) {
             }
 
             let itemNameElement = null;
+            let itemImageNameElement = null;
             if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
                 itemNameElement = $(itemElement).find(".document-name");
+                itemImageNameElement = $(itemElement).find("img.thumbnail");
                 // const thumbnail = $(itemElement).find(".thumbnail");
                 // thumbnail.css("z-index", 1); // stupid display flex
             } else {
                 itemNameElement = $(itemElement).find(".document-name");
+                itemImageNameElement = $(itemElement).find("img.thumbnail");
             }
 
             const color = API.getColorFromItem(item);
-            if (itemNameElement.length > 0 && color) {
+            if (itemNameElement?.length > 0 && color) {
                 if (color && !colorIsDefault(color)) {
                     if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
                         const backgroundColor = API.getRarityTextBackgroundColor(color);
@@ -118,6 +126,15 @@ export async function applyChangesCompendiumRarityColor(tab) {
                         }
                     } else {
                         itemNameElement.css("color", color);
+                    }
+                }
+            }
+            if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
+                if (itemImageNameElement?.length > 0 && color) {
+                    if (color && !colorIsDefault(color)) {
+                        // itemImageNameElement.css("border-color", color+"!important");
+                        itemImageNameElement.css("border", "solid " + color);
+                        // itemImageNameElement.css("border-width", "thick");
                     }
                 }
             }
@@ -141,7 +158,7 @@ export function renderActorRarityColors(actorSheet, html, options) {
     for (let itemElement of items) {
         // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
         // Get closest available Item dataset.
-        let id = itemElement.closest('[data-item-id]')?.dataset.itemId;
+        let id = itemElement.closest("[data-item-id]")?.dataset.itemId;
         if (!id) {
             continue;
         }
@@ -165,9 +182,13 @@ export function renderActorRarityColors(actorSheet, html, options) {
         if (!itemNameElement) {
             continue;
         }
+        let itemImageNameElement = null;
+        if ($(itemElement).find(options.itemImageNameSelector)?.length > 0) {
+            itemImageNameElement = $(itemElement).find(options.itemImageNameSelector);
+        }
 
         const color = API.getColorFromItem(item);
-        if (itemNameElement.length > 0 && color) {
+        if (itemNameElement?.length > 0 && color) {
             if (color && !colorIsDefault(color)) {
                 if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
                     const backgroundColor = API.getRarityTextBackgroundColor(color);
@@ -180,6 +201,15 @@ export function renderActorRarityColors(actorSheet, html, options) {
                     }
                 } else {
                     itemNameElement.css("color", color);
+                }
+            }
+        }
+        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
+            if (itemImageNameElement?.length > 0 && color) {
+                if (color && !colorIsDefault(color)) {
+                    //itemImageNameElement.css("border-color", color+"!important");
+                    itemImageNameElement.css("border", "solid " + color);
+                    // itemImageNameElement.css("border-width", "thick");
                 }
             }
         }
@@ -224,9 +254,13 @@ Hooks.on("renderSidebarTab", (bar, html) => {
         } else {
             itemNameElement = $(itemElement).find(".document-name");
         }
+        let itemImageNameElement = null;
+        if ($(itemElement).find("img.thumbnail")?.length > 0) {
+            itemImageNameElement = $(itemElement).find("img.thumbnail");
+        }
 
         const color = API.getColorFromItem(item);
-        if (itemNameElement.length > 0 && color) {
+        if (itemNameElement?.length > 0 && color) {
             if (color && !colorIsDefault(color)) {
                 if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
                     const backgroundColor = API.getRarityTextBackgroundColor(color);
@@ -237,6 +271,15 @@ Hooks.on("renderSidebarTab", (bar, html) => {
                     }
                 } else {
                     itemNameElement.css("color", color);
+                }
+            }
+        }
+        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
+            if (itemImageNameElement?.length > 0 && color) {
+                if (color && !colorIsDefault(color)) {
+                    // itemImageNameElement.css("border-color", color+"!important");
+                    itemImageNameElement.css("border", "solid " + color);
+                    // itemImageNameElement.css("border-width", "thick");
                 }
             }
         }
@@ -261,6 +304,7 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
     }
     const options = {
         itemNameSelector: `[data-tidy-field="name"]`,
+        itemImageNameSelector: `[data-tidy-sheet-part='item-image']`,
         raritySelectSelector: `select[data-tidy-field="system.rarity"]`,
     };
 
@@ -273,6 +317,9 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
     if (html.find(options.itemNameSelector2)?.length > 0) {
         html.find(options.itemNameSelector2).css("background-color", "");
         html.find(options.itemNameSelector2).css("color", "");
+    }
+    if (html.find(options.itemImageNameSelector)?.length > 0) {
+        html.find(options.itemImageNameSelector).css("border", "");
     }
     html.find(`${options.raritySelectSelector} option`).css("background-color", "");
     html.find(`${options.raritySelectSelector} option`).css("color", "");
@@ -287,6 +334,7 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
     }
     const options = {
         itemNameSelector: 'input[name="name"]',
+        itemImageNameSelector: "img.profile",
         raritySelectSelector: 'select[name="system.rarity"]',
     };
     renderItemSheetRarityColors(app, html, appData, options);
@@ -311,7 +359,10 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
     if (!itemNameElement) {
         return;
     }
-    // const itemRarityElement = html.find(`select[name="system.rarity"]`);
+    let itemImageNameElement = null;
+    if (html.find(options.itemImageNameSelector)?.length > 0) {
+        itemImageNameElement = html.find(options.itemImageNameSelector);
+    }
 
     const color = API.getColorFromItem(item);
     if (color && !colorIsDefault(color)) {
@@ -324,6 +375,15 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
             }
         } else {
             itemNameElement.css("color", color);
+        }
+    }
+    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
+        if (itemImageNameElement?.length > 0 && color) {
+            if (color && !colorIsDefault(color)) {
+                // itemImageNameElement.css("border-color", color+"!important");
+                itemImageNameElement.css("border", "solid " + color);
+                // itemImageNameElement.css("border-width", "thick");
+            }
         }
     }
 
