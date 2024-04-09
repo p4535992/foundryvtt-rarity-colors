@@ -1,3 +1,8 @@
+### 0.3.18
+
+- Add better module settings for choose the mode styling
+- Fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/16
+
 ### 0.3.17
 
 - Add new feature : Border color on itme images
