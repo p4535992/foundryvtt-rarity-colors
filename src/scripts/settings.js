@@ -199,6 +199,21 @@ export const registerSettings = function () {
         type: RarityColorsApp,
     });
 
+    // game.settings.register(CONSTANTS.MODULE_ID, "harvestAddItemsMode", {
+    //     name: "Harvesting: Add items harvest mode",
+    //     hint: "ONLY WITH 'Item Piles' MODULE PRESENT AND ACTIVE. Harvest action considers three modes: 'Shared it or Keep it', 'Shared it', 'Keep it'",
+    //     scope: "world",
+    //     config: true,
+    //     requiresReload: true,
+    //     type: String,
+    //     choices: {
+    //         ShareItOrKeepIt: "Shared it or Keep it",
+    //         ShareIt: "Shared it",
+    //         KeepIt: "Keep it",
+    //     },
+    //     default: "ShareItOrKeepIt",
+    // });
+
     game.settings.register(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText", {
         name: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.name`,
         hint: `${CONSTANTS.MODULE_ID}.setting.enableBackgroundColorInsteadText.hint`,
