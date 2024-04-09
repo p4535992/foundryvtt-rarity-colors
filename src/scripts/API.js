@@ -25,7 +25,7 @@ const API = {
 
         item = RetrieveHelpers.getItemSync(item, true);
         if (!item) {
-            Logger.error(`No item found with reference`, false, item);
+            Logger.error(`getColorFromItem | No item found with reference`, false, item);
             return null;
         }
 
@@ -72,26 +72,34 @@ const API = {
 
         if (applyModuleSettings) {
             if (rarityOrType !== "" && rarityOrType !== undefined && doColor) {
-                Logger.debug(`Try to get color with settings : ${rarityOrType}`);
+                Logger.debug(`getColorFromItem | Try to get color with settings : ${rarityOrType}`);
                 if (!this.mapConfigurations[rarityOrType]) {
-                    Logger.warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+                    Logger.warn(
+                        `getColorFromItem | Cannot find color for rarity '${rarityOrType}'`,
+                        false,
+                        this.mapConfigurations,
+                    );
                     return null;
                 }
                 const color = this.mapConfigurations[rarityOrType].color;
-                if (color && !colorIsDefault(color)) {
+                if (!colorIsDefault(color)) {
                     return color;
                 }
             }
             return null;
         } else {
             if (rarityOrType !== "" && rarityOrType !== undefined) {
-                Logger.debug(`Try to get color without settings : ${rarityOrType}`);
+                Logger.debug(`getColorFromItem | Try to get color without settings : ${rarityOrType}`);
                 if (!this.mapConfigurations[rarityOrType]) {
-                    Logger.warn(`Cannot find color for rarity '${rarityOrType}'`, false, this.mapConfigurations);
+                    Logger.warn(
+                        `getColorFromItem | Cannot find color for rarity '${rarityOrType}'`,
+                        false,
+                        this.mapConfigurations,
+                    );
                     return null;
                 }
                 const color = this.mapConfigurations[rarityOrType].color;
-                if (color && !colorIsDefault(color)) {
+                if (!colorIsDefault(color)) {
                     return color;
                 }
             }

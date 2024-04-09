@@ -5,19 +5,21 @@ import Logger from "./lib/Logger.js";
 
 export let ORIGINAL_CONFIG = {};
 
-// let mapConfigurations = {};
+let rarityColorBorderEnable = false;
+let rarityColorBackgroundEnable = false;
+let rarityColorTextEnable = false;
+let rarityFlag = false;
 
 export const initHooks = async () => {
     ORIGINAL_CONFIG = deepClone(game.dnd5e.config);
-
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
-    if (!rarityFlag) {
-        return;
-    }
 };
 
 export const setupHooks = async () => {
     game.modules.get(CONSTANTS.MODULE_ID).api = API;
+    rarityColorBorderEnable = isBorderEnable();
+    rarityColorBackgroundEnable = isBackgroundEnable();
+    rarityColorTextEnable = isTextEnable();
+    rarityFlag = isDisabled();
 };
 
 export const readyHooks = () => {
@@ -29,7 +31,6 @@ export const readyHooks = () => {
 
 // Tidy 5e Sheet compatibility
 Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -56,7 +57,6 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
 });
 
 Hooks.on("renderActorSheet", (actorSheet, html) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -69,7 +69,6 @@ Hooks.on("renderActorSheet", (actorSheet, html) => {
 });
 
 Hooks.on("renderSidebarTab", (tab) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -81,143 +80,7 @@ Hooks.on("renderSidebarTab", (tab) => {
     }
 });
 
-export async function applyChangesCompendiumRarityColor(tab) {
-    const headerBanners = document.querySelectorAll(`.directory.compendium`).forEach(async (h) => {
-        const dataPack = h.dataset.pack;
-        const items = document.querySelectorAll(`.directory.compendium[data-pack='${dataPack}'] .directory-item`);
-        for (let itemElement of items) {
-            // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
-            let item = null;
-            if (!itemElement.dataset.uuid) {
-                let id = itemElement.dataset.documentId;
-                if (!id) {
-                    continue;
-                }
-                item = await fromUuid(`Compendium.${dataPack}.${id}`);
-            } else {
-                item = await fromUuid(itemElement.dataset.uuid);
-            }
-
-            if (!item) {
-                continue;
-            }
-
-            let itemNameElement = null;
-            let itemImageNameElement = null;
-            if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-                itemNameElement = $(itemElement).find(".document-name");
-                itemImageNameElement = $(itemElement).find("img.thumbnail");
-                // const thumbnail = $(itemElement).find(".thumbnail");
-                // thumbnail.css("z-index", 1); // stupid display flex
-            } else {
-                itemNameElement = $(itemElement).find(".document-name");
-                itemImageNameElement = $(itemElement).find("img.thumbnail");
-            }
-
-            const color = API.getColorFromItem(item);
-            if (itemNameElement?.length > 0 && color) {
-                if (color && !colorIsDefault(color)) {
-                    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-                        const backgroundColor = API.getRarityTextBackgroundColor(color);
-                        itemNameElement.css("background-color", backgroundColor);
-                        if (game.modules.get("colorsettings")?.api) {
-                            const textColor = API.getRarityTextColor(color);
-                            itemNameElement.css("color", textColor);
-                        }
-                    } else {
-                        itemNameElement.css("color", color);
-                    }
-                }
-            }
-            if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
-                if (itemImageNameElement?.length > 0 && color) {
-                    if (color && !colorIsDefault(color)) {
-                        // itemImageNameElement.css("border-color", color+"!important");
-                        itemImageNameElement.css("border", "solid " + color);
-                        // itemImageNameElement.css("border-width", "thick");
-                    }
-                }
-            }
-        }
-    });
-}
-
-export function renderActorRarityColors(actorSheet, html, options) {
-    if (isEmptyObject(API.mapConfigurations)) {
-        API.mapConfigurations = API.getColorMap();
-    }
-
-    let items = [];
-    if (html.find($(options.itemSelector))?.length > 0) {
-        items = html.find($(options.itemSelector));
-    }
-    if (html.find($(options.itemSelector2))?.length > 0) {
-        items = html.find($(options.itemSelector2));
-    }
-    // let items = html.find($(options.itemSelector));
-    for (let itemElement of items) {
-        // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
-        // Get closest available Item dataset.
-        let id = itemElement.closest("[data-item-id]")?.dataset.itemId;
-        if (!id) {
-            continue;
-        }
-        let actor = actorSheet.object;
-        // let item = actor.items.get(id[1]);
-        let item = actor.items.get(id);
-        if (!item) {
-            continue;
-        }
-        let itemNameElement = null;
-        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-            itemNameElement = $(itemElement);
-        } else {
-            if ($(itemElement).find(options.itemNameSelector)?.length > 0) {
-                itemNameElement = $(itemElement).find(options.itemNameSelector);
-            }
-            if ($(itemElement).find(options.itemNameSelector2)?.length > 0) {
-                itemNameElement = $(itemElement).find(options.itemNameSelector2);
-            }
-        }
-        if (!itemNameElement) {
-            continue;
-        }
-        let itemImageNameElement = null;
-        if ($(itemElement).find(options.itemImageNameSelector)?.length > 0) {
-            itemImageNameElement = $(itemElement).find(options.itemImageNameSelector);
-        }
-
-        const color = API.getColorFromItem(item);
-        if (itemNameElement?.length > 0 && color) {
-            if (color && !colorIsDefault(color)) {
-                if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
-                    const backgroundColor = API.getRarityTextBackgroundColor(color);
-                    // Target background-color and background to ensure there are no overlapping backgrounds.
-                    itemNameElement.css("background-color", backgroundColor);
-                    itemNameElement.css("background", backgroundColor);
-                    if (game.modules.get("colorsettings")?.api) {
-                        const textColor = API.getRarityTextColor(color);
-                        itemNameElement.css("color", textColor);
-                    }
-                } else {
-                    itemNameElement.css("color", color);
-                }
-            }
-        }
-        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
-            if (itemImageNameElement?.length > 0 && color) {
-                if (color && !colorIsDefault(color)) {
-                    //itemImageNameElement.css("border-color", color+"!important");
-                    itemImageNameElement.css("border", "solid " + color);
-                    // itemImageNameElement.css("border-width", "thick");
-                }
-            }
-        }
-    }
-}
-
 Hooks.on("renderSidebarTab", (bar, html) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -247,11 +110,11 @@ Hooks.on("renderSidebarTab", (bar, html) => {
         }
 
         let itemNameElement = null;
-        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+        if (rarityColorBackgroundEnable) {
             itemNameElement = $(itemElement).find(".document-name");
             const thumbnail = $(itemElement).find(".thumbnail");
             thumbnail.css("z-index", 1); // stupid display flex
-        } else {
+        } else if (rarityColorTextEnable) {
             itemNameElement = $(itemElement).find(".document-name");
         }
         let itemImageNameElement = null;
@@ -260,23 +123,21 @@ Hooks.on("renderSidebarTab", (bar, html) => {
         }
 
         const color = API.getColorFromItem(item);
-        if (itemNameElement?.length > 0 && color) {
-            if (color && !colorIsDefault(color)) {
-                if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+        if (!colorIsDefault(color)) {
+            if (itemNameElement?.length > 0) {
+                if (rarityColorBackgroundEnable) {
                     const backgroundColor = API.getRarityTextBackgroundColor(color);
                     itemNameElement.css("background-color", backgroundColor);
                     if (game.modules.get("colorsettings")?.api) {
                         const textColor = API.getRarityTextColor(color);
                         itemNameElement.css("color", textColor);
                     }
-                } else {
+                } else if (rarityColorTextEnable) {
                     itemNameElement.css("color", color);
                 }
             }
-        }
-        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
-            if (itemImageNameElement?.length > 0 && color) {
-                if (color && !colorIsDefault(color)) {
+            if (rarityColorBorderEnable) {
+                if (itemImageNameElement?.length > 0) {
                     // itemImageNameElement.css("border-color", color+"!important");
                     itemImageNameElement.css("border", "solid " + color);
                     // itemImageNameElement.css("border-width", "thick");
@@ -286,19 +147,17 @@ Hooks.on("renderSidebarTab", (bar, html) => {
     }
 });
 
-Hooks.on("updateItem", (item, diff, options, userID) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
-    if (!rarityFlag) {
-        return;
-    }
-    if (item.actor) {
-        return;
-    }
-    ui.sidebar.render();
-});
+// Hooks.on("updateItem", (item, diff, options, userID) => {
+//     if (!rarityFlag) {
+//         return;
+//     }
+//     if (item.actor) {
+//         return;
+//     }
+//     ui.sidebar.render();
+// });
 
 Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -328,7 +187,6 @@ Hooks.on("tidy5e-sheet.renderItemSheet", (app, element, data) => {
 });
 
 Hooks.on("renderItemSheet", (app, html, appData) => {
-    let rarityFlag = game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag");
     if (!rarityFlag) {
         return;
     }
@@ -340,7 +198,145 @@ Hooks.on("renderItemSheet", (app, html, appData) => {
     renderItemSheetRarityColors(app, html, appData, options);
 });
 
-export function renderItemSheetRarityColors(app, html, appData, options) {
+// =================================================
+// UTILITY
+// ===================================================
+
+async function applyChangesCompendiumRarityColor(tab) {
+    if (game.settings.get(CONSTANTS.MODULE_ID, "disableRarityColorOnCompendium")) {
+        return;
+    }
+    const headerBanners = document.querySelectorAll(`.directory.compendium`).forEach(async (h) => {
+        const dataPack = h.dataset.pack;
+        const items = document.querySelectorAll(`.directory.compendium[data-pack='${dataPack}'] .directory-item`);
+        for (let itemElement of items) {
+            // let id = itemElement.outerHTML.match(/data-document-id="(.*?)"/);
+            let item = null;
+            if (!itemElement.dataset.uuid) {
+                let id = itemElement.dataset.documentId;
+                if (!id) {
+                    continue;
+                }
+                item = await fromUuid(`Compendium.${dataPack}.${id}`);
+            } else {
+                item = await fromUuid(itemElement.dataset.uuid);
+            }
+
+            if (!item) {
+                continue;
+            }
+
+            let itemNameElement = null;
+            let itemImageNameElement = null;
+            if (rarityColorBackgroundEnable) {
+                itemNameElement = $(itemElement).find(".document-name");
+                itemImageNameElement = $(itemElement).find("img.thumbnail");
+                // const thumbnail = $(itemElement).find(".thumbnail");
+                // thumbnail.css("z-index", 1); // stupid display flex
+            } else if (rarityColorTextEnable) {
+                itemNameElement = $(itemElement).find(".document-name");
+                itemImageNameElement = $(itemElement).find("img.thumbnail");
+            }
+
+            const color = API.getColorFromItem(item);
+            if (!colorIsDefault(color)) {
+                if (itemNameElement?.length > 0) {
+                    if (rarityColorBackgroundEnable) {
+                        const backgroundColor = API.getRarityTextBackgroundColor(color);
+                        itemNameElement.css("background-color", backgroundColor);
+                        if (game.modules.get("colorsettings")?.api) {
+                            const textColor = API.getRarityTextColor(color);
+                            itemNameElement.css("color", textColor);
+                        }
+                    } else if (rarityColorTextEnable) {
+                        itemNameElement.css("color", color);
+                    }
+                }
+                if (rarityColorBorderEnable) {
+                    if (itemImageNameElement?.length > 0) {
+                        // itemImageNameElement.css("border-color", color+"!important");
+                        itemImageNameElement.css("border", "solid " + color);
+                        // itemImageNameElement.css("border-width", "thick");
+                    }
+                }
+            }
+        }
+    });
+}
+
+function renderActorRarityColors(actorSheet, html, options) {
+    if (isEmptyObject(API.mapConfigurations)) {
+        API.mapConfigurations = API.getColorMap();
+    }
+
+    let items = [];
+    if (html.find($(options.itemSelector))?.length > 0) {
+        items = html.find($(options.itemSelector));
+    }
+    if (html.find($(options.itemSelector2))?.length > 0) {
+        items = html.find($(options.itemSelector2));
+    }
+    // let items = html.find($(options.itemSelector));
+    for (let itemElement of items) {
+        // let id = itemElement.outerHTML.match(/data-item-id="(.*?)"/);
+        // Get closest available Item dataset.
+        let id = itemElement.closest("[data-item-id]")?.dataset.itemId;
+        if (!id) {
+            continue;
+        }
+        let actor = actorSheet.object;
+        // let item = actor.items.get(id[1]);
+        let item = actor.items.get(id);
+        if (!item) {
+            continue;
+        }
+        let itemNameElement = null;
+        if (rarityColorBackgroundEnable) {
+            itemNameElement = $(itemElement);
+        } else if (rarityColorTextEnable) {
+            if ($(itemElement).find(options.itemNameSelector)?.length > 0) {
+                itemNameElement = $(itemElement).find(options.itemNameSelector);
+            }
+            if ($(itemElement).find(options.itemNameSelector2)?.length > 0) {
+                itemNameElement = $(itemElement).find(options.itemNameSelector2);
+            }
+        }
+        if (!itemNameElement) {
+            continue;
+        }
+        let itemImageNameElement = null;
+        if ($(itemElement).find(options.itemImageNameSelector)?.length > 0) {
+            itemImageNameElement = $(itemElement).find(options.itemImageNameSelector);
+        }
+
+        const color = API.getColorFromItem(item);
+        if (!colorIsDefault(color)) {
+            if (itemNameElement?.length > 0) {
+                if (rarityColorBackgroundEnable) {
+                    const backgroundColor = API.getRarityTextBackgroundColor(color);
+                    // Target background-color and background to ensure there are no overlapping backgrounds.
+                    itemNameElement.css("background-color", backgroundColor);
+                    itemNameElement.css("background", backgroundColor);
+                    if (game.modules.get("colorsettings")?.api) {
+                        const textColor = API.getRarityTextColor(color);
+                        itemNameElement.css("color", textColor);
+                    }
+                } else if (rarityColorTextEnable) {
+                    itemNameElement.css("color", color);
+                }
+            }
+            if (rarityColorBorderEnable) {
+                if (itemImageNameElement?.length > 0) {
+                    //itemImageNameElement.css("border-color", color+"!important");
+                    itemImageNameElement.css("border", "solid " + color);
+                    // itemImageNameElement.css("border-width", "thick");
+                }
+            }
+        }
+    }
+}
+
+function renderItemSheetRarityColors(app, html, appData, options) {
     let item = appData;
     if (!item) {
         return;
@@ -365,21 +361,19 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
     }
 
     const color = API.getColorFromItem(item);
-    if (color && !colorIsDefault(color)) {
-        if (game.settings.get(CONSTANTS.MODULE_ID, "enableBackgroundColorInsteadText")) {
+    if (!colorIsDefault(color)) {
+        if (rarityColorBackgroundEnable) {
             const backgroundColor = API.getRarityTextBackgroundColor(color);
             itemNameElement.css("background-color", backgroundColor);
             if (game.modules.get("colorsettings")?.api) {
                 const textColor = API.getRarityTextColor(color);
                 itemNameElement.css("color", textColor);
             }
-        } else {
+        } else if (rarityColorTextEnable) {
             itemNameElement.css("color", color);
         }
-    }
-    if (game.settings.get(CONSTANTS.MODULE_ID, "enableBorderColor")) {
-        if (itemImageNameElement?.length > 0 && color) {
-            if (color && !colorIsDefault(color)) {
+        if (rarityColorBorderEnable) {
+            if (itemImageNameElement?.length > 0 && color) {
                 // itemImageNameElement.css("border-color", color+"!important");
                 itemImageNameElement.css("border", "solid " + color);
                 // itemImageNameElement.css("border-width", "thick");
@@ -423,10 +417,6 @@ export function renderItemSheetRarityColors(app, html, appData, options) {
             }
         });
 }
-
-// =================================================
-// UTILITY
-// ===================================================
 
 export function prepareMapConfigurations() {
     let configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
@@ -576,7 +566,7 @@ function prepareItemRarity(customItemRarity) {
     }
     const defaultItemRarity = customItemRarity.defaults;
     for (const [key, value] of Object.entries(defaultItemRarity)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             delete itemRarity[key];
         } else if (typeof value === "string" || value instanceof String) {
             itemRarity[key] = {
@@ -586,7 +576,7 @@ function prepareItemRarity(customItemRarity) {
         }
     }
     for (const [key, value] of Object.entries(custom)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             continue;
         } else {
             if (!value) {
@@ -609,7 +599,7 @@ function prepareSpellSchools(customSpellSchools) {
     }
     const defaultSpellSchools = customSpellSchools.defaults;
     for (const [key, value] of Object.entries(defaultSpellSchools)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             delete spellSchools[key];
         } else if (typeof value === "string" || value instanceof String) {
             spellSchools[key] = {
@@ -619,7 +609,7 @@ function prepareSpellSchools(customSpellSchools) {
         }
     }
     for (const [key, value] of Object.entries(custom)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             continue;
         } else {
             spellSchools[value.key] = {
@@ -639,7 +629,7 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
     }
     const defaultClassFeatureTypes = customClassFeatureTypes.defaults;
     for (const [key, value] of Object.entries(defaultClassFeatureTypes)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             delete classFeatureTypes[key];
         } else if (typeof value === "string" || value instanceof String) {
             classFeatureTypes[key] = {
@@ -649,7 +639,7 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
         }
     }
     for (const [key, value] of Object.entries(custom)) {
-        if (key === "undefined") {
+        if (key === "undefined" || key === "null") {
             continue;
         } else {
             classFeatureTypes[value.key] = {
@@ -660,23 +650,6 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
     }
 }
 
-/**
- * @href https://stackoverflow.com/questions/19799777/how-to-add-transparency-information-to-a-hex-color-code
- * @href https://stackoverflow.com/questions/21646738/convert-hex-to-rgba
- */
-export function hexToRGBAString(colorHex, alpha = 1) {
-    return API.hexToRGBAString(colorHex, alpha);
-}
-
-/**
- * turn hex rgba into rgba string
- * @param {String} hex 8 long hex value in string form, eg: "#123456ff"
- * @returns Array of rgba[r, g, b, a]
- */
-export function hexToRGBA(hex) {
-    return API.hexToRGBA(hex);
-}
-
 export function colorIsDefault(color) {
     if (!color) {
         return true;
@@ -685,4 +658,33 @@ export function colorIsDefault(color) {
         return false;
     }
     return true;
+}
+
+function isDisabled() {
+    return (
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityFlag") ||
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.NONE
+    );
+}
+
+function isBackgroundEnable() {
+    return (
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.BACKGROUND_AND_BORDER ||
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.ONLY_BACKGROUND
+    );
+}
+
+function isBorderEnable() {
+    return (
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.BACKGROUND_AND_BORDER ||
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.TEXT_AND_BORDER ||
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.ONLY_BORDER
+    );
+}
+
+function isTextEnable() {
+    return (
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.TEXT_AND_BORDER ||
+        game.settings.get(CONSTANTS.MODULE_ID, "rarityColorMode") === CONSTANTS.SETTINGS.MODE.ONLY_TEXT
+    );
 }

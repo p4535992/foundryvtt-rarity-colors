@@ -56,6 +56,12 @@
     "rarity-colors.setting.featExternal.name": "Feat External Color",
     "rarity-colors.setting.featExternal.hint": " ",
 
+    "rarity-colors.setting.rarityColorMode.name": "Rarity Color Mode",
+    "rarity-colors.setting.rarityColorMode.hint": "Choose what mode you want for this module",
+
+    "rarity-colors.setting.disableRarityColorOnCompendium.name": "Disable Rarity Color on the compendium",
+    "rarity-colors.setting.disableRarityColorOnCompendium.hint": "Apply this styling to the compendium can slowdown the loading of the compendium. You can now disable this if you want it.",
+
     "rarity-colors.setting.reset.name": "Reset settings to default",
     "rarity-colors.setting.reset.label": "Reset Settings To Default",
     "rarity-colors.setting.reset.hint": "This will reset all of the settings of back to the active game system's default.",

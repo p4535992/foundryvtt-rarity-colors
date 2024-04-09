@@ -32,7 +32,7 @@ export class RarityColorsApp extends FormApplication {
         // Item Rarity
         const configurationsItemRarityDefaultsTmp = duplicate(configurations.itemRarity.defaults);
         for (const [key, value] of Object.entries(configurationsItemRarityDefaultsTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.itemRarity.defaults[key];
                 continue;
             }
@@ -83,7 +83,7 @@ export class RarityColorsApp extends FormApplication {
         configurations.itemRarity.custom ??= {};
         const configurationsItemRarityCustomTmp = duplicate(configurations.itemRarity.custom);
         for (const [key, value] of Object.entries(configurationsItemRarityCustomTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.itemRarity.custom[key];
                 continue;
             }
@@ -104,7 +104,7 @@ export class RarityColorsApp extends FormApplication {
         // Spells School
         const configurationsSpellSchoolsDefaultsTmp = duplicate(configurations.spellSchools.defaults);
         for (const [key, value] of Object.entries(configurationsSpellSchoolsDefaultsTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.spellSchools.defaults[key];
                 continue;
             }
@@ -125,7 +125,7 @@ export class RarityColorsApp extends FormApplication {
         configurations.spellSchools.custom ??= {};
         const configurationsSpellSchoolsCustomTmp = duplicate(configurations.spellSchools.custom);
         for (const [key, value] of Object.entries(configurationsSpellSchoolsCustomTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.spellSchools.custom[key];
                 continue;
             }
@@ -146,7 +146,7 @@ export class RarityColorsApp extends FormApplication {
         // Class feature Types
         const configurationsClassFeatureTypesDefaultsTmp = duplicate(configurations.classFeatureTypes.defaults);
         for (const [key, value] of Object.entries(configurationsClassFeatureTypesDefaultsTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.classFeatureTypes.defaults[key];
                 continue;
             }
@@ -170,7 +170,7 @@ export class RarityColorsApp extends FormApplication {
         configurations.classFeatureTypes.custom ??= {};
         const configurationsClassFeatureTypesCustomTmp = duplicate(configurations.classFeatureTypes.custom);
         for (const [key, value] of Object.entries(configurationsClassFeatureTypesCustomTmp)) {
-            if (typeof value === "string" || value instanceof String || key === "undefined") {
+            if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.classFeatureTypes.custom[key];
                 continue;
             }
