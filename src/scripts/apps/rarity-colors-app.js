@@ -1,4 +1,4 @@
-import { ORIGINAL_CONFIG, prepareConfigurations } from "../raritycolors.js";
+import { ORIGINAL_CONFIG, prepareConfigurations, prepareMapConfigurations } from "../raritycolors.js";
 import CONSTANTS from "../constants.js";
 import { isEmptyObject } from "../lib/lib.js";
 import Logger from "../lib/Logger.js";
@@ -29,6 +29,8 @@ export class RarityColorsApp extends FormApplication {
             configurations = prepareConfigurations();
         }
 
+        let mapDefaults = prepareMapConfigurations();
+
         // Item Rarity
         const configurationsItemRarityDefaultsTmp = duplicate(configurations.itemRarity.defaults);
         for (const [key, value] of Object.entries(configurationsItemRarityDefaultsTmp)) {
@@ -41,37 +43,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                switch (key) {
-                    case "common": {
-                        value.color = "#000000";
-                        break;
-                    }
-                    case "uncommon": {
-                        value.color = "#008000";
-                        break;
-                    }
-                    case "rare": {
-                        value.color = "#0000ff";
-                        break;
-                    }
-                    case "veryRare":
-                    case "veryrare": {
-                        value.color = "#800080";
-                        break;
-                    }
-                    case "legendary": {
-                        value.color = "#ffa500";
-                        break;
-                    }
-                    case "artifact": {
-                        value.color = "#d2691e";
-                        break;
-                    }
-                    default: {
-                        value.color = "#000000";
-                        break;
-                    }
-                }
+                value.color = mapDefaults[key]?.color || "#000000";
             }
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.itemRarity[key];
@@ -94,7 +66,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                value.color = "#000000";
+                value.color = mapDefaults[key]?.color || "#000000";
             }
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.itemRarity[key];
@@ -117,7 +89,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                value.color = "#4a8396";
+                value.color = mapDefaults[key]?.color || "#4a8396";
             }
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.spellSchools[key];
@@ -140,7 +112,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                value.color = "#4a8396";
+                value.color = mapDefaults[key]?.color || "#4a8396";
             }
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.spellSchools[key];
@@ -163,7 +135,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                value.color = "#48d1cc";
+                value.color = mapDefaults[key]?.color || "#48d1cc";
             }
             // if (value.label) {
             //   value.name = value.label;
@@ -189,7 +161,7 @@ export class RarityColorsApp extends FormApplication {
                 continue;
             }
             if (!value.color || value.color === "#000000") {
-                value.color = "#48d1cc";
+                value.color = mapDefaults[key]?.color || "#48d1cc";
             }
             if (value.label) {
                 value.name = value.label;

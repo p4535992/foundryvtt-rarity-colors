@@ -301,9 +301,9 @@ function renderActorRarityColors(actorSheet, html, options) {
                 itemNameElement = $(itemElement).find(options.itemNameSelector2);
             }
         }
-        if (!itemNameElement) {
-            continue;
-        }
+        // if (!itemNameElement) {
+        //     continue;
+        // }
         let itemImageNameElement = null;
         if ($(itemElement).find(options.itemImageNameSelector)?.length > 0) {
             itemImageNameElement = $(itemElement).find(options.itemImageNameSelector);
@@ -352,9 +352,9 @@ function renderItemSheetRarityColors(app, html, appData, options) {
     if (html.find(options.itemNameSelector2)?.length > 0) {
         itemNameElement = html.find(options.itemNameSelector2);
     }
-    if (!itemNameElement) {
-        return;
-    }
+    // if (!itemNameElement) {
+    //     return;
+    // }
     let itemImageNameElement = null;
     if (html.find(options.itemImageNameSelector)?.length > 0) {
         itemImageNameElement = html.find(options.itemImageNameSelector);
@@ -362,15 +362,17 @@ function renderItemSheetRarityColors(app, html, appData, options) {
 
     const color = API.getColorFromItem(item);
     if (!colorIsDefault(color)) {
-        if (rarityColorBackgroundEnable) {
-            const backgroundColor = API.getRarityTextBackgroundColor(color);
-            itemNameElement.css("background-color", backgroundColor);
-            if (game.modules.get("colorsettings")?.api) {
-                const textColor = API.getRarityTextColor(color);
-                itemNameElement.css("color", textColor);
+        if (itemNameElement?.length > 0) {
+            if (rarityColorBackgroundEnable) {
+                const backgroundColor = API.getRarityTextBackgroundColor(color);
+                itemNameElement.css("background-color", backgroundColor);
+                if (game.modules.get("colorsettings")?.api) {
+                    const textColor = API.getRarityTextColor(color);
+                    itemNameElement.css("color", textColor);
+                }
+            } else if (rarityColorTextEnable) {
+                itemNameElement.css("color", color);
             }
-        } else if (rarityColorTextEnable) {
-            itemNameElement.css("color", color);
         }
         if (rarityColorBorderEnable) {
             if (itemImageNameElement?.length > 0 && color) {
@@ -428,13 +430,13 @@ export function prepareMapConfigurations() {
     ) {
         Logger.warn(`No configurations is been setted yet`);
         mapAll["common"] = { color: "#000000" };
-        mapAll["uncommon"] = { color: "#008000" };
-        mapAll["rare"] = { color: "#0000ff" };
-        mapAll["veryrare"] = { color: "#800080" };
-        mapAll["legendary"] = { color: "#ffa500" };
-        mapAll["artifact"] = { color: "#d2691e" };
-        mapAll["spell"] = { color: "#4a8396" };
-        mapAll["feat"] = { color: "#48d1cc" };
+        mapAll["uncommon"] = { color: "#4bff4aff" };
+        mapAll["rare"] = { color: "#0000ffff" };
+        mapAll["veryrare"] = { color: "#800080ff" };
+        mapAll["legendary"] = { color: "#ffa500ff" };
+        mapAll["artifact"] = { color: "#d2691eff" };
+        mapAll["spell"] = { color: "#4a8396ff" };
+        mapAll["feat"] = { color: "#48d1ccff" };
     } else {
         prepareMapItemRarity(mapAll, configurations.itemRarity);
     }
@@ -444,8 +446,14 @@ export function prepareMapConfigurations() {
         isEmptyObject(configurations.spellSchools) ||
         isEmptyObject(configurations.spellSchools.defaults)
     ) {
-        // TODO ADD DEFAULT
-        prepareMapSpellSchools(mapAll, configurations.spellSchools);
+        mapAll["abj"] = { color: "#4bff4aff" };
+        mapAll["con"] = { color: "#d14848ff" };
+        mapAll["div"] = { color: "#4a8396ff" };
+        mapAll["enc"] = { color: "#d557ffff" };
+        mapAll["evo"] = { color: "#48d1ccff" };
+        mapAll["ill"] = { color: "#fffc66ff" };
+        mapAll["nec"] = { color: "#800080ff" };
+        mapAll["trs"] = { color: "#d2691eff" };
     } else {
         prepareMapSpellSchools(mapAll, configurations.spellSchools);
     }
@@ -455,8 +463,12 @@ export function prepareMapConfigurations() {
         isEmptyObject(configurations.classFeatureTypes) ||
         isEmptyObject(configurations.classFeatureTypes.defaults)
     ) {
-        // TODO ADD DEFAULT
-        prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
+        mapAll["background"] = { color: "#d557ffff" };
+        mapAll["class"] = { color: "#5e9effff" };
+        mapAll["feat"] = { color: "#d14848ff" };
+        mapAll["monster"] = { color: "#4bff4aff" };
+        mapAll["race"] = { color: "#fffc66ff" };
+        mapAll["supernaturalGift"] = { color: "#ffbc44ff" };
     } else {
         prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
     }
@@ -464,13 +476,13 @@ export function prepareMapConfigurations() {
     // just for retro compatibility
     if (!mapAll["spell"]?.color) {
         mapAll["spell"] = {
-            color: "#4a8396",
+            color: "#4a8396ff",
             name: "Spell",
         };
     }
     if (!mapAll["feat"]?.color) {
         mapAll["feat"] = {
-            color: "#48d1cc",
+            color: "#48d1ccff",
             name: "Feature",
         };
     }
@@ -623,7 +635,7 @@ function prepareSpellSchools(customSpellSchools) {
             delete spellSchools[key];
         } else if (typeof value === "string" || value instanceof String) {
             spellSchools[key] = {
-                color: "#4a8396",
+                color: "#4a8396ff",
                 name: value,
             };
         }
@@ -633,7 +645,7 @@ function prepareSpellSchools(customSpellSchools) {
             continue;
         } else {
             spellSchools[value.key] = {
-                color: value.color ?? "#4a8396",
+                color: value.color ?? "#4a8396ff",
                 name: value.name ? value.name : value.label,
             };
         }
@@ -653,7 +665,7 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
             delete classFeatureTypes[key];
         } else if (typeof value === "string" || value instanceof String) {
             classFeatureTypes[key] = {
-                color: "#48d1cc",
+                color: "#48d1ccff",
                 name: value,
             };
         }
@@ -663,7 +675,7 @@ function prepareClassFeatureTypes(customClassFeatureTypes) {
             continue;
         } else {
             classFeatureTypes[value.key] = {
-                color: value.color ?? "#48d1cc",
+                color: value.color ?? "#48d1ccff",
                 name: value.name ? value.name : value.label,
             };
         }
