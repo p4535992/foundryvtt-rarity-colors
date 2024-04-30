@@ -1,3 +1,7 @@
+### 0.3.19
+
+- BUg fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/17
+
 ### 0.3.18
 
 - Add better module settings for choose the mode styling

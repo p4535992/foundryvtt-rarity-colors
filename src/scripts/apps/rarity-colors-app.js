@@ -76,7 +76,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.itemRarity[key];
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
+            }
             configurations.itemRarity.defaults[key] = value;
         }
 
@@ -97,7 +99,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.itemRarity[key];
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.itemRarity[key]);
+            }
             configurations.itemRarity.custom[key] = value;
         }
 
@@ -118,7 +122,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.spellSchools[key];
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
+            }
             configurations.spellSchools.defaults[key] = value;
         }
 
@@ -139,7 +145,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.spellSchools[key];
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.spellSchools[key]);
+            }
             configurations.spellSchools.custom[key] = value;
         }
 
@@ -163,7 +171,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
+            }
             configurations.classFeatureTypes.defaults[key] = value;
         }
 
@@ -187,7 +197,9 @@ export class RarityColorsApp extends FormApplication {
             // if (!value.name) {
             //   value.name = ORIGINAL_CONFIG.featureTypes[key]?.label ?? "";
             // }
-            value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
+            if (!value.name || this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key])) {
+                value.name = this._tryToRetrieveName(ORIGINAL_CONFIG.featureTypes[key]);
+            }
             configurations.classFeatureTypes.custom[key] = value;
         }
         return { configurations, ORIGINAL_CONFIG };

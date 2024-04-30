@@ -435,12 +435,32 @@ export function prepareMapConfigurations() {
         mapAll["artifact"] = { color: "#d2691e" };
         mapAll["spell"] = { color: "#4a8396" };
         mapAll["feat"] = { color: "#48d1cc" };
-        return mapAll;
+    } else {
+        prepareMapItemRarity(mapAll, configurations.itemRarity);
     }
 
-    prepareMapItemRarity(mapAll, configurations.itemRarity);
-    prepareMapSpellSchools(mapAll, configurations.spellSchools);
-    prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
+    if (
+        isEmptyObject(configurations) ||
+        isEmptyObject(configurations.spellSchools) ||
+        isEmptyObject(configurations.spellSchools.defaults)
+    ) {
+        // TODO ADD DEFAULT
+        prepareMapSpellSchools(mapAll, configurations.spellSchools);
+    } else {
+        prepareMapSpellSchools(mapAll, configurations.spellSchools);
+    }
+
+    if (
+        isEmptyObject(configurations) ||
+        isEmptyObject(configurations.classFeatureTypes) ||
+        isEmptyObject(configurations.classFeatureTypes.defaults)
+    ) {
+        // TODO ADD DEFAULT
+        prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
+    } else {
+        prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
+    }
+
     // just for retro compatibility
     if (!mapAll["spell"]?.color) {
         mapAll["spell"] = {
