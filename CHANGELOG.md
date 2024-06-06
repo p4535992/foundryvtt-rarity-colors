@@ -1,3 +1,7 @@
+### 0.3.20
+
+- Add maximum compatibility to v12
+
 ### 0.3.19
 
 - BUg fix: https://github.com/p4535992/foundryvtt-rarity-colors/issues/17
