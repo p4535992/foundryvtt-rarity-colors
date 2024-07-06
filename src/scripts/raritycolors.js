@@ -11,7 +11,8 @@ let rarityColorTextEnable = false;
 let rarityFlag = false;
 
 export const initHooks = async () => {
-    ORIGINAL_CONFIG = deepClone(game.dnd5e.config);
+    // TODO Make something for multisystem here
+    ORIGINAL_CONFIG = deepClone(game.dnd5e?.config || {});
 };
 
 export const setupHooks = async () => {
@@ -591,7 +592,8 @@ export function prepareConfigurations() {
 }
 
 function prepareItemRarity(customItemRarity) {
-    const itemRarity = deepClone(game.dnd5e.config.itemRarity);
+    // TODO Make something for multisystem here
+    const itemRarity = deepClone(game.dnd5e?.config?.itemRarity || {});
     const custom = customItemRarity.custom ?? {};
     if (isEmptyObject(customItemRarity.defaults)) {
         customItemRarity.defaults = itemRarity;
@@ -624,7 +626,8 @@ function prepareItemRarity(customItemRarity) {
 }
 
 function prepareSpellSchools(customSpellSchools) {
-    const spellSchools = deepClone(game.dnd5e.config.spellSchools);
+    // TODO Make something for multisystem here
+    const spellSchools = deepClone(game.dnd5e?.config?.spellSchools || {});
     const custom = customSpellSchools.custom ?? {};
     if (isEmptyObject(customSpellSchools.defaults)) {
         customSpellSchools.defaults = spellSchools;
@@ -653,8 +656,9 @@ function prepareSpellSchools(customSpellSchools) {
 }
 
 function prepareClassFeatureTypes(customClassFeatureTypes) {
-    // const classFeatureTypes = deepClone(game.dnd5e.config.featureTypes.class.subtypes);
-    const classFeatureTypes = deepClone(game.dnd5e.config.featureTypes);
+    // TODO Make something for multisystem here
+    // const classFeatureTypes = deepClone(game.dnd5e?.config?.featureTypes?.class?.subtypes || {});
+    const classFeatureTypes = deepClone(game.dnd5e?.config?.featureTypes || {});
     const custom = customClassFeatureTypes.custom ?? {};
     if (isEmptyObject(customClassFeatureTypes.defaults)) {
         customClassFeatureTypes.defaults = classFeatureTypes;
