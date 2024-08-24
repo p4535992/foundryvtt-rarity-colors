@@ -1,3 +1,10 @@
+### 12.0.0
+
+- Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/20
+- Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/21
+- Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/19
+- Add feature for Dnd5e https://github.com/p4535992/foundryvtt-rarity-colors/issues/22 
+
 ### 0.3.21
 
 - Try to fix again  https://github.com/p4535992/foundryvtt-rarity-colors/issues/10

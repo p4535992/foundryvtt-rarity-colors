@@ -12,7 +12,7 @@ let rarityFlag = false;
 
 export const initHooks = async () => {
     // TODO Make something for multisystem here
-    ORIGINAL_CONFIG = deepClone(game.dnd5e?.config || {});
+    ORIGINAL_CONFIG = foundry.utils.deepClone(game.dnd5e?.config || {});
 };
 
 export const setupHooks = async () => {
@@ -107,6 +107,11 @@ Hooks.on("renderSidebarTab", (bar, html) => {
         }
 
         if (!item) {
+            continue;
+        }
+        // TODO make multisystem only dnd5e supported
+        if (game.system.id === "dnd5e" && !item.system.identified) {
+            Logger.debug(`Item is not identified no color is applied`, item);
             continue;
         }
 
@@ -226,6 +231,11 @@ async function applyChangesCompendiumRarityColor(tab) {
             if (!item) {
                 continue;
             }
+            // TODO make multisystem only dnd5e supported
+            if (game.system.id === "dnd5e" && !item.system.identified) {
+                Logger.debug(`Item is not identified no color is applied`, item);
+                continue;
+            }
 
             let itemNameElement = null;
             let itemImageNameElement = null;
@@ -291,6 +301,12 @@ function renderActorRarityColors(actorSheet, html, options) {
         if (!item) {
             continue;
         }
+        // TODO make multisystem only dnd5e supported
+        if (game.system.id === "dnd5e" && !item.system.identified) {
+            Logger.debug(`Item is not identified no color is applied`, item);
+            continue;
+        }
+
         let itemNameElement = null;
         if (rarityColorBackgroundEnable) {
             itemNameElement = $(itemElement);
@@ -421,6 +437,43 @@ function renderItemSheetRarityColors(app, html, appData, options) {
         });
 }
 
+function _retrieveMapItemRarityDefaults() {
+    let mapItemRarityDefaults = {};
+    mapItemRarityDefaults["common"] = { color: "#000000" };
+    mapItemRarityDefaults["uncommon"] = { color: "#4bff4aff" };
+    mapItemRarityDefaults["rare"] = { color: "#0000ffff" };
+    mapItemRarityDefaults["veryrare"] = { color: "#800080ff" };
+    mapItemRarityDefaults["legendary"] = { color: "#ffa500ff" };
+    mapItemRarityDefaults["artifact"] = { color: "#d2691eff" };
+    mapItemRarityDefaults["spell"] = { color: "#4a8396ff" };
+    mapItemRarityDefaults["feat"] = { color: "#48d1ccff" };
+    return mapItemRarityDefaults;
+}
+
+function _retrieveMapSpellSchoolsRarityDefaults() {
+    let mapSpellSchool = {};
+    mapSpellSchool["abj"] = { color: "#4bff4aff" };
+    mapSpellSchool["con"] = { color: "#d14848ff" };
+    mapSpellSchool["div"] = { color: "#4a8396ff" };
+    mapSpellSchool["enc"] = { color: "#d557ffff" };
+    mapSpellSchool["evo"] = { color: "#48d1ccff" };
+    mapSpellSchool["ill"] = { color: "#fffc66ff" };
+    mapSpellSchool["nec"] = { color: "#800080ff" };
+    mapSpellSchool["trs"] = { color: "#d2691eff" };
+    return mapSpellSchool;
+}
+
+function _retrieveMapClassFeatureTypesRarityDefaults() {
+    let mapClassFeatureTypes = {};
+    mapClassFeatureTypes["background"] = { color: "#d557ffff" };
+    mapClassFeatureTypes["class"] = { color: "#5e9effff" };
+    mapClassFeatureTypes["feat"] = { color: "#d14848ff" };
+    mapClassFeatureTypes["monster"] = { color: "#4bff4aff" };
+    mapClassFeatureTypes["race"] = { color: "#fffc66ff" };
+    mapClassFeatureTypes["supernaturalGift"] = { color: "#ffbc44ff" };
+    return mapClassFeatureTypes;
+}
+
 export function prepareMapConfigurations() {
     let configurations = game.settings.get(CONSTANTS.MODULE_ID, "configurations");
     let mapAll = {};
@@ -430,14 +483,8 @@ export function prepareMapConfigurations() {
         isEmptyObject(configurations.itemRarity.defaults)
     ) {
         Logger.warn(`No configurations is been setted yet`);
-        mapAll["common"] = { color: "#000000" };
-        mapAll["uncommon"] = { color: "#4bff4aff" };
-        mapAll["rare"] = { color: "#0000ffff" };
-        mapAll["veryrare"] = { color: "#800080ff" };
-        mapAll["legendary"] = { color: "#ffa500ff" };
-        mapAll["artifact"] = { color: "#d2691eff" };
-        mapAll["spell"] = { color: "#4a8396ff" };
-        mapAll["feat"] = { color: "#48d1ccff" };
+        let mapItemRarityDefaults = _retrieveMapItemRarityDefaults();
+        foundry.utils.mergeObject(mapAll, mapItemRarityDefaults);
     } else {
         prepareMapItemRarity(mapAll, configurations.itemRarity);
     }
@@ -447,14 +494,8 @@ export function prepareMapConfigurations() {
         isEmptyObject(configurations.spellSchools) ||
         isEmptyObject(configurations.spellSchools.defaults)
     ) {
-        mapAll["abj"] = { color: "#4bff4aff" };
-        mapAll["con"] = { color: "#d14848ff" };
-        mapAll["div"] = { color: "#4a8396ff" };
-        mapAll["enc"] = { color: "#d557ffff" };
-        mapAll["evo"] = { color: "#48d1ccff" };
-        mapAll["ill"] = { color: "#fffc66ff" };
-        mapAll["nec"] = { color: "#800080ff" };
-        mapAll["trs"] = { color: "#d2691eff" };
+        let mapSpellSchoolsRarityDefaults = _retrieveMapSpellSchoolsRarityDefaults();
+        foundry.utils.mergeObject(mapAll, mapSpellSchoolsRarityDefaults);
     } else {
         prepareMapSpellSchools(mapAll, configurations.spellSchools);
     }
@@ -464,12 +505,8 @@ export function prepareMapConfigurations() {
         isEmptyObject(configurations.classFeatureTypes) ||
         isEmptyObject(configurations.classFeatureTypes.defaults)
     ) {
-        mapAll["background"] = { color: "#d557ffff" };
-        mapAll["class"] = { color: "#5e9effff" };
-        mapAll["feat"] = { color: "#d14848ff" };
-        mapAll["monster"] = { color: "#4bff4aff" };
-        mapAll["race"] = { color: "#fffc66ff" };
-        mapAll["supernaturalGift"] = { color: "#ffbc44ff" };
+        let mapClassFeatureTypesRarityDefaults = _retrieveMapClassFeatureTypesRarityDefaults();
+        foundry.utils.mergeObject(mapAll, mapClassFeatureTypesRarityDefaults);
     } else {
         prepareMapClassFeatureTypes(mapAll, configurations.classFeatureTypes);
     }
@@ -544,15 +581,15 @@ export function prepareConfigurations() {
     ) {
         configurations = {
             spellSchools: {
-                custom: {},
+                custom: configurations?.spellSchools?.custom || {},
                 defaults: {},
             },
             itemRarity: {
-                custom: {},
+                custom: configurations?.itemRarity?.custom || {},
                 defaults: {},
             },
             classFeatureTypes: {
-                custom: {},
+                custom: configurations?.classFeatureTypes?.custom || {},
                 defaults: {},
             },
         };
@@ -560,15 +597,15 @@ export function prepareConfigurations() {
     }
     configurations ??= {
         spellSchools: {
-            custom: {},
+            custom: configurations?.spellSchools?.custom || {},
             defaults: {},
         },
         itemRarity: {
-            custom: {},
+            custom: configurations?.itemRarity?.custom || {},
             defaults: {},
         },
         classFeatureTypes: {
-            custom: {},
+            custom: configurations?.classFeatureTypes?.custom || {},
             defaults: {},
         },
     };
@@ -593,7 +630,7 @@ export function prepareConfigurations() {
 
 function prepareItemRarity(customItemRarity) {
     // TODO Make something for multisystem here
-    const itemRarity = deepClone(game.dnd5e?.config?.itemRarity || {});
+    const itemRarity = foundry.utils.deepClone(game.dnd5e?.config?.itemRarity || {});
     const custom = customItemRarity.custom ?? {};
     if (isEmptyObject(customItemRarity.defaults)) {
         customItemRarity.defaults = itemRarity;
@@ -627,7 +664,7 @@ function prepareItemRarity(customItemRarity) {
 
 function prepareSpellSchools(customSpellSchools) {
     // TODO Make something for multisystem here
-    const spellSchools = deepClone(game.dnd5e?.config?.spellSchools || {});
+    const spellSchools = foundry.utils.deepClone(game.dnd5e?.config?.spellSchools || {});
     const custom = customSpellSchools.custom ?? {};
     if (isEmptyObject(customSpellSchools.defaults)) {
         customSpellSchools.defaults = spellSchools;
@@ -657,8 +694,8 @@ function prepareSpellSchools(customSpellSchools) {
 
 function prepareClassFeatureTypes(customClassFeatureTypes) {
     // TODO Make something for multisystem here
-    // const classFeatureTypes = deepClone(game.dnd5e?.config?.featureTypes?.class?.subtypes || {});
-    const classFeatureTypes = deepClone(game.dnd5e?.config?.featureTypes || {});
+    // const classFeatureTypes = foundry.utils.deepClone(game.dnd5e?.config?.featureTypes?.class?.subtypes || {});
+    const classFeatureTypes = foundry.utils.deepClone(game.dnd5e?.config?.featureTypes || {});
     const custom = customClassFeatureTypes.custom ?? {};
     if (isEmptyObject(customClassFeatureTypes.defaults)) {
         customClassFeatureTypes.defaults = classFeatureTypes;

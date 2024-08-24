@@ -5,7 +5,7 @@ import Logger from "../lib/Logger.js";
 
 export class RarityColorsApp extends FormApplication {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             title: game.i18n.localize(`${CONSTANTS.MODULE_ID}.RarityColorsApp.title`),
             template: `modules/${CONSTANTS.MODULE_ID}/templates/rarityColorsApp.hbs`,
             id: `${CONSTANTS.MODULE_ID}-config-app`,
@@ -32,7 +32,8 @@ export class RarityColorsApp extends FormApplication {
         let mapDefaults = prepareMapConfigurations();
 
         // Item Rarity
-        const configurationsItemRarityDefaultsTmp = duplicate(configurations.itemRarity.defaults);
+        configurations.itemRarity ??= {};
+        const configurationsItemRarityDefaultsTmp = foundry.utils.duplicate(configurations.itemRarity.defaults);
         for (const [key, value] of Object.entries(configurationsItemRarityDefaultsTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.itemRarity.defaults[key];
@@ -55,7 +56,7 @@ export class RarityColorsApp extends FormApplication {
         }
 
         configurations.itemRarity.custom ??= {};
-        const configurationsItemRarityCustomTmp = duplicate(configurations.itemRarity.custom);
+        const configurationsItemRarityCustomTmp = foundry.utils.duplicate(configurations.itemRarity.custom);
         for (const [key, value] of Object.entries(configurationsItemRarityCustomTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.itemRarity.custom[key];
@@ -78,7 +79,8 @@ export class RarityColorsApp extends FormApplication {
         }
 
         // Spells School
-        const configurationsSpellSchoolsDefaultsTmp = duplicate(configurations.spellSchools.defaults);
+        configurations.spellSchools ??= {};
+        const configurationsSpellSchoolsDefaultsTmp = foundry.utils.duplicate(configurations.spellSchools.defaults);
         for (const [key, value] of Object.entries(configurationsSpellSchoolsDefaultsTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.spellSchools.defaults[key];
@@ -101,7 +103,7 @@ export class RarityColorsApp extends FormApplication {
         }
 
         configurations.spellSchools.custom ??= {};
-        const configurationsSpellSchoolsCustomTmp = duplicate(configurations.spellSchools.custom);
+        const configurationsSpellSchoolsCustomTmp = foundry.utils.duplicate(configurations.spellSchools.custom);
         for (const [key, value] of Object.entries(configurationsSpellSchoolsCustomTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.spellSchools.custom[key];
@@ -124,7 +126,10 @@ export class RarityColorsApp extends FormApplication {
         }
 
         // Class feature Types
-        const configurationsClassFeatureTypesDefaultsTmp = duplicate(configurations.classFeatureTypes.defaults);
+        configurations.classFeatureTypes ??= {};
+        const configurationsClassFeatureTypesDefaultsTmp = foundry.utils.duplicate(
+            configurations.classFeatureTypes.defaults,
+        );
         for (const [key, value] of Object.entries(configurationsClassFeatureTypesDefaultsTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.classFeatureTypes.defaults[key];
@@ -150,7 +155,9 @@ export class RarityColorsApp extends FormApplication {
         }
 
         configurations.classFeatureTypes.custom ??= {};
-        const configurationsClassFeatureTypesCustomTmp = duplicate(configurations.classFeatureTypes.custom);
+        const configurationsClassFeatureTypesCustomTmp = foundry.utils.duplicate(
+            configurations.classFeatureTypes.custom,
+        );
         for (const [key, value] of Object.entries(configurationsClassFeatureTypesCustomTmp)) {
             if (typeof value === "string" || value instanceof String || key === "undefined" || key === "null") {
                 delete configurations.classFeatureTypes.custom[key];
@@ -201,8 +208,9 @@ export class RarityColorsApp extends FormApplication {
             key: "new",
             color: "#000000",
         };
+        configurations.itemRarity ??= {};
         configurations.itemRarity.custom ??= {};
-        configurations.itemRarity.custom[randomID()] = newItemRarity;
+        configurations.itemRarity.custom[foundry.utils.randomID()] = newItemRarity;
         await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
         this.render(true);
     }
@@ -224,8 +232,9 @@ export class RarityColorsApp extends FormApplication {
             key: "new",
             color: "#000000",
         };
+        configurations.spellSchools ??= {};
         configurations.spellSchools.custom ??= {};
-        configurations.spellSchools.custom[randomID()] = newSpellSchool;
+        configurations.spellSchools.custom[foundry.utils.randomID()] = newSpellSchool;
         await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
         this.render(true);
     }
@@ -247,8 +256,9 @@ export class RarityColorsApp extends FormApplication {
             key: "new",
             color: "#000000",
         };
+        configurations.classFeatureTypes ??= {};
         configurations.classFeatureTypes.custom ??= {};
-        configurations.classFeatureTypes.custom[randomID()] = newClassFeature;
+        configurations.classFeatureTypes.custom[foundry.utils.randomID()] = newClassFeature;
         await game.settings.set(CONSTANTS.MODULE_ID, "configurations", configurations);
         this.render(true);
     }

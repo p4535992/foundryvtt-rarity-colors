@@ -22,10 +22,22 @@ const API = {
             Logger.warn(`getColorFromItem | No item reference is been passed`, true);
             return;
         }
-
-        item = RetrieveHelpers.getItemSync(item, true);
+        // Error: fromUuidSync was invoked on UUID
+        // 'Compendium.mon-compendium-partager.monstres-partager.Actor.WrDj95t16BTLQUGT.Item.vowp2kgd28v1VwqG'
+        // which references an Embedded Document and cannot be retrieved synchronously.
+        try {
+            item = RetrieveHelpers.getItemSync(item, true);
+        } catch (e) {
+            Logger.debug(e.message);
+            item = null;
+        }
         if (!item) {
             Logger.error(`getColorFromItem | No item found with reference`, false, item);
+            return null;
+        }
+        // TODO make multisystem only dnd5e supported
+        if (game.system.id === "dnd5e" && !item.system.identified) {
+            Logger.debug(`Item is not identified no color is applied`, item);
             return null;
         }
 

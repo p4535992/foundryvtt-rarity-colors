@@ -2,7 +2,7 @@
     "id": "rarity-colors",
     "title": "Rarity Colors",
     "description": "Auto colors inventory items based on visibility",
-    "version": "0.3.21",
+    "version": "12.0.0",
     "authors": [
         {
             "name": "Kandashi",
@@ -48,13 +48,13 @@
     "esmodules": ["module.js"],
     "styles": ["styles/raritycolors.css"],
     "compatibility": {
-        "minimum": 11,
+        "minimum": 12,
         "verified": 12,
         "maximum": 12
     },
     "url": "https://github.com/p4535992/foundryvtt-rarity-colors",
-    "manifest": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.21/module.json",
-    "download": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/0.3.21/module.zip",
+    "manifest": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/12.0.0/module.json",
+    "download": "https://github.com/p4535992/foundryvtt-rarity-colors/releases/download/12.0.0/module.zip",
     "readme": "https://github.com/p4535992/foundryvtt-rarity-colors/blob/master/README.md",
     "changelog": "https://github.com/p4535992/foundryvtt-rarity-colors/blob/master/CHANGELOG.md",
     "bugs": "https://github.com/p4535992/foundryvtt-rarity-colors/issues",
