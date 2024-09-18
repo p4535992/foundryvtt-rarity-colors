@@ -1,4 +1,4 @@
-import { isEmptyObject } from "./lib/lib.js";
+import { isEmptyObject, isItemUnidentified } from "./lib/lib.js";
 import CONSTANTS from "./constants.js";
 import API from "./API.js";
 import Logger from "./lib/Logger.js";
@@ -110,7 +110,7 @@ Hooks.on("renderSidebarTab", (bar, html) => {
             continue;
         }
         // TODO make multisystem only dnd5e supported
-        if (game.system.id === "dnd5e" && !item.system.identified) {
+        if (isItemUnidentified(item)) {
             Logger.debug(`Item is not identified no color is applied`, item);
             continue;
         }
@@ -232,7 +232,7 @@ async function applyChangesCompendiumRarityColor(tab) {
                 continue;
             }
             // TODO make multisystem only dnd5e supported
-            if (game.system.id === "dnd5e" && !item.system.identified) {
+            if (isItemUnidentified(item)) {
                 Logger.debug(`Item is not identified no color is applied`, item);
                 continue;
             }
@@ -302,7 +302,7 @@ function renderActorRarityColors(actorSheet, html, options) {
             continue;
         }
         // TODO make multisystem only dnd5e supported
-        if (game.system.id === "dnd5e" && !item.system.identified) {
+        if (isItemUnidentified(item)) {
             Logger.debug(`Item is not identified no color is applied`, item);
             continue;
         }

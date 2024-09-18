@@ -1,5 +1,5 @@
 import CONSTANTS from "./constants.js";
-import { isEmptyObject, isRealNumber } from "./lib/lib.js";
+import { isEmptyObject, isItemUnidentified, isRealNumber } from "./lib/lib.js";
 import { fontColorContrast } from "./libs/font-color-contrast-11.1.0/FontColorContrast.js";
 import { colorIsDefault, prepareMapConfigurations } from "./raritycolors.js";
 import Logger from "./lib/Logger.js";
@@ -36,7 +36,7 @@ const API = {
             return null;
         }
         // TODO make multisystem only dnd5e supported
-        if (game.system.id === "dnd5e" && !item.system.identified) {
+        if (isItemUnidentified(item)) {
             Logger.debug(`Item is not identified no color is applied`, item);
             return null;
         }

@@ -1,3 +1,9 @@
+### 12.0.1
+
+- Fix https://github.com/p4535992/foundryvtt-rarity-colors/issues/24
+- Fix https://github.com/p4535992/foundryvtt-rarity-colors/issues/21
+- Set minimum version to 11
+
 ### 12.0.0
 
 - Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/20

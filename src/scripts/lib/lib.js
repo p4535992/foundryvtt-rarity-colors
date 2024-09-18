@@ -15,3 +15,16 @@ export function isEmptyObject(obj) {
 export function isRealNumber(inNumber) {
     return !isNaN(inNumber) && typeof inNumber === "number" && isFinite(inNumber);
 }
+
+// TODO Multisystem
+export function isItemUnidentified(item) {
+    if (game.system.id === "dnd5e" && item) {
+        let type = item?.type;
+        const isSpell = type === "spell";
+        const isFeat = type === "feat";
+        const isIdentified = item.system.identified;
+        return !isSpell && !isFeat && !isIdentified;
+    } else {
+        return false;
+    }
+}
