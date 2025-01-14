@@ -37,7 +37,7 @@ Hooks.on("tidy5e-sheet.renderActorSheet", (app, element) => {
     }
 
     const options = {
-        itemSelector: `[data-tidy-sheet-part='item-table-row'] .item-table-row`,
+        itemSelector: `[data-tidy-sheet-part='item-table-row'] .item-table-row, [data-tidy-sheet-part='item-table-row'].item-table-row`,
         itemNameSelector: `[data-tidy-sheet-part='item-name']`,
         itemImageNameSelector: `.item-image`,
     };
