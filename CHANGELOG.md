@@ -1,3 +1,7 @@
+### 12.0.2
+
+- quick fix: adding Tidy v7.5.0 compatibility https://github.com/p4535992/foundryvtt-rarity-colors/pull/27 ty to @kgar
+
 ### 12.0.1
 
 - Fix https://github.com/p4535992/foundryvtt-rarity-colors/issues/24
@@ -9,7 +13,7 @@
 - Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/20
 - Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/21
 - Manage error https://github.com/p4535992/foundryvtt-rarity-colors/issues/19
-- Add feature for Dnd5e https://github.com/p4535992/foundryvtt-rarity-colors/issues/22 
+- Add feature for Dnd5e https://github.com/p4535992/foundryvtt-rarity-colors/issues/22
 
 ### 0.3.21
 
